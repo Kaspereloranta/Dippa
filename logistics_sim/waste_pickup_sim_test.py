@@ -6,7 +6,6 @@ import random
 sim_config = {	
 	'sim_name': 'Hämeenlinna and nearby regions',
 	'sim_runtime_days': 14, #14, # Simulation runtime in days <- Case Envor pidempi? (ruohomassa)
-	#'pickup_sites_filename': 'geo_data/sim_test_sites.geojson',
 	'pickup_sites_filename': 'geo_data/pickupSitesWithMassCoefficients.geojson',
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', 
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', # Nämä saadaaan oletetttavasti Lukelta (pickup_sites, depots ja terminals)
