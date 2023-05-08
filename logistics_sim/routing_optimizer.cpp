@@ -131,7 +131,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 14; // Get routes for 14 days
+  x.output_num_days = 14; // Get routes for 14 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
@@ -353,7 +353,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 }
 
 void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
-  if (pickupSites[pickupSiteIndex].level == 0) {
+  
+  // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
+  // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
+  
+  if (pickupSites[pickupSiteIndex].level == 0) { // <- TÄHÄN VOI MUUTTAA JOS ASETETAAN RAJA MISSÄ VOI KÄYDÄ JA MISSÄ EI
     // Unnecessary visit, nothing to pick up
     if (debug >= 2) printf("%gh Vehicle #%d: nothing to pick up at site #%d\n", sim->now()/60, vehicleIndex, pickupSiteIndex);
   } else if (vehicles[vehicleIndex].loadLevel == routingInput.vehicles[vehicleIndex].load_capacity) {
@@ -374,6 +378,9 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
 
 // Calculate cost function from components
 double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime) {
+
+  // TÄNNE AUTOKOHTAISET PARAMETRIT
+
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
@@ -478,6 +485,9 @@ int main() {
 */
 
   Optimizer<int16_t> optimizer(routingInput.num_genes, logisticsSims);
+  
+  // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
+  
   int numGenerations = 40000; // 40000
   int numFinetuneGenerations = 20000; // 20000
   int numGenerationsPerStep = 100;
