@@ -1,0 +1,10 @@
+./logistics_sim/*.exe
+./logistics_sim/vscode
+./logistics_sim/secrets.py
+./logistics_sim/waste_pickup_sim_secrets.py
+./logistics_sim/routing_optimizer
+./logistics_sim/routing_optimizer.exe
+./logistics_sim/log
+./logistics_sim/__pycache__
+
+
