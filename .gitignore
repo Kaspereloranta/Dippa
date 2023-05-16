@@ -6,5 +6,4 @@
 ./logistics_sim/routing_optimizer.exe
 ./logistics_sim/log
 ./logistics_sim/__pycache__
-
-
+*.csv
