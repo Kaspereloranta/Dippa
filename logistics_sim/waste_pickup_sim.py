@@ -81,7 +81,7 @@ def heuristic_router(routing_input):
 		}]
 	}
 	
-	print(routing_output)
+	#print(routing_output)
 
 	return routing_output
 

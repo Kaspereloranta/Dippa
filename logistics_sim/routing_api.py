@@ -4,6 +4,7 @@ from waste_pickup_sim_secrets import API_key
 
 import requests
 import numpy as np
+import time
 
 def get_distance_and_duration_matrix(coords):
 	block_side_length = 50
@@ -19,6 +20,7 @@ def get_distance_and_duration_matrix(coords):
 		for j in range(len(block_corners) - 1):
 			source_indexes = np.arange(block_corners[i], block_corners[i + 1]).tolist()
 			destination_indexes = np.arange(block_corners[j], block_corners[j + 1]).tolist()
+			time.sleep(2) # to avoid too many requests within a minute
 			api_results = api_request_distance_and_duration_matrix(coords, source_indexes, destination_indexes)
 			print("API RESULTS", api_results)
 			distance_matrix[block_corners[i]:block_corners[i + 1], block_corners[j]:block_corners[j + 1]] = api_results['distance_matrix']

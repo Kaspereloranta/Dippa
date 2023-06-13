@@ -19,7 +19,7 @@
 using json = nlohmann::json;
 
 int debug = 1; // 0: no printf, 1: printf for genetic algo, 2: all printf
-const float pickup_duration = 15;
+const float pickup_duration = 10;
 
 enum LocationType {LOCATION_TYPE_DEPOT, LOCATION_TYPE_PICKUP_SITE, LOCATION_TYPE_TERMINAL};
 
@@ -131,7 +131,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 14; // Get routes for 14 days # <- SIMULOINNIN PITUUS ! ! 
+  x.output_num_days = 228; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
