@@ -4,9 +4,9 @@ import json
 import random
 
 sim_config = {	
-	'sim_name': 'Hämeenlinna and nearby regions',
+	'sim_name': 'Biomass transportation to biogas facility',
 	'sim_runtime_days': 228, # Simulation runtime in days, (Kalenterivuoden 2022 työpäivien määrä) , ylläpidetään myös: routing_optimizer.cpp rivi 136 ! 
-	'pickup_sites_filename': '../Biomassa-atlas_data/all_pickup_sites.geojson', # JOS PAIKKOJA PALJON, KANNATTAA LISÄTÄ VIIVE JOTTEI REITITIN HAE LIIAN NOPEASTI
+	'pickup_sites_filename': '../Biomassa-atlas_data/all_pickup_sites.geojson',
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', 
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', # Nämä saadaaan oletetttavasti Lukelta (pickup_sites, depots ja terminals)
 	'vehicle_template': {
