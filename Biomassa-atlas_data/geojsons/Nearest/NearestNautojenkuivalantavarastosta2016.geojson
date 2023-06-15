@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Clustermasses": 753.80532230152039, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.334017885714033, "lat": 60.939997660753583 }, "geometry": { "type": "Point", "coordinates": [ 23.334017885714033, 60.939997660753583 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 633.19647073327701, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.408169567080449, "lat": 60.950830743741733 }, "geometry": { "type": "Point", "coordinates": [ 23.408169567080449, 60.950830743741733 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 633.19647073327701, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.356370588377128, "lat": 60.895940679893627 }, "geometry": { "type": "Point", "coordinates": [ 23.356370588377128, 60.895940679893627 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 722.31696858857867, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.436330671247308, "lat": 60.909274278156154 }, "geometry": { "type": "Point", "coordinates": [ 23.436330671247308, 60.909274278156154 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 583.05171531490987, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.250847383626326, "lat": 60.955192830744494 }, "geometry": { "type": "Point", "coordinates": [ 23.250847383626326, 60.955192830744494 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 649.31040990996064, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.265212598304615, "lat": 60.891852982405673 }, "geometry": { "type": "Point", "coordinates": [ 23.265212598304615, 60.891852982405673 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 5074.6094562275739, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.490772097588376, "lat": 60.955982618062485 }, "geometry": { "type": "Point", "coordinates": [ 23.490772097588376, 60.955982618062485 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 564.89377471870557, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.391249228020314, "lat": 60.995662522864471 }, "geometry": { "type": "Point", "coordinates": [ 23.391249228020314, 60.995662522864471 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 512.58761916503386, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.324935427140485, "lat": 60.993824355008705 }, "geometry": { "type": "Point", "coordinates": [ 23.324935427140485, 60.993824355008705 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 637.10847155956094, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.226838798337123, "lat": 60.922105122523874 }, "geometry": { "type": "Point", "coordinates": [ 23.226838798337123, 60.922105122523874 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 534.08846717511676, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.456995547522613, "lat": 60.985864687261852 }, "geometry": { "type": "Point", "coordinates": [ 23.456995547522613, 60.985864687261852 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 784.54418565641095, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.513199703420216, "lat": 60.91919935790407 }, "geometry": { "type": "Point", "coordinates": [ 23.513199703420216, 60.91919935790407 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1098.5102003297411, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.40398427455013, "lat": 60.859389833582014 }, "geometry": { "type": "Point", "coordinates": [ 23.40398427455013, 60.859389833582014 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 802.24991669434235, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.484217923428886, "lat": 60.882302484935835 }, "geometry": { "type": "Point", "coordinates": [ 23.484217923428886, 60.882302484935835 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 5910.9961253246474, "Type": "Lihakarjan kuivalanta yhteensä varastosta", "lon": 23.307473000264711, "lat": 60.862078525667059 }, "geometry": { "type": "Point", "coordinates": [ 23.307473000264711, 60.862078525667059 ] } }
+]
+}
