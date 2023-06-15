@@ -6,7 +6,7 @@ import random
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
 	'sim_runtime_days': 228, # Simulation runtime in days, (Kalenterivuoden 2022 työpäivien määrä) , ylläpidetään myös: routing_optimizer.cpp rivi 136 ! 
-	'pickup_sites_filename': '../Biomassa-atlas_data/all_pickup_sites.geojson',
+	'pickup_sites_filename': '../Biomassa-atlas_data/nearest_pickup_sites.geojson',
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', 
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', # Nämä saadaaan oletetttavasti Lukelta (pickup_sites, depots ja terminals)
 	'vehicle_template': {
@@ -17,9 +17,6 @@ sim_config = {
 		'pickup_duration': 10 # Minutes # TÄSSÄ TULEE VIELÄ HUOMIOIDA KERUUN KESTON LINEAARINEN KOMPONENTTI #  ylläpidetään myös: routing_optimizer.cpp rivi 22 ! 
 	},
 	'depots': [
-		{
-			'num_vehicles': 1 # Selvitettävä haastatteluissa
-		},
 		{
 			'num_vehicles': 1 # Selvitettävä haastatteluissa
 		}

@@ -507,9 +507,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		pickup_site_config = {
 			**pickup_site['properties'],
 			'lonlats': tuple(pickup_site['geometry']['coordinates']),
-			'capacity': pickup_site['properties']['Clustermasses']*sim_config['sim_runtime_days']/365
+			'capacity': pickup_site['properties']['Clustermasses'] # *sim_config['sim_runtime_days']/365
 		}
-		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']*np.random.lognormal(np.log(1 / ((14 + 21) / 2)), 0.1) # Log-normal dist of 2 to 3 weeks to be full. # Selvitettävä haastatteluissa
+		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] #*np.random.lognormal(np.log(1 / ((14 + 21) / 2)), 0.1) # Log-normal dist of 2 to 3 weeks to be full. # Selvitettävä haastatteluissa
 		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8) # Selvitettävä haastatteluissa # OLJEN KANSSA TÄMÄ VOISI OLLA SUORAAN TÄYNNÄ ? # OPTIMOINNISSA GEENIEN KANSSA MYÖS TÄRKEÄ JUTTU MIETTIÄ
 		sim_config['pickup_sites'].append(pickup_site_config)
 	# Create configurations for terminals using known data
