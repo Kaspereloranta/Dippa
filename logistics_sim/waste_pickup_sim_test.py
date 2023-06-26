@@ -4,7 +4,7 @@ import json
 import random
 
 sim_config = {	
-	'sim_name': 'Dry manure transportation to biogas facility',
+	'sim_name': 'Dry manure biomass transportation to biogas facility',
 	'sim_runtime_days': 228, # Simulation runtime in days, (Kalenterivuoden 2022 työpäivien määrä) , ylläpidetään myös: routing_optimizer.cpp rivi 136 ! 
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites_lietelannat.geojson',
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', 

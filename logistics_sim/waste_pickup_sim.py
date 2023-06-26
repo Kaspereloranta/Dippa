@@ -168,7 +168,7 @@ class PickupSite(IndexedLocation):
 			
 			# TO ADD NOISE TO THE CUMULATION:
 
-			self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1)-10,10)/20)
+			self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20)
 
 
 # Vehicle
@@ -264,7 +264,7 @@ class Vehicle(IndexedSimEntity):
 							# Slurry manure collection rate is 1 ton / min
 							# Grass and straws collection rate is 2 units / min
 							collection_rate = 1 # Slurry manure
-							
+
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
 
 						self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
@@ -358,7 +358,7 @@ class WastePickupSimulation():
 		# Monitor pickup site levels
 		for site in self.pickup_sites:
 			site.addLevelListener(self.site_full, site.capacity, {"site": site})
-		self.daily_monitoring_activity = self.env.process(self.daily_monitoring())
+		self.daily_monitoring_activity = self.env.process(self.daily_monitoring(config))
 		
 		# Daily vehicle routing
 		self.routing_output = None # No routes planned yet. The value None will cause them to be planned
@@ -402,9 +402,10 @@ class WastePickupSimulation():
 				})
 			yield self.env.timeout(15)
 
-	def daily_monitoring(self):
+	def daily_monitoring(self,sim_config):
 		while True:
-			self.log(f"Monitored levels: {', '.join(map(lambda x: to_percentage_string(x.level/x.capacity), self.pickup_sites))}")
+			if not sim_config['sim_name'].startswith('Grass and straws'):
+				self.log(f"Monitored levels: {', '.join(map(lambda x: to_percentage_string(x.level/x.capacity), self.pickup_sites))}")
 			yield self.env.timeout(24*60)
 
 	def daily_routing(self):
@@ -527,8 +528,14 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			'lonlats': tuple(pickup_site['geometry']['coordinates']),
 			'capacity': pickup_site['properties']['Clustermasses']
 		}
-		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] #*np.random.lognormal(np.log(1 / ((14 + 21) / 2)), 0.1) # Log-normal dist of 2 to 3 weeks to be full. # Selvitettävä haastatteluissa
-		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8) # Selvitettävä haastatteluissa # OLJEN KANSSA TÄMÄ VOISI OLLA SUORAAN TÄYNNÄ ? # OPTIMOINNISSA GEENIEN KANSSA MYÖS TÄRKEÄ JUTTU MIETTIÄ
+
+		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] # Ks. myös rivit 164-171 (Kohina täällä)
+		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8) # OLJEN KANSSA TÄMÄ VOISI OLLA SUORAAN TÄYNNÄ ? # OPTIMOINNISSA GEENIEN KANSSA MYÖS TÄRKEÄ JUTTU MIETTIÄ
+		
+		# CAPACITY FOR GRASS AND STRAWS IS INFINTE AS THEY ARE "STORED" IN THE FIELD AS BALED
+		if pickup_site_config['Type'].startswith('Sivuvirta'):
+			pickup_site_config['capacity'] = 9999999999
+
 		sim_config['pickup_sites'].append(pickup_site_config)
 
 	# Create configurations for terminals using known data

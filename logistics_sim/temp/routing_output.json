@@ -1,0 +1,119 @@
+{
+    "days": [
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": [
+                        20,
+                        11,
+                        20
+                    ]
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": [
+                        20,
+                        1,
+                        20
+                    ]
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": [
+                        20,
+                        7,
+                        0,
+                        20
+                    ]
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": [
+                        20,
+                        11,
+                        20
+                    ]
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        },
+        {
+            "vehicles": [
+                {
+                    "route": []
+                }
+            ]
+        }
+    ]
+}
