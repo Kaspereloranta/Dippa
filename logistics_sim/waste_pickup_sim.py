@@ -166,8 +166,10 @@ class PickupSite(IndexedLocation):
 			yield self.sim.env.timeout(24*60)
 			#self.log(f"Level increase to {tons_to_string(self.level + self.daily_growth_rate)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level + self.daily_growth_rate) / self.capacity)})")
 			
-			# TO ADD NOISE TO THE CUMULATION:
+			# TODO:
+			# NURMIEN JA OLKIEN KERTYMINEN 2-3 KERTAA VUODESSA
 
+			# TO ADD NOISE TO THE CUMULATION:
 			self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20)
 
 
@@ -249,7 +251,7 @@ class Vehicle(IndexedSimEntity):
 							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
 							# Dry manure collection rate is ? ton / min
 							# Slurry manure collection rate is 1 ton / min
-							# Grass and straws collection rate is 2 units / min
+  							# Grass and straws collection rate is 2 units / min <- How many tonns in unit?
 							collection_rate = 1 # Slurry manure
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
 
@@ -262,7 +264,7 @@ class Vehicle(IndexedSimEntity):
 							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
 							# Dry manure collection rate is ? ton / min
 							# Slurry manure collection rate is 1 ton / min
-							# Grass and straws collection rate is 2 units / min
+							# Grass and straws collection rate is 2 units / min <- How many tonns in unit?
 							collection_rate = 1 # Slurry manure
 
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)

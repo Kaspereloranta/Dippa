@@ -362,7 +362,8 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   /* # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
   # Dry manure collection rate is ? ton / min
   # Slurry manure collection rate is 1 ton / min
-  # Grass and straws collection rate is 2 units / min
+  # Grass and straws collection rate is 2 units / min <- How many tonns in unit?
+
   collection_rate = 1 # Slurry manure
   yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate) */
 
