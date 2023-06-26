@@ -14,7 +14,8 @@ sim_config = {
 		'max_route_duration': 8*60 + 15, # Minutes (9h - 45min break = 8h 15min) # Selvitettävä haastatteluissa # KÄÄNNETTÄVÄ MYÖS OPTIMOIJAN PUOLELLE EHKÄ
 		'break_duration': 45, # Minutes # Break Happens after 1/2 of drivetime # Selvitettävä haastatteluissa # KÄÄNNETTÄVÄ MYÖS OPTIMOIJAN PUOLELLE  EHKÄ
 		'num_breaks_per_shift': 1,
-		'pickup_duration': 10 # Minutes # TÄSSÄ TULEE VIELÄ HUOMIOIDA KERUUN KESTON LINEAARINEN KOMPONENTTI  HUOMIOIDAAN SIMULOINNISSA waste_pickup_sim.py rivit 254 ja 266 #  ylläpidetään myös: routing_optimizer.cpp rivi 22 ! 
+		'pickup_duration': 10 # Minutes # TÄSSÄ TULEE VIELÄ HUOMIOIDA KERUUN KESTON LINEAARINEN KOMPONENTTI  HUOMIOIDAAN SIMULOINNISSA waste_pickup_sim.py rivit 254 ja 266  SEKÄ OPTIMOIJASSA LogisticsSimulation::pickup
+		#  Vakiokompontenttia ylläpidetään myös: routing_optimizer.cpp rivi 22 ! 
 	},
 	'depots': [
 		{
