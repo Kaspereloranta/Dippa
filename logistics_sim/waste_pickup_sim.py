@@ -245,13 +245,28 @@ class Vehicle(IndexedSimEntity):
 							get_amount = self.load_capacity - self.load_level
 							pickup_site.get(get_amount)
 							self.load_level = self.load_capacity
-							yield self.sim.env.timeout(self.pickup_duration)
+
+							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
+							# Dry manure collection rate is ? ton / min
+							# Slurry manure collection rate is 1 ton / min
+							# Grass and straws collection rate is 2 units / min
+							collection_rate = 1 # Slurry manure
+							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
+
 						else:
 							# Can take all
 							get_amount = pickup_site.level
 							self.load_level += get_amount
 							pickup_site.get(get_amount)
-							yield self.sim.env.timeout(self.pickup_duration)
+
+							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
+							# Dry manure collection rate is ? ton / min
+							# Slurry manure collection rate is 1 ton / min
+							# Grass and straws collection rate is 2 units / min
+							collection_rate = 1 # Slurry manure
+							
+							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
+
 						self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 					else:
 						self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
