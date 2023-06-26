@@ -294,7 +294,10 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 // Pickup work
                 int pickup_site_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
                 pickup(vehicleIndex, pickup_site_index);
-                co_await sim.timeout(pickup_duration);              
+                
+                // To consider the linear component of pickup_duration, row above is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index);
+
+                // co_await sim.timeout(pickup_duration);              
               }
               break;
             case LOCATION_TYPE_TERMINAL:
@@ -353,25 +356,47 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 }
 
 void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
-  
+
+  // co_await sim.timeout(pickup_duration);              
+
+  /* # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
+  # Dry manure collection rate is ? ton / min
+  # Slurry manure collection rate is 1 ton / min
+  # Grass and straws collection rate is 2 units / min
+  collection_rate = 1 # Slurry manure
+  yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate) */
+
+  float collection_rate = 1; // Slurry manure
+
   // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
   // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
   
-  if (pickupSites[pickupSiteIndex].level == 0) { // <- TÄHÄN VOI MUUTTAA JOS ASETETAAN RAJA MISSÄ VOI KÄYDÄ JA MISSÄ EI
+  if (pickupSites[pickupSiteIndex].level == 0) // <- TÄHÄN VOI MUUTTAA JOS ASETETAAN RAJA MISSÄ VOI KÄYDÄ JA MISSÄ EI
+  { 
     // Unnecessary visit, nothing to pick up
     if (debug >= 2) printf("%gh Vehicle #%d: nothing to pick up at site #%d\n", sim->now()/60, vehicleIndex, pickupSiteIndex);
-  } else if (vehicles[vehicleIndex].loadLevel == routingInput.vehicles[vehicleIndex].load_capacity) {
+    co_await sim.timeout(pickup_duration);
+  }
+  else if (vehicles[vehicleIndex].loadLevel == routingInput.vehicles[vehicleIndex].load_capacity) 
+  {
     // Unnecessary visit, no unused load capacity left
     if (debug >= 2) printf("%gh Vehicle #%d: has no capacity left to pick anything at pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-  } else if (vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].level > routingInput.vehicles[vehicleIndex].load_capacity) {
+    co_await sim.timeout(pickup_duration);
+  } 
+  else if (vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].level > routingInput.vehicles[vehicleIndex].load_capacity) 
+  {
     // The vehicle cannot take everything
     pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
+    co_await sim.timeout(pickup_duration + collection_rate*(routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel));
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
-  } else {
+  }
+  else 
+  {
     // The vehicle empties the site
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
+    co_await sim.timeout(pickup_duration + collection_rate*pickupSites[pickupSiteIndex].level;
     pickupSites[pickupSiteIndex].level = 0;
   }
 }
