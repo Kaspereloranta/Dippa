@@ -295,7 +295,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 int pickup_site_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
                 pickup(vehicleIndex, pickup_site_index);
                 
-                // To consider the linear component of pickup_duration, row above is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index);
+                // To consider the linear component of pickup_duration, row below is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index);
 
                 // co_await sim.timeout(pickup_duration);              
               }
@@ -359,15 +359,10 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
 
   // co_await sim.timeout(pickup_duration);              
 
-  /* # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-  # Dry manure collection rate is ? ton / min
-  # Slurry manure collection rate is 1 ton / min
-  # Grass and straws collection rate is 2 units / min <- How many tonns in unit?
-
-  collection_rate = 1 # Slurry manure
-  yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate) */
-
-  float collection_rate = 1; // Slurry manure
+  // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
+  float collection_rate = 1/1.6; // Slurry manure
+  // float collection_rate = 1/1; // Dry manure
+  // float collection_rate = 1/1.2; // Grass and straws
 
   // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
   // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
@@ -517,7 +512,7 @@ int main() {
   int numGenerations = 40000; // 40000
   int numFinetuneGenerations = 20000; // 20000
   int numGenerationsPerStep = 100;
-  optimizer.initPopulation();
+  //optimizer.initPopulation();
 
   int generationIndex = 0;
   for (; generationIndex < numGenerations; generationIndex += numGenerationsPerStep) {

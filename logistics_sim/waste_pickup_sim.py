@@ -168,9 +168,12 @@ class PickupSite(IndexedLocation):
 			
 			# TODO:
 			# NURMIEN JA OLKIEN KERTYMINEN 2-3 KERTAA VUODESSA
+			if self.sim.config['sim_type'] == 1:
+				print(self.sim.env.now.time())
 
-			# TO ADD NOISE TO THE CUMULATION:
-			self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20)
+			else: # MANURES
+				# TO ADD NOISE TO THE CUMULATION:
+				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
 
 
 # Vehicle
@@ -241,34 +244,25 @@ class Vehicle(IndexedSimEntity):
 				if isinstance(arrive_location, PickupSite):
 					# Arrived at a pickup site
 					pickup_site = arrive_location
+					
+					# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
+					collection_rate = 1/1.6 # Slurry manure
+					# collection_rate = 1/1 # Dry manure
+					# collection _rate = 1/1.2 # Grass and straws
+					
 					if pickup_site.level > 0:
 						if self.load_level + pickup_site.level > self.load_capacity: 
 							# Can only take some
 							get_amount = self.load_capacity - self.load_level
 							pickup_site.get(get_amount)
-							self.load_level = self.load_capacity
-
-							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-							# Dry manure collection rate is ? ton / min
-							# Slurry manure collection rate is 1 ton / min
-  							# Grass and straws collection rate is 2 units / min <- How many tonns in unit?
-							collection_rate = 1 # Slurry manure
+							self.load_level = self.load_capacity							
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
-
 						else:
 							# Can take all
 							get_amount = pickup_site.level
 							self.load_level += get_amount
 							pickup_site.get(get_amount)
-
-							# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-							# Dry manure collection rate is ? ton / min
-							# Slurry manure collection rate is 1 ton / min
-							# Grass and straws collection rate is 2 units / min <- How many tonns in unit?
-							collection_rate = 1 # Slurry manure
-
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
-
 						self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 					else:
 						self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
@@ -406,7 +400,7 @@ class WastePickupSimulation():
 
 	def daily_monitoring(self,sim_config):
 		while True:
-			if not sim_config['sim_name'].startswith('Grass and straws'):
+			if not sim_config['sim_type'] == 1:
 				self.log(f"Monitored levels: {', '.join(map(lambda x: to_percentage_string(x.level/x.capacity), self.pickup_sites))}")
 			yield self.env.timeout(24*60)
 
@@ -532,12 +526,19 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		}
 
 		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] # Ks. myös rivit 164-171 (Kohina täällä)
-		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8) # OLJEN KANSSA TÄMÄ VOISI OLLA SUORAAN TÄYNNÄ ? # OPTIMOINNISSA GEENIEN KANSSA MYÖS TÄRKEÄ JUTTU MIETTIÄ
+		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8)
 		
-		# CAPACITY FOR GRASS AND STRAWS IS INFINTE AS THEY ARE "STORED" IN THE FIELD AS BALED
-		if pickup_site_config['Type'].startswith('Sivuvirta'):
+		# CAPACITY FOR GRASS AND STRAWS IS INFINTE AS THEY ARE "STORED"
+		# IN THE FIELD AS BALED.
+		# And at the beginning the level of grass and straws is zero since they become 
+		# collectable in summer only after cuttings
+		# new pickup_site.attribute total_mass is defined, to raise level 0 -> total_mass
+		# 3 times a year.
+		if sim_config['sim_type'] == 1:
 			pickup_site_config['capacity'] = 9999999999
-
+			pickup_site_config['level'] = 0
+			pickup_site_config['daily_growth_rate'] = 0
+			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']
 		sim_config['pickup_sites'].append(pickup_site_config)
 
 	# Create configurations for terminals using known data
