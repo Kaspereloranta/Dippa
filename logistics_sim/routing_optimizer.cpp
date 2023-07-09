@@ -11,6 +11,7 @@
 #include <string>
 #include <chrono>
 #include <algorithm>
+#include <random>
 #include <omp.h>
 #include <coroutine>
 #include <sstream>
@@ -34,6 +35,8 @@ struct RoutingInputPickupSite: public IndexedLocation
   float capacity;
   float level;
   float growth_rate;
+  float total_mass;
+  int times_collected;
   int max_num_visits;
 };
 
@@ -339,8 +342,41 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     }
     co_await sim.timeout(24*60);
     // Increase pickup site levels
-    for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {          
-      pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
+    for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
+      /*
+      // For manures
+      printf(routingInput.output_num_days," ja ",routingInput.sim_duration_days)
+      pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60
+                                            + std::max(-10.0, std::min(dist(gen), 10.0))/20*
+                                            routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
+      */
+      // For grass and straws
+      std::random_device rd;
+      std::mt19937 gen(rd());
+      std::discrete_distribution<> dist({13, 1});  // Probability distribution for choices
+    
+      int isFulfilled = 0;
+    
+      if (138240 <= sim.now && sim.now <= 158400 && routingInput.pickup_sites[pickupSiteIndex].times_collected == 0) {
+          isFulfilled = dist(gen);
+          routingInput.pickup_sites[pickupSiteIndex].level = routingInput.pickup_sites[pickupSiteIndex].total_mass*isFulfilled;
+          if (isFulfilled==1) {
+              ++routingInput.pickup_sites[pickupSiteIndex].times_collected;
+          }
+      } else if (180000 <= sim.now && sim.now <= 200160 && routingInput.pickup_sites[pickupSiteIndex].times_collected == 1) {
+          isFulfilled = dist(gen);
+          routingInput.pickup_sites[pickupSiteIndex].level = routingInput.pickup_sites[pickupSiteIndex].total_mass*isFulfilled;
+          if (isFulfilled==1) {
+              ++routingInput.pickup_sites[pickupSiteIndex].times_collected;
+          }
+      } else if (221760 <= sim.now && sim.now <= 241920 && routingInput.pickup_sites[pickupSiteIndex].times_collected == 2) {
+          isFulfilled = dist(gen);
+          routingInput.pickup_sites[pickupSiteIndex].level = routingInput.pickup_sites[pickupSiteIndex].total_mass*isFulfilled;
+          if (isFulfilled==1) {
+              ++routingInput.pickup_sites[pickupSiteIndex].times_collected;
+          }
+      }
+     
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
@@ -360,9 +396,9 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   // co_await sim.timeout(pickup_duration);              
 
   // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-  float collection_rate = 1/1.6; // Slurry manure
+  // float collection_rate = 1/1.6; // Slurry manure
   // float collection_rate = 1/1; // Dry manure
-  // float collection_rate = 1/1.2; // Grass and straws
+  float collection_rate = 1/1.2; // Grass and straws
 
   // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
   // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ

@@ -127,6 +127,11 @@ class PickupSite(IndexedLocation):
 		self.levelListeners = []
 
 		self.daily_growth_rate = sim.config['pickup_sites'][index]['daily_growth_rate']
+
+		if self.sim.config['sim_type'] == 1:
+			self.total_mass = sim.config['pickup_sites'][index]['total_mass']
+			self.times_collected = sim.config['pickup_sites'][index]['times_collected']
+
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day")
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
@@ -168,9 +173,23 @@ class PickupSite(IndexedLocation):
 			
 			# TODO:
 			# NURMIEN JA OLKIEN KERTYMINEN 2-3 KERTAA VUODESSA
-			if self.sim.config['sim_type'] == 1:
-				print(self.sim.env.now.time())
 
+			if self.sim.config['sim_type'] == 1:
+				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
+					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
+					self.put(self.total_mass*isFulfilled)
+					if isFulfilled:
+						++self.times_collected
+				elif (180000 <= self.sim.env.now <= 200160 and self.times_collected == 1):
+					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
+					self.put(self.total_mass*isFulfilled)
+					if isFulfilled:
+						++self.times_collected
+				elif (221760 <= self.sim.env.now <= 241920 and self.times_collected == 2):
+					isFulfilled = random.choices([0,1],[13,1],k=1)[0]					
+					self.put(self.total_mass*isFulfilled)
+					if isFulfilled:
+						++self.times_collected
 			else: # MANURES
 				# TO ADD NOISE TO THE CUMULATION:
 				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
@@ -246,9 +265,9 @@ class Vehicle(IndexedSimEntity):
 					pickup_site = arrive_location
 					
 					# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-					collection_rate = 1/1.6 # Slurry manure
+					# collection_rate = 1/1.6 # Slurry manure
 					# collection_rate = 1/1 # Dry manure
-					# collection _rate = 1/1.2 # Grass and straws
+					collection_rate = 1/1.2 # Grass and straws
 					
 					if pickup_site.level > 0:
 						if self.load_level + pickup_site.level > self.load_capacity: 
@@ -539,6 +558,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			pickup_site_config['level'] = 0
 			pickup_site_config['daily_growth_rate'] = 0
 			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']
+			pickup_site_config['times_collected'] = 0
 		sim_config['pickup_sites'].append(pickup_site_config)
 
 	# Create configurations for terminals using known data
