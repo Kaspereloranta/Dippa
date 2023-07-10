@@ -328,16 +328,18 @@ class Terminal(IndexedLocation):
 		self.storage_level = 0
 		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
 
-	def produce_biogas_forever(self, sim, index):
+		self.production_process = sim.env.process(self.produce_biogas_forever())
+
+	def produce_biogas_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
 			self.storage_level -= self.consumption_rate
 			self.storage_level = max(0,self.storage_level)
-			self.log(f"Storage level of biogas facility: #{self.storage_level}")			
+			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
 
 	def receive_biomass(self, sim, index, received_amount):
 		self.storage_level += received_amount
-		self.log(f"Biomass received. Current storage level: #{self.storage_level}")			
+		self.warn(f"Biomass received. Current storage level: {self.storage_level} tons.")			
 
 
 # Simulation
