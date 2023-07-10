@@ -156,7 +156,10 @@ class PickupSite(IndexedLocation):
 		# { capacity = level_at_time_x
 		# => capacity = level_now + (time_x - time_now)*growth_rate
 		# => time_x = time_now + (capacity - level_now)/growth_rate
-		return self.sim.env.now + 24*60*(self.capacity - self.level)/self.daily_growth_rate
+		if self.daily_growth_rate > 0:
+			return self.sim.env.now + 24*60*(self.capacity - self.level)/self.daily_growth_rate
+		else:
+			return 0
 
 	def addLevelListener(self, listener, threshold, data = None):
 		#self.log("Added level listener")
@@ -178,18 +181,18 @@ class PickupSite(IndexedLocation):
 				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
 					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
 					self.put(self.total_mass*isFulfilled)
-					if isFulfilled:
-						++self.times_collected
+					if isFulfilled==1:
+						self.times_collected += 1
 				elif (180000 <= self.sim.env.now <= 200160 and self.times_collected == 1):
 					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
 					self.put(self.total_mass*isFulfilled)
-					if isFulfilled:
-						++self.times_collected
+					if isFulfilled==1:
+						self.times_collected += 1
 				elif (221760 <= self.sim.env.now <= 241920 and self.times_collected == 2):
 					isFulfilled = random.choices([0,1],[13,1],k=1)[0]					
 					self.put(self.total_mass*isFulfilled)
-					if isFulfilled:
-						++self.times_collected
+					if isFulfilled==1:
+						self.times_collected += 1
 			else: # MANURES
 				# TO ADD NOISE TO THE CUMULATION:
 				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
@@ -433,7 +436,9 @@ class WastePickupSimulation():
 						'capacity': pickup_site.capacity,
 						'level': pickup_site.level,
 						'growth_rate': pickup_site.daily_growth_rate/(24*60),
-						'location_index': pickup_site.location_index
+						'location_index': pickup_site.location_index,
+                		**({'total_mass': pickup_site.total_mass, 'times_collected': pickup_site.times_collected}
+                   		if self.config['sim_type'] == 1 else {})
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index
@@ -554,10 +559,10 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		# new pickup_site.attribute total_mass is defined, to raise level 0 -> total_mass
 		# 3 times a year.
 		if sim_config['sim_type'] == 1:
-			pickup_site_config['capacity'] = 9999999999
-			pickup_site_config['level'] = 0
-			pickup_site_config['daily_growth_rate'] = 0
-			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']
+		#	pickup_site_config['capacity'] = 9999999999
+		#	pickup_site_config['level'] = 0
+		#	pickup_site_config['daily_growth_rate'] = 0
+			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
 			pickup_site_config['times_collected'] = 0
 		sim_config['pickup_sites'].append(pickup_site_config)
 

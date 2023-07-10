@@ -356,7 +356,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       std::discrete_distribution<> dist({13, 1});  // Probability distribution for choices
     
       int isFulfilled = 0;
-    
+      printf(sim.now)
       if (138240 <= sim.now && sim.now <= 158400 && routingInput.pickup_sites[pickupSiteIndex].times_collected == 0) {
           isFulfilled = dist(gen);
           routingInput.pickup_sites[pickupSiteIndex].level = routingInput.pickup_sites[pickupSiteIndex].total_mass*isFulfilled;
