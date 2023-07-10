@@ -439,7 +439,7 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   // TÄNNE AUTOKOHTAISET PARAMETRIT
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
-  + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
+  // + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
 }
 

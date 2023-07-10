@@ -552,16 +552,14 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] # Ks. myös rivit 164-171 (Kohina täällä)
 		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8)
 		
-		# CAPACITY FOR GRASS AND STRAWS IS INFINTE AS THEY ARE "STORED"
-		# IN THE FIELD AS BALED.
-		# And at the beginning the level of grass and straws is zero since they become 
-		# collectable in summer only after cuttings
-		# new pickup_site.attribute total_mass is defined, to raise level 0 -> total_mass
-		# 3 times a year.
+		# FOR GRASS AND STRAWS
+		# New pickup_site attributes total_mass is and times_collected are defined, 
+		# to raise level 0 -> total_mass 3 times a year
+		# NOTE: FOR GRASS AND STRAWS capacity=clustermass and daily_growth=clustermass/sim_runtime_days 
+		# However, overfilling is not fined in the cost function and mass is cumulated only 3 times a year, not daily basis
+		# Capacity and daily_growth attributes must have a reasonable values to allow c++ optimizer to run, in which max_num_visits
+		# is calculated for pickup sites, if capacity is very great and daily_growth_rate = 0 -> max_num_visits = 0 and nothing happens.
 		if sim_config['sim_type'] == 1:
-		#	pickup_site_config['capacity'] = 9999999999
-		#	pickup_site_config['level'] = 0
-		#	pickup_site_config['daily_growth_rate'] = 0
 			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
 			pickup_site_config['times_collected'] = 0
 		sim_config['pickup_sites'].append(pickup_site_config)
