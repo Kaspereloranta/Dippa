@@ -289,10 +289,11 @@ class Vehicle(IndexedSimEntity):
 					else:
 						self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 
-				elif isinstance(arrive_location, Depot):
-					# Arrived at a depot
-					depot = arrive_location
-					self.log(f"Dumped the load {tons_to_string(self.load_level)} at depot #{depot.index}")
+				elif isinstance(arrive_location, Terminal):
+					# Arrived at a terminal
+					terminal = arrive_location
+					self.log(f"Dumped the load {tons_to_string(self.load_level)} at depot #{terminal.index}")
+					terminal.receive_biomass(self.load_level)
 					self.load_level = 0
 
 			# Mark as not moving at final destination
@@ -322,6 +323,21 @@ class Terminal(IndexedLocation):
 
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['terminals'][index]['location_index'])
+
+		# Biomass storage level and consumption rate (tons/day).
+		self.storage_level = 0
+		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
+
+	def produce_biogas_forever(self, sim, index):
+		while True:
+			yield self.sim.env.timeout(24*60)
+			self.storage_level -= self.consumption_rate
+			self.storage_level = max(0,self.storage_level)
+			self.log(f"Storage level of biogas facility: #{self.storage_level}")			
+
+	def receive_biomass(self, sim, index, received_amount):
+		self.storage_level += received_amount
+		self.log(f"Biomass received. Current storage level: #{self.storage_level}")			
 
 
 # Simulation
@@ -546,11 +562,10 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		pickup_site_config = {
 			**pickup_site['properties'],
 			'lonlats': tuple(pickup_site['geometry']['coordinates']),
-			'capacity': pickup_site['properties']['Clustermasses']
+			'capacity': pickup_site['properties']['Clustermasses'],
+			'daily_growth_rate' : pickup_site['properties']['Clustermasses']/sim_config['sim_runtime_days'], # Ks. myös rivit 164-171 (Kohina täällä)
+			'level' : pickup_site['properties']['Clustermasses']*np.random.uniform(0, 0.8)
 		}
-
-		pickup_site_config['daily_growth_rate'] = pickup_site_config['capacity']/sim_config['sim_runtime_days'] # Ks. myös rivit 164-171 (Kohina täällä)
-		pickup_site_config['level'] = pickup_site_config['capacity']*np.random.uniform(0, 0.8)
 		
 		# FOR GRASS AND STRAWS
 		# New pickup_site attributes total_mass is and times_collected are defined, 
@@ -571,7 +586,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 	for terminal in terminals_geojson['features']:
 		terminal_config = {
 			**terminal['properties'],
-			'lonlats': tuple(terminal['geometry']['coordinates'])
+			'lonlats': tuple(terminal['geometry']['coordinates']),
+			'storage_level' : 0,
+			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['terminals'].append(terminal_config)
 		
