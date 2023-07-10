@@ -330,7 +330,7 @@ class Depot(IndexedLocation):
 			self.storage_level = max(0,self.storage_level)
 			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
 
-	def receive_biomass(self, sim, index, received_amount):
+	def receive_biomass(self, received_amount):
 		self.storage_level += received_amount
 		self.warn(f"Biomass received. Current storage level: {self.storage_level} tons.")			
 
