@@ -289,11 +289,11 @@ class Vehicle(IndexedSimEntity):
 					else:
 						self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 
-				elif isinstance(arrive_location, Terminal):
+				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
-					terminal = arrive_location
-					self.log(f"Dumped the load {tons_to_string(self.load_level)} at depot #{terminal.index}")
-					terminal.receive_biomass(self.load_level)
+					depot = arrive_location
+					self.log(f"Dumped the load {tons_to_string(self.load_level)} at depot #{depot.index}")
+					depot.receive_biomass(self.load_level)
 					self.load_level = 0
 
 			# Mark as not moving at final destination
@@ -317,6 +317,22 @@ class Depot(IndexedLocation):
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['depots'][index]['location_index'])
 
+	# Biomass storage level and consumption rate (tons/day).
+		self.storage_level = 0
+		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
+
+		self.production_process = sim.env.process(self.produce_biogas_forever())
+
+	def produce_biogas_forever(self):
+		while True:
+			yield self.sim.env.timeout(24*60)
+			self.storage_level -= self.consumption_rate
+			self.storage_level = max(0,self.storage_level)
+			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
+
+	def receive_biomass(self, sim, index, received_amount):
+		self.storage_level += received_amount
+		self.warn(f"Biomass received. Current storage level: {self.storage_level} tons.")			
 
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
@@ -601,7 +617,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		depot_config = {
 			**depot['properties'],
 			**sim_config['depots'][index],
-			'lonlats': tuple(depot['geometry']['coordinates'])
+			'lonlats': tuple(depot['geometry']['coordinates']),
+			'storage_level' : 0,
+			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['depots'][index] = depot_config
 
