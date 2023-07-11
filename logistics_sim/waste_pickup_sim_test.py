@@ -6,7 +6,7 @@ import random
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
 	'sim_type': 2, # 1=Grass and straws, 2=dry manures, 3=slurry manures
-	'sim_runtime_days': 228, # Simulation runtime in days, (Kalenterivuoden 2022 työpäivien määrä) , ylläpidetään myös: routing_optimizer.cpp rivi 136 ! 
+	'sim_runtime_days': 28, # Simulation runtime in days, (Kalenterivuoden 2022 työpäivien määrä) , ylläpidetään myös: routing_optimizer.cpp rivi 136 ! 
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites_kuivalannat.geojson',
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
 	'depot_capacity' : 14000, # yearly targeted input for facility
