@@ -317,14 +317,17 @@ class Depot(IndexedLocation):
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['depots'][index]['location_index'])
 
-		# Biomass storage level, consumption rate (tons/day), production_stoppage_days 
-		# (storage_level < 0) and days of overfilling.
+		# Biomass storage level, total biomass received, consumption rate (tons/day), production_stoppage_days 
+		# (storage_level < 0) and days of overfilling, and boolean for if the yearly demand is satisfied.
 
 		self.storage_level = 0
+		self.cumulative_biomass_received = 0
+		self.is_yearly_demand_satisfied = False
 		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
 		self.capacity = sim.config['terminals'][0]['capacity']
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
+		self.unnecessary_imports_counter = 0
 
 		self.production_process = sim.env.process(self.produce_biogas_forever())
 
@@ -341,37 +344,30 @@ class Depot(IndexedLocation):
 			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
 
 	def receive_biomass(self, received_amount):
+		
+		if self.is_yearly_demand_satisfied:
+			self.unnecessary_imports_counter += 1
+			self.warn(f"Unnecessary import. Yearly demand already satisfied.")
+			return
+
 		self.storage_level += received_amount
+		self.cumulative_biomass_received += received_amount
+		self.log(f"Biomass received. Current storage level: {self.storage_level} tons.")
 
 		if self.storage_level > self.capacity:
 			self.warn(f"Overfilling at biogas facility!")
 			self.overfilling_counter += 1
 
-		self.log(f"Biomass received. Current storage level: {self.storage_level} tons.")			
+		if self.cumulative_biomass_received >= self.capacity:
+			self.is_yearly_demand_satisfied = True
+			self.log(f"Yearly demand for biomass satisfied!")
+
 
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
 
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['terminals'][index]['location_index'])
-
-""" 		# Biomass storage level and consumption rate (tons/day).
-		self.storage_level = 0
-		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
-
-		self.production_process = sim.env.process(self.produce_biogas_forever())
-
-	def produce_biogas_forever(self):
-		while True:
-			yield self.sim.env.timeout(24*60)
-			self.storage_level -= self.consumption_rate
-			self.storage_level = max(0,self.storage_level)
-			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
-
-	def receive_biomass(self, sim, index, received_amount):
-		self.storage_level += received_amount
-		self.log(f"Biomass received. Current storage level: {self.storage_level} tons.")
-"""			
 
 
 # Simulation

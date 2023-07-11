@@ -51,6 +51,14 @@ void from_json(const json &j, RoutingInputPickupSite &x)
 struct RoutingInputDepot: public IndexedLocation
 {
   static const LocationType locationType = LOCATION_TYPE_DEPOT;
+	float storage_level = 0;
+	float cumulative_biomass_received = 0;
+	bool is_yearly_demand_satisfied = False;
+	float consumption_rate;
+	float capacity;
+	int production_stoppage_counter = 0;
+	int overfilling_counter = 0;
+	int unnecessary_imports_counter = 0;
 };
 
 void from_json(const json &j, RoutingInputDepot &x)
@@ -184,6 +192,7 @@ void to_json(json& j, const RoutingOutput& x) {
 // Forward declaration of vehicle and pickup site classes
 class VehicleState;
 class PickupSiteState;
+class DepotState;
 
 // Logistics simulation class definition and member function declarations
 class LogisticsSimulation: public HasCostFunction<int16_t> {
@@ -198,11 +207,13 @@ public:
   // State
   std::vector<VehicleState> vehicles;
   std::vector<PickupSiteState> pickupSites;
+  std::vector<DepotState> depots;
   int totalNumPickupSiteOverloadDays;
 
   // Member functions
   double costFunction(const std::vector<int16_t> &genome, double earlyOutThreshold = std::numeric_limits<double>::max());
   void pickup(int vehicleIndex, int pickupSiteIndex);
+  void receive(int vehicleIndex, int depotIndex);
   std::string locationString(int locationIndex);
 
   // Space for printing
@@ -236,6 +247,18 @@ struct VehicleState {
   int destinationLocationIndex; // Destination location index
   double departureTime; // If moving: time when departed from source location
 };
+
+// Depot state class definition
+struct DepotState {
+	float storage_level = 0;
+	float cumulative_biomass_received = 0;
+	bool is_yearly_demand_satisfied = False;
+	float consumption_rate;
+	float capacity;
+	int production_stoppage_counter = 0;
+	int overfilling_counter = 0;
+	int unnecessary_imports_counter = 0;
+}
 
 std::string LogisticsSimulation::locationString(int locationIndex) {
   std::stringstream ss;
@@ -314,6 +337,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
               {
                 if (debug >= 2) printf("%gh Vehicle #%d: dump whole load of %f t at %s\n", sim.now()/60, vehicleIndex, vehicle.loadLevel, locationString(vehicle.locationIndex).c_str());
                 int depot_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
+                receive(vehicleIndex,depot_index);
                 vehicle.loadLevel = 0;
               }
               break;
@@ -335,17 +359,36 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
 
 simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &sim) {
 
+  // TÄNNE TARVITAAN VIELÄ MASSAN KULUTUS/VASTAANOTTO LAITOKSELLA
+
   for (int day = 0; day < routingInput.sim_duration_days; day++) {
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
     }
     co_await sim.timeout(24*60);
+
+    // Biogas production process:
+
+    // TÄMÄ C++:KSI
+    /* 
+    def produce_biogas_forever(self):
+		while True:
+			yield self.sim.env.timeout(24*60)
+			self.storage_level -= self.consumption_rate
+
+			if self.storage_level <= 0:
+				self.warn(f"Production stoppage!")
+				self.production_stoppage_counter += 1
+
+			self.storage_level = max(0,self.storage_level)
+			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
+    */
+
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
       // For manures
-      printf(routingInput.output_num_days," ja ",routingInput.sim_duration_days)
       pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60
                                             + std::max(-10.0, std::min(dist(gen), 10.0))/20*
                                             routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
@@ -433,6 +476,35 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     pickupSites[pickupSiteIndex].level = 0;
   }
 }
+
+void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
+
+
+// TÄMÄ C++:KSI:
+/* 
+def receive_biomass(self, received_amount):
+		
+		if self.is_yearly_demand_satisfied:
+			self.unnecessary_imports_counter += 1
+			self.warn(f"Unnecessary import. Yearly demand already satisfied.")
+			return
+
+		self.storage_level += received_amount
+		self.cumulative_biomass_received += received_amount
+		self.log(f"Biomass received. Current storage level: {self.storage_level} tons.")
+
+		if self.storage_level > self.capacity:
+			self.warn(f"Overfilling at biogas facility!")
+			self.overfilling_counter += 1
+
+		if self.cumulative_biomass_received >= self.capacity:
+			self.is_yearly_demand_satisfied = True
+			self.log(f"Yearly demand for biomass satisfied!")
+
+*/
+
+}
+
 
 // Calculate cost function from components
 double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime) {
