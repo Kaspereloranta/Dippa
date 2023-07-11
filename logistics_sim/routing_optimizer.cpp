@@ -343,13 +343,14 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     co_await sim.timeout(24*60);
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
-      /*
+      
       // For manures
       printf(routingInput.output_num_days," ja ",routingInput.sim_duration_days)
       pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60
                                             + std::max(-10.0, std::min(dist(gen), 10.0))/20*
                                             routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
-      */
+      
+      /*
       // For grass and straws
       std::random_device rd;
       std::mt19937 gen(rd());
@@ -376,7 +377,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
               ++routingInput.pickup_sites[pickupSiteIndex].times_collected;
           }
       }
-     
+      */
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
@@ -397,8 +398,8 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
 
   // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
   // float collection_rate = 1/1.6; // Slurry manure
-  // float collection_rate = 1/1; // Dry manure
-  float collection_rate = 1/1.2; // Grass and straws
+  float collection_rate = 1/1; // Dry manure
+  // float collection_rate = 1/1.2; // Grass and straws
 
   // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
   // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
@@ -439,9 +440,9 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   // TÄNNE AUTOKOHTAISET PARAMETRIT
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
-  // + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
+  + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
-  
+
   // TÄNNE VIELÄ LAITOKSEN YLITÄYTÖN SAKOTUS ! 
 }
 
