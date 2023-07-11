@@ -3,7 +3,10 @@
 //
 // This work is dual-licensed under the MIT and Apache 2.0 licenses and is distributed without any warranty.
 
-// g++ routing_optimizer.cpp simcpp/simcpp.cpp -std=c++20 -march=native -I. -O3 -fcoroutines -ffast-math -fopenmp -o routing_optimizer
+// Compile with one of:
+// g++ routing_optimizer.cpp -std=c++20 -march=native -I. -O3 -fcoroutines -ffast-math -fopenmp -o routing_optimizer
+// g++-10 routing_optimizer.cpp -std=c++20 -march=native -I. -O3 -fcoroutines -ffast-math -fopenmp -o routing_optimizer
+
 #include <stdio.h>
 #include "ga.h"
 #include <iostream>
@@ -51,11 +54,11 @@ void from_json(const json &j, RoutingInputPickupSite &x)
 struct RoutingInputDepot: public IndexedLocation
 {
   static const LocationType locationType = LOCATION_TYPE_DEPOT;
-	float storage_level ;
-	float cumulative_biomass_received;
+	double storage_level ;
+	double cumulative_biomass_received;
 	bool is_yearly_demand_satisfied;
-	float consumption_rate;
-	float capacity;
+	double consumption_rate;
+	double capacity;
 	int production_stoppage_counter;
 	int overfilling_counter;
 	int unnecessary_imports_counter;
@@ -250,11 +253,11 @@ struct VehicleState {
 
 // Depot state class definition
 struct DepotState {
-	float storage_level = 0;
-	float cumulative_biomass_received = 0;
+	double storage_level = 0;
+	double cumulative_biomass_received = 0;
   bool is_yearly_demand_satisfied = false;
-	float consumption_rate;
-	float capacity;
+	double consumption_rate;
+	double capacity;
 	int production_stoppage_counter = 0;
 	int overfilling_counter = 0;
 	int unnecessary_imports_counter = 0;
@@ -321,7 +324,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 int pickup_site_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
                 pickup(vehicleIndex, pickup_site_index);
                 
-                // To consider the linear component of pickup_duration, row below is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index);
+                // To consider the linear component of pickup_duration, row below is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index, simcpp20::simulation<> &sim);
 
                 // co_await sim.timeout(pickup_duration);              
               }
@@ -381,6 +384,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
       // For manures
+
+      // Declare and initialize the random number generator and distribution
+      std::random_device rd;
+      std::mt19937 gen(rd());
+      std::uniform_real_distribution<double> dist(0.0, 1.0);
       pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60
                                             + std::max(-10.0, std::min(dist(gen), 10.0))/20*
                                             routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
@@ -432,9 +440,9 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   // co_await sim.timeout(pickup_duration);              
 
   // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-  // float collection_rate = 1/1.6; // Slurry manure
-  float collection_rate = 1/1; // Dry manure
-  // float collection_rate = 1/1.2; // Grass and straws
+  // double collection_rate = 1/1.6; // Slurry manure
+  double collection_rate = 1/1; // Dry manure
+  // double collection_rate = 1/1.2; // Grass and straws
 
   // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
   // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
@@ -443,20 +451,20 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   { 
     // Unnecessary visit, nothing to pick up
     if (debug >= 2) printf("%gh Vehicle #%d: nothing to pick up at site #%d\n", sim->now()/60, vehicleIndex, pickupSiteIndex);
-    co_await sim.timeout(pickup_duration);
+    co_await sim->timeout(pickup_duration);
   }
   else if (vehicles[vehicleIndex].loadLevel == routingInput.vehicles[vehicleIndex].load_capacity) 
   {
     // Unnecessary visit, no unused load capacity left
     if (debug >= 2) printf("%gh Vehicle #%d: has no capacity left to pick anything at pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    co_await sim.timeout(pickup_duration);
+    co_await sim->timeout(pickup_duration);
   } 
   else if (vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].level > routingInput.vehicles[vehicleIndex].load_capacity) 
   {
     // The vehicle cannot take everything
     pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    co_await sim.timeout(pickup_duration + collection_rate*(routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel));
+    co_await sim->timeout(pickup_duration + collection_rate*(routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel));
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
   }
   else 
@@ -464,9 +472,10 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   // The vehicle empties the site
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
-    co_await sim.timeout(pickup_duration + collection_rate*pickupSites[pickupSiteIndex].level);
+    co_await sim->timeout(pickup_duration + collection_rate*pickupSites[pickupSiteIndex].level);
     pickupSites[pickupSiteIndex].level = 0;
   }
+  co_return;
 }
 
 void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
@@ -560,10 +569,9 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     depots[depotIndex].overfilling_counter = 0;
     depots[depotIndex].unnecessary_imports_counter = 0;
   }  
-  }
   
   // Initialize cost components
-  totalNumPickupSiteOverloadDays = 0;
+  int totalNumPickupSiteOverloadDays = 0;
 
   // Simulate
   simcpp20::simulation<> sim;
