@@ -215,7 +215,7 @@ public:
 
   // Member functions
   double costFunction(const std::vector<int16_t> &genome, double earlyOutThreshold = std::numeric_limits<double>::max());
-  void pickup(int vehicleIndex, int pickupSiteIndex);
+  simcpp20::event<> pickup(simcpp20::simulation<> &sim, int vehicleIndex, int pickupSiteIndex);
   void receive(int vehicleIndex, int depotIndex);
   std::string locationString(int locationIndex);
 
@@ -322,11 +322,11 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
               {
                 // Pickup work
                 int pickup_site_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
-                pickup(vehicleIndex, pickup_site_index);
+                pickup(sim, vehicleIndex, pickup_site_index);
                 
                 // To consider the linear component of pickup_duration, row below is commented and sim.timeout is called in pickup(vehicleIndex, pickup_site_index, simcpp20::simulation<> &sim);
 
-                // co_await sim.timeout(pickup_duration);              
+                //co_await sim.timeout(pickup_duration);              
               }
               break;
             case LOCATION_TYPE_TERMINAL:
@@ -357,7 +357,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
     }
   }
 
-  co_return;
+  //co_return;
 }
 
 simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &sim) {
@@ -435,7 +435,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
   co_return;
 }
 
-void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
+simcpp20::event<> LogisticsSimulation::pickup(simcpp20::simulation<> &sim, int vehicleIndex, int pickupSiteIndex) {
 
   // co_await sim.timeout(pickup_duration);              
 
@@ -450,29 +450,29 @@ void LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   if (pickupSites[pickupSiteIndex].level == 0) // <- TÄHÄN VOI MUUTTAA JOS ASETETAAN RAJA MISSÄ VOI KÄYDÄ JA MISSÄ EI
   { 
     // Unnecessary visit, nothing to pick up
-    if (debug >= 2) printf("%gh Vehicle #%d: nothing to pick up at site #%d\n", sim->now()/60, vehicleIndex, pickupSiteIndex);
-    co_await sim->timeout(pickup_duration);
+    if (debug >= 2) printf("%gh Vehicle #%d: nothing to pick up at site #%d\n", sim.now()/60, vehicleIndex, pickupSiteIndex);
+    co_await sim.timeout(pickup_duration);
   }
   else if (vehicles[vehicleIndex].loadLevel == routingInput.vehicles[vehicleIndex].load_capacity) 
   {
     // Unnecessary visit, no unused load capacity left
-    if (debug >= 2) printf("%gh Vehicle #%d: has no capacity left to pick anything at pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    co_await sim->timeout(pickup_duration);
+    if (debug >= 2) printf("%gh Vehicle #%d: has no capacity left to pick anything at pickup site #%d with %f t remaining\n", sim.now()/60, vehicleIndex, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
+    co_await sim.timeout(pickup_duration);
   } 
   else if (vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].level > routingInput.vehicles[vehicleIndex].load_capacity) 
   {
     // The vehicle cannot take everything
     pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
-    if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    co_await sim->timeout(pickup_duration + collection_rate*(routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel));
+    if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim.now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
+    co_await sim.timeout(pickup_duration + collection_rate*(routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel));
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
   }
   else 
   {
   // The vehicle empties the site
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
-    if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
-    co_await sim->timeout(pickup_duration + collection_rate*pickupSites[pickupSiteIndex].level);
+    if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim.now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
+    co_await sim.timeout(pickup_duration + collection_rate*pickupSites[pickupSiteIndex].level);
     pickupSites[pickupSiteIndex].level = 0;
   }
   co_return;
