@@ -155,7 +155,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 228; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
+  x.output_num_days = 14; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
@@ -386,9 +386,10 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
     // Biogas production process (resource consumption):     
-      depots[depotIndex].storage_level -= depots[depotIndex].consumption_rate;
-      
-      if (depots[depotIndex].storage_level <= 0){
+      if (depots[depotIndex].storage_level > 0){
+        depots[depotIndex].storage_level -= depots[depotIndex].consumption_rate;
+      }
+      if (depots[depotIndex].storage_level < 0){
         depots[depotIndex].production_stoppage_counter += 1;
       }
       depots[depotIndex].storage_level = std::max(0.0,depots[depotIndex].storage_level);
@@ -511,13 +512,14 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
 
 // Calculate cost function from components
-double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime) {
+double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime,  int productionStoppages, int overFillings, int unnecessaryImports) {
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
-  + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
-
-  // TÄNNE VIELÄ LAITOKSEN YLITÄYTÖN SAKOTUS ! 
+  + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
+  + productionStoppages*1000
+  + overFillings*10
+  + unnecessaryImports*100;
 }
 
 // Logistics simulation class member function: cost function
@@ -547,7 +549,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
         totalOdometerLowerBound += routingInput.distance_matrix[route[route.size() - 2]][route[route.size() - 1]];
       }
     }
-    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0);
+    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0, 0, 0, 0);
     if (costLowerBound >= earlyOutThreshold) return std::numeric_limits<double>::max();
   }
 
@@ -598,10 +600,17 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     if (debug >= 2) printf("Vehicle #%d odometer reading: %g km\n", vehicleIndex, vehicles[vehicleIndex].odometer/1000);
     totalOdometer += vehicles[vehicleIndex].odometer;
   }
+    for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
+      productionStoppages += depots[depotIndex].production_stoppage_counter;
+      overFillings += depots[depotIndex].overfilling_counter;
+      unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
+      if (debug >= 2) printf("Biogas plant #%d production stoppages: %g h\n", depots[depotIndex].production_stoppage_counter);
+      if (debug >= 2) printf("Biogas plant #%d unnecessary imports: %g h\n", depots[depotIndex].unnecessary_imports_counter);
+  }
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
   if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
-  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime);
+  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, productionStoppages, overFillings, unnecessaryImports);
 }
 
 // Simulation class constructor
