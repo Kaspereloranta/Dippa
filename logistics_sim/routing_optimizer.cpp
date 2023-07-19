@@ -48,8 +48,8 @@ void from_json(const json &j, RoutingInputPickupSite &x)
   j.at("capacity").get_to(x.capacity);
   j.at("level").get_to(x.level);
   j.at("growth_rate").get_to(x.growth_rate);
-  j.at("total_mass").get_to(x.total_mass);
-  j.at("times_collected").get_to(x.times_collected);
+  // j.at("total_mass").get_to(x.total_mass);
+  // j.at("times_collected").get_to(x.times_collected);
   j.at("location_index").get_to(x.location_index);
 }
 
@@ -315,8 +315,8 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
 
         // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
         // double collection_rate = 1/1.6; // Slurry manure
-        // double collection_rate = 1/1; // Dry manure
-        double collection_rate = 1/1.2; // Grass and straws
+        double collection_rate = 1/1; // Dry manure
+        // double collection_rate = 1/1.2; // Grass and straws
 
         vehicle.destinationLocationIndex = route[routeStep];
         if (vehicle.locationIndex == vehicle.destinationLocationIndex) {
@@ -399,7 +399,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
       // For manures
-      /*
+      
       // Declare and initialize the random number generator and distribution
       std::random_device rd;
       std::mt19937 gen(rd());
@@ -407,8 +407,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60
                                             + std::max(-10.0, std::min(dist(gen), 10.0))/20*
                                             routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
-      */
-
+      /* 
       // For grass and straws
       std::random_device rd;
       std::mt19937 gen(rd());
@@ -434,7 +433,8 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
               ++routingInput.pickup_sites[pickupSiteIndex].times_collected;
           }
       }
-      
+      */
+
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
@@ -514,7 +514,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime) {
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
-  // + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
+  + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
 
   // TÄNNE VIELÄ LAITOKSEN YLITÄYTÖN SAKOTUS ! 

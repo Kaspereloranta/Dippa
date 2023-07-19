@@ -266,8 +266,8 @@ class Vehicle(IndexedSimEntity):
 					
 					# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
 					# collection_rate = 1/1.6 # Slurry manure
-					# collection_rate = 1/1 # Dry manure
-					collection_rate = 1/1.2 # Grass and straws
+					collection_rate = 1/1 # Dry manure
+					# collection_rate = 1/1.2 # Grass and straws
 					
 					if pickup_site.level > 0:
 						if self.load_level + pickup_site.level > self.load_capacity: 
