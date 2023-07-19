@@ -173,10 +173,7 @@ class PickupSite(IndexedLocation):
 		while True:
 			yield self.sim.env.timeout(24*60)
 			#self.log(f"Level increase to {tons_to_string(self.level + self.daily_growth_rate)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level + self.daily_growth_rate) / self.capacity)})")
-			
-			# TODO:
-			# NURMIEN JA OLKIEN KERTYMINEN 2-3 KERTAA VUODESSA
-
+			# FOR GRASS AND STRAWS
 			if self.sim.config['sim_type'] == 1:
 				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
 					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
@@ -269,8 +266,8 @@ class Vehicle(IndexedSimEntity):
 					
 					# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
 					# collection_rate = 1/1.6 # Slurry manure
-					collection_rate = 1/1 # Dry manure
-					# collection_rate = 1/1.2 # Grass and straws
+					# collection_rate = 1/1 # Dry manure
+					collection_rate = 1/1.2 # Grass and straws
 					
 					if pickup_site.level > 0:
 						if self.load_level + pickup_site.level > self.load_capacity: 
@@ -320,7 +317,7 @@ class Depot(IndexedLocation):
 		# Biomass storage level, total biomass received, consumption rate (tons/day), production_stoppage_days 
 		# (storage_level < 0) and days of overfilling, and boolean for if the yearly demand is satisfied.
 
-		self.storage_level = 0
+		self.storage_level = sim.config['terminals'][0]['storage_level']
 		self.cumulative_biomass_received = 0
 		self.is_yearly_demand_satisfied = False
 		self.consumption_rate = sim.config['terminals'][0]['consumption_rate']
@@ -468,8 +465,7 @@ class WastePickupSimulation():
 
 	def daily_monitoring(self,sim_config):
 		while True:
-			if not sim_config['sim_type'] == 1:
-				self.log(f"Monitored levels: {', '.join(map(lambda x: to_percentage_string(x.level/x.capacity), self.pickup_sites))}")
+			self.log(f"Monitored levels: {', '.join(map(lambda x: to_percentage_string(x.level/x.capacity), self.pickup_sites))}")
 			yield self.env.timeout(24*60)
 
 	def daily_routing(self):
@@ -487,7 +483,15 @@ class WastePickupSimulation():
                    		if self.config['sim_type'] == 1 else {})
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
-						'location_index': depot.location_index
+						'location_index': depot.location_index,
+						'storage_level': depot.storage_level,
+						'cumulative_biomass_received' : depot.cumulative_biomass_received,
+						'is_yearly_demand_satisfied' : depot.is_yearly_demand_satisfied,
+						'consumption_rate' : depot.consumption_rate,
+						'capacity' : depot.capacity,
+						'production_stoppage_counter' : depot.production_stoppage_counter,
+						'overfilling_counter' : depot.overfilling_counter,
+						'unnecessary_imports_counter' : depot.unnecessary_imports_counter
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
 						'location_index': terminal.location_index
@@ -617,7 +621,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		terminal_config = {
 			**terminal['properties'],
 			'lonlats': tuple(terminal['geometry']['coordinates']),
-			'storage_level' : 0,
+			'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
 			'capacity' : sim_config['depot_capacity'],
 			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
 		}
@@ -631,7 +635,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			**depot['properties'],
 			**sim_config['depots'][index],
 			'lonlats': tuple(depot['geometry']['coordinates']),
-			'storage_level' : 0,
+			'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
 			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['depots'][index] = depot_config
