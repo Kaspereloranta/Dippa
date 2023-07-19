@@ -355,6 +355,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
               {
                 if (debug >= 2) printf("%gh Vehicle #%d: dump whole load of %f t at %s\n", sim.now()/60, vehicleIndex, vehicle.loadLevel, locationString(vehicle.locationIndex).c_str());
                 int depot_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
+                printf("MOI2");
                 receive(vehicleIndex,depot_index);
                 vehicle.loadLevel = 0;
               }
@@ -492,14 +493,13 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
 
 void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
+
   if (depots[depotIndex].is_yearly_demand_satisfied) {
     depots[depotIndex].unnecessary_imports_counter++;
     return;
   }
-
   depots[depotIndex].storage_level += vehicles[vehicleIndex].loadLevel;
   depots[depotIndex].cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
-
   if (depots[depotIndex].storage_level > depots[depotIndex].capacity ) {
     depots[depotIndex].overfilling_counter++;
   }
@@ -615,7 +615,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
 
 // Simulation class constructor
 LogisticsSimulation::LogisticsSimulation(RoutingInput &routingInput):
-routingInput(routingInput), routingOutput(routingInput), vehicles(routingInput.vehicles.size()), pickupSites(routingInput.pickup_sites.size()) {}
+routingInput(routingInput), routingOutput(routingInput), vehicles(routingInput.vehicles.size()), pickupSites(routingInput.pickup_sites.size()), depots(routingInput.depots.size()) {}
 
 int main() {
   // Read routing optimization input

@@ -331,7 +331,7 @@ class Depot(IndexedLocation):
 	def produce_biogas_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
-			
+
 			if self.storage_level > 0:
 				self.storage_level -= self.consumption_rate
 
@@ -513,15 +513,15 @@ class WastePickupSimulation():
 					json.dump(routing_input, outfile, indent=4)
 
 				# Comment/uncomment: heuristic router
-				self.routing_output = heuristic_router(routing_input)
+				# self.routing_output = heuristic_router(routing_input)
 
 				# Comment/uncomment: genetic algorithm router
 
-#				filename = 'log/routing_optimizer_log.txt'
-#				os.makedirs(os.path.dirname(filename), exist_ok=True)
-#				os.system(f"routing_optimizer>{filename}") # ***
-#				with open('temp/routing_output.json') as infile:
-#					self.routing_output = json.load(infile)
+				filename = 'log/routing_optimizer_log.txt'
+				os.makedirs(os.path.dirname(filename), exist_ok=True)
+				os.system(f"routing_optimizer>{filename}") # ***
+				with open('temp/routing_output.json') as infile:
+					self.routing_output = json.load(infile)
 
 			# Assign routes
 			for vehicle_index, vehicle_routing_output in enumerate(self.routing_output['days'][0]['vehicles']):
