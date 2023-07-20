@@ -22,7 +22,7 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
-int debug = 2; // 0: no printf, 1: printf for genetic algo, 2: all printf
+int debug = 1; // 0: no printf, 1: printf for genetic algo, 2: all printf
 const float pickup_duration = 10;
 
 enum LocationType {LOCATION_TYPE_DEPOT, LOCATION_TYPE_PICKUP_SITE, LOCATION_TYPE_TERMINAL};
@@ -355,7 +355,6 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
               {
                 if (debug >= 2) printf("%gh Vehicle #%d: dump whole load of %f t at %s\n", sim.now()/60, vehicleIndex, vehicle.loadLevel, locationString(vehicle.locationIndex).c_str());
                 int depot_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
-                printf("MOI2");
                 receive(vehicleIndex,depot_index);
                 vehicle.loadLevel = 0;
               }
@@ -516,10 +515,10 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
-  + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
-  + productionStoppages*1000
-  + overFillings*10
-  + unnecessaryImports*100;
+  + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
+ // + productionStoppages*1000
+ //  + overFillings*10
+ //  + unnecessaryImports*100;
 }
 
 // Logistics simulation class member function: cost function
