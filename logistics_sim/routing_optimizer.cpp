@@ -515,10 +515,10 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
-  + totalOvertime*(50.0/60); // Cost of 50 eur / h for overtime work  
- // + productionStoppages*1000
- //  + overFillings*10
- //  + unnecessaryImports*100;
+  + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
+  + productionStoppages*1000
+  + overFillings*10
+  + unnecessaryImports*100;
 }
 
 // Logistics simulation class member function: cost function
@@ -680,7 +680,6 @@ int main() {
   printf("\n\n");
   LogisticsSimulation logisticsSim(routingInput);
   logisticsSim.costFunction(genome); // Get routeStartLoci
-  printf("OPTIMOIJAN LOPPU");
   json j = logisticsSim.routingOutput;
   std::ofstream o("temp/routing_output.json");
   o << std::setw(4) << j << std::endl;
