@@ -124,18 +124,23 @@ class PickupSite(IndexedLocation):
 
 		self.capacity = sim.config['pickup_sites'][index]['capacity']
 		self.level = sim.config['pickup_sites'][index]['level']
-		self.TS = sim.config['pickup_sites'][index]['TS-rate']
-		self.levelListeners = []
-
+		self.TS_initial = sim.config['pickup_sites'][index]['TS-rate']
 		self.daily_growth_rate = sim.config['pickup_sites'][index]['daily_growth_rate']
+		self.levelListeners = []
 
 		if self.sim.config['sim_type'] == 1:
 			self.total_mass = sim.config['pickup_sites'][index]['total_mass']
 			self.times_collected = sim.config['pickup_sites'][index]['times_collected']
 
-		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day")
+		if sim.config['isTimeCriticalityConsidered'] == 'True':
+					self.TS_current = sim.config['pickup_sites'][index]['TS-rate']
+					self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
+					self.moisture_loss = sim.config['pickup_sites'][index]['moisture_loss_coefficient']
+
+		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
+		self.drying_process = sim.env.process(self.dry_weekly_forever())
 
 	# Put some amount into the containers at the site
 	def put(self, amount):
@@ -173,8 +178,7 @@ class PickupSite(IndexedLocation):
 	def grow_daily_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
-			self.put(self.daily_growth_rate)
-			"""
+			#self.put(self.daily_growth_rate)
 			#self.log(f"Level increase to {tons_to_string(self.level + self.daily_growth_rate)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level + self.daily_growth_rate) / self.capacity)})")
 			# FOR GRASS AND STRAWS
 			if self.sim.config['sim_type'] == 1:
@@ -196,7 +200,20 @@ class PickupSite(IndexedLocation):
 			else: # MANURES
 				# TO ADD NOISE TO THE CUMULATION:
 				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
-			"""
+
+	def dry_weekly_forever(self):
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			while True:
+				yield self.sim.env.timeout(24*60*7)
+				self.log(f"Level: {tons_to_string(self.level)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level) / self.capacity)})")
+				self.log(f"TS: {self.TS_current}")
+				self.log(f"DRYING PROCESS")
+				self.level -= self.level*self.volume_loss
+				self.TS_current = (1-(0.95*(1-self.TS_current/100)))*100
+				self.log(f"Level: {tons_to_string(self.level)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level) / self.capacity)})")
+				self.log(f"TS: {self.TS_current}")
+
+
 
 # Vehicle
 class Vehicle(IndexedSimEntity):	
@@ -638,6 +655,12 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		if sim_config['sim_type'] == 1:
 			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
 			pickup_site_config['times_collected'] = 0
+
+		# If biomasses is assumed to dry out over time
+		if sim_config['isTimeCriticalityConsidered'] == 'True':
+			pickup_site_config['volume_loss_coefficient'] = 0.01 # Weekly-basis
+			pickup_site_config['moisture_loss_coefficient'] = 0.05 # Weekly-basis
+
 		sim_config['pickup_sites'].append(pickup_site_config)
 
 	# Create configurations for terminals using known data
