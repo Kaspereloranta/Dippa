@@ -148,10 +148,7 @@ class PickupSite(IndexedLocation):
 
 		# To update TS-rate of site
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			self.log(f"TS: {self.TS_current}")
-			self.log(f"ADDING NEW BIOMASS TO SITE")
 			self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
-			self.log(f"TS: {self.TS_current}")
 
 		self.level += amount
 		listeners_to_message = list(filter(lambda x: self.level >= x[1], listeners_to_message_maybe))
@@ -214,7 +211,7 @@ class PickupSite(IndexedLocation):
 			while True:
 				yield self.sim.env.timeout(24*60*7)
 				self.level -= self.level*self.volume_loss
-				self.TS_current = (1-(0.95*(1-self.TS_current/100)))*100
+				self.TS_current = (1-((1-self.moisture_loss)*(1-self.TS_current/100)))*100
 
 
 
@@ -517,7 +514,10 @@ class WastePickupSimulation():
 						'growth_rate': pickup_site.daily_growth_rate/(24*60),
 						'location_index': pickup_site.location_index,
                 		**({'total_mass': pickup_site.total_mass, 'times_collected': pickup_site.times_collected}
-                   		if self.config['sim_type'] == 1 else {})
+                   		if self.config['sim_type'] == 1 else {}),
+						**({'TS_initial': pickup_site.TS_initial, 'TS_current': pickup_site.TS_current, 
+	  						'volume_loss_coefficient': pickup_site.volume_loss, 'moisture_loss_coefficient' : pickup_site.moisture_loss}
+                   		if self.config['isTimeCriticalityConsidered'] == 'True' else {})
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index,

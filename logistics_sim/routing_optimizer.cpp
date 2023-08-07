@@ -41,6 +41,10 @@ struct RoutingInputPickupSite: public IndexedLocation
   float total_mass;
   int times_collected;
   int max_num_visits;
+  float TS_initial;
+  float TS_current;
+  float volume_loss_coefficient;
+  float moisture_loss_coefficient;
 };
 
 void from_json(const json &j, RoutingInputPickupSite &x)
@@ -48,8 +52,12 @@ void from_json(const json &j, RoutingInputPickupSite &x)
   j.at("capacity").get_to(x.capacity);
   j.at("level").get_to(x.level);
   j.at("growth_rate").get_to(x.growth_rate);
+  j.at("TS_initial").get_to(x.TS_initial);
   // j.at("total_mass").get_to(x.total_mass);
   // j.at("times_collected").get_to(x.times_collected);
+  j.at("TS_current").get_to(x.TS_current);
+  j.at("volume_loss_coefficient").get_to(x.volume_loss_coefficient);
+  j.at("moisture_loss_coefficient").get_to(x.moisture_loss_coefficient);
   j.at("location_index").get_to(x.location_index);
 }
 
@@ -260,6 +268,10 @@ private:
 struct PickupSiteState {
   float level; // Material level
   int times_collected = 0;
+  float TS_initial;
+  float TS_current;
+  float volume_loss_coefficient;
+  float moisture_loss_coefficient;
 };
 
 // Vehicle state class definition and member function definitions
@@ -398,7 +410,6 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
     }
-    co_await sim.timeout(24*60);
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
     // Biogas production process (resource consumption):     
@@ -415,7 +426,16 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
-      pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
+      float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
+      pickupSites[pickupSiteIndex].level += put_amount;
+
+      // To update TS-rate of site
+			pickupSites[pickupSiteIndex].TS_current = (pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level 
+                                                + pickupSites[pickupSiteIndex].TS_initial/100*put_amount)/(pickupSites[pickupSiteIndex].level+put_amount)*100;
+
+      // TODO: 
+      // Calculation of accumulation with noises to variable put_amount (above) to enable calculating the new TS-rate.
+
       /* 
       // For manures
       
@@ -453,6 +473,14 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
           }
       }
       */
+
+      // Drying process within the pickup sites
+      for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
+        pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
+        pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
+      }
+
+      co_await sim.timeout(24*60);
 
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
