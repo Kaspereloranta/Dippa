@@ -145,6 +145,14 @@ class PickupSite(IndexedLocation):
 	# Put some amount into the containers at the site
 	def put(self, amount):
 		listeners_to_message_maybe = list(filter(lambda x: self.level < x[1], self.levelListeners))
+
+		# To update TS-rate of site
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			self.log(f"TS: {self.TS_current}")
+			self.log(f"ADDING NEW BIOMASS TO SITE")
+			self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
+			self.log(f"TS: {self.TS_current}")
+
 		self.level += amount
 		listeners_to_message = list(filter(lambda x: self.level >= x[1], listeners_to_message_maybe))
 		if len(listeners_to_message):
@@ -205,13 +213,8 @@ class PickupSite(IndexedLocation):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
 				yield self.sim.env.timeout(24*60*7)
-				self.log(f"Level: {tons_to_string(self.level)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level) / self.capacity)})")
-				self.log(f"TS: {self.TS_current}")
-				self.log(f"DRYING PROCESS")
 				self.level -= self.level*self.volume_loss
 				self.TS_current = (1-(0.95*(1-self.TS_current/100)))*100
-				self.log(f"Level: {tons_to_string(self.level)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level) / self.capacity)})")
-				self.log(f"TS: {self.TS_current}")
 
 
 
