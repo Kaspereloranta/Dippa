@@ -82,11 +82,27 @@ void from_json(const json &j, RoutingInputDepot &x)
 struct RoutingInputTerminal: public IndexedLocation
 {
   static const LocationType locationType = LOCATION_TYPE_TERMINAL;
+  double storage_level ;
+	double cumulative_biomass_received;
+	bool is_yearly_demand_satisfied;
+	double consumption_rate;
+	double capacity;
+	int production_stoppage_counter;
+	int overfilling_counter;
+	int unnecessary_imports_counter;
 };
 
 void from_json(const json &j, RoutingInputTerminal &x)
 {
   j.at("location_index").get_to(x.location_index);
+  j.at("storage_level").get_to(x.storage_level);
+  j.at("cumulative_biomass_received").get_to(x.cumulative_biomass_received);
+  j.at("is_yearly_demand_satisfied").get_to(x.is_yearly_demand_satisfied);
+  j.at("consumption_rate").get_to(x.consumption_rate);
+  j.at("capacity").get_to(x.capacity);
+  j.at("production_stoppage_counter").get_to(x.production_stoppage_counter);
+  j.at("overfilling_counter").get_to(x.overfilling_counter);
+  j.at("unnecessary_imports_counter").get_to(x.unnecessary_imports_counter);
 }
 
 struct RoutingInputVehicle: public IndexedLocation
@@ -155,7 +171,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 14; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
+  x.output_num_days = 228; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
@@ -315,7 +331,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
 
         // # TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
         // double collection_rate = 1/1.6; // Slurry manure
-        double collection_rate = 1/1; // Dry manure
+        double collection_rate = 1/1 ; // Dry manure
         // double collection_rate = 1/1.2; // Grass and straws
 
         vehicle.destinationLocationIndex = route[routeStep];
@@ -399,6 +415,8 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
+      pickupSites[pickupSiteIndex].level += routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
+      /* 
       // For manures
       
       // Declare and initialize the random number generator and distribution
@@ -516,9 +534,9 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
-  + productionStoppages*1000
-  + overFillings*10
-  + unnecessaryImports*100;
+  + productionStoppages*500;
+  + overFillings*50,
+  + unnecessaryImports*50;
 }
 
 // Logistics simulation class member function: cost function
@@ -599,12 +617,13 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     if (debug >= 2) printf("Vehicle #%d odometer reading: %g km\n", vehicleIndex, vehicles[vehicleIndex].odometer/1000);
     totalOdometer += vehicles[vehicleIndex].odometer;
   }
-    for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
-      productionStoppages += depots[depotIndex].production_stoppage_counter;
-      overFillings += depots[depotIndex].overfilling_counter;
-      unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
-      if (debug >= 2) printf("Biogas plant #%d production stoppages: %g h\n", depots[depotIndex].production_stoppage_counter);
-      if (debug >= 2) printf("Biogas plant #%d unnecessary imports: %g h\n", depots[depotIndex].unnecessary_imports_counter);
+  for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
+    productionStoppages += depots[depotIndex].production_stoppage_counter;
+    overFillings += depots[depotIndex].overfilling_counter;
+    unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
+    if (debug >= 2) printf("Biogas plant #%d production stoppages: %g h\n", depots[depotIndex].production_stoppage_counter);
+    if (debug >= 2) printf("Biogas plant #%d unnecessary imports: %g h\n", depots[depotIndex].unnecessary_imports_counter);
+    if (debug >= 2) printf("Biogas plant #%d overfillings: %g h\n", depots[depotIndex].overfilling_counter);
   }
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
