@@ -118,6 +118,7 @@ struct RoutingInputVehicle: public IndexedLocation
   float load_capacity;
   int home_depot_index;
   int max_route_duration;
+  float load_TS_rate;
 };
 
 void from_json(const json &j, RoutingInputVehicle &x)
@@ -125,6 +126,7 @@ void from_json(const json &j, RoutingInputVehicle &x)
   j.at("load_capacity").get_to(x.load_capacity);
   j.at("home_depot_index").get_to(x.home_depot_index);
   j.at("max_route_duration").get_to(x.max_route_duration);
+  j.at("load_TS_rate").get_to(x.load_TS_rate);
 }
 
 struct LocationTypeAndSpecificIndex
@@ -225,7 +227,6 @@ void to_json(json& j, const RoutingOutput& x) {
   j = json{{"days", x.days}};
 }
 
-
 // Forward declaration of vehicle and pickup site classes
 class VehicleState;
 class PickupSiteState;
@@ -279,6 +280,7 @@ struct VehicleState {
   float loadLevel; // Load level
   float odometer; // Total distance traveled
   float overtime; // Total overtime accumulated
+  float load_TS_rate;
 
   // Vehicle en route or not
   bool enRoute; // true: vehicle is en route, so no new route can be started, false: vehicle can start a new route
@@ -409,6 +411,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
+      // Drying process within the vehicles
+        vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
+        vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
+      }
+
     }
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
@@ -523,12 +530,15 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     collectedAmount = (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
+    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
+
   }
   else 
   {
   // The vehicle empties the site
     collectedAmount = pickupSites[pickupSiteIndex].level;
+    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
     pickupSites[pickupSiteIndex].level = 0;
@@ -605,6 +615,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     vehicleState.loadLevel = 0;
     vehicleState.odometer = 0;
     vehicleState.overtime = 0;
+    vehicleState.load_TS_rate = 0;
     vehicleState.enRoute = false;
     vehicleState.moving = false;
     vehicleState.locationIndex = routingInput.depots[routingInput.vehicles[vehicleIndex].home_depot_index].location_index;

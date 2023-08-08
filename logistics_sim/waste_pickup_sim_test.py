@@ -17,10 +17,11 @@ sim_config = {
 		'max_route_duration': 8*60 + 15, # Minutes (9h - 45min break = 8h 15min) 
 		'break_duration': 45, # Minutes # Break Happens after 1/2 of drivetime 
 		'num_breaks_per_shift': 1,
-		'pickup_duration': 10 # Minutes # Tämä 10 min = keruiden asetusaika, sama kaikille biomassoille. Simulaatiossa ja optimoinnissa huomioidaan keruun keston lineaarinen komponentti.
+		'pickup_duration': 10, # Minutes # Tämä 10 min = keruiden asetusaika, sama kaikille biomassoille. Simulaatiossa ja optimoinnissa huomioidaan keruun keston lineaarinen komponentti.
 							  # Vakiokomponenttia ylläpidetään myös: routing_optimizer.cpp rivi 22
 							  # Lin. kommponentti simulaatiossa: waste_pickup_sim.py rivit 254 ja 266  
 							  #  Lin. kommponentti optimoijassa: LogisticsSimulation::pickup
+		'load_TS_rate': 0.0
 	},
 	'depots': [
 		{
@@ -32,8 +33,6 @@ sim_config = {
 def hypothesis_test():
 	"""
 	"""
-	# Tänne jotain toteutusta simulointien vertailuun eri oletuksilla?
-
 	# Runs N simulation
 	# logs them to list of jsons 
 	pass 

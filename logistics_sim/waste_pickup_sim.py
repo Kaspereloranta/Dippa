@@ -13,7 +13,6 @@ import os
 
 from routing_api import get_distance_and_duration_matrix
 
-
 def time_to_string(minutes):
 	hours = math.floor(minutes/60)
 	minutes -= hours*60
@@ -140,7 +139,8 @@ class PickupSite(IndexedLocation):
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
-		self.drying_process = sim.env.process(self.dry_weekly_forever())
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			self.drying_process = sim.env.process(self.dry_daily_forever())
 
 	# Put some amount into the containers at the site
 	def put(self, amount):
@@ -206,13 +206,15 @@ class PickupSite(IndexedLocation):
 				# TO ADD NOISE TO THE CUMULATION:
 				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
 
-	def dry_weekly_forever(self):
+	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
-				yield self.sim.env.timeout(24*60*7)
-				self.level -= self.level*self.volume_loss
-				self.TS_current = (1-((1-self.moisture_loss)*(1-self.TS_current/100)))*100
+				yield self.sim.env.timeout(24*60)
+				self.level -= self.level*pow(self.volume_loss,1/7)
+				self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
 
+	def TS_rate(self):
+		return float(self.TS_current)
 
 
 # Vehicle
@@ -222,9 +224,10 @@ class Vehicle(IndexedSimEntity):
 		super().__init__(sim, index)
 		self.home_depot_index = home_depot_index
 
-		# Load level and capacity
+		# Load level, capacity, and TS-rate of the load. 
 		self.load_capacity = sim.config['vehicle_template']['load_capacity']
-		self.load_level = 0
+		self.load_level = 0.0
+		self.load_TS_rate = sim.config ['vehicle_template']['load_TS_rate']
 
 		# Work shift
 		self.max_route_duration = sim.config['vehicle_template']['max_route_duration']
@@ -235,7 +238,11 @@ class Vehicle(IndexedSimEntity):
 		# Location and movement
 		self.moving = False
 		self.location_index = sim.depots[self.home_depot_index].location_index
-		self.vehicle_odometer = 0	
+		self.vehicle_odometer = 0
+
+		# Drying of load
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			self.drying_process = sim.env.process(self.load_drying_daily_forever())
 
 		self.log(f"At {type(sim.locations[self.location_index]).__name__} #{sim.locations[self.location_index].index}")
 
@@ -256,11 +263,16 @@ class Vehicle(IndexedSimEntity):
 				source_location_lonlats[1] + route_step_fractional_progress*(destination_location_lonlats[1] - source_location_lonlats[1])
 			)
 
-	def put_load(self, value):
+	def put_load(self, value, ts):
+		self.update_TS(value,ts)
 		self.load_level += value
 		self.log(f"Load level increased to {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)} ({to_percentage_string(self.load_level/self.load_capacity)})")
-		if (self.load_level > self.capacity):
+		self.log(f"Load TS-rate {self.load_TS_rate}" )
+		if (self.load_level > self.load_capacity):
 			self.warn("Overload")
+
+	def update_TS(self,amount,ts):
+		self.load_TS_rate = (self.load_TS_rate/100*self.load_level + ts/100*amount)/(self.load_level+amount)*100
 
 	# Assign route for vehicle
 	def assign_route(self, route):
@@ -294,13 +306,15 @@ class Vehicle(IndexedSimEntity):
 							# Can only take some
 							get_amount = self.load_capacity - self.load_level
 							pickup_site.get(get_amount)
-							self.load_level = self.load_capacity							
+							loadTS = pickup_site.TS_rate()
+							self.put_load(get_amount,loadTS)
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
 						else:
 							# Can take all
 							get_amount = pickup_site.level
-							self.load_level += get_amount
 							pickup_site.get(get_amount)
+							loadTS = pickup_site.TS_rate()
+							self.put_load(get_amount,loadTS)
 							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
 						self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 					else:
@@ -319,7 +333,15 @@ class Vehicle(IndexedSimEntity):
 			self.total_run_time += moving_end_time - moving_start_time
 			self.location_index = route[-1]
 
-
+	def load_drying_daily_forever(self):
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			while True:
+				yield self.sim.env.timeout(24*60)
+				self.log(f"Vehicle load {tons_to_string(self.load_level)}, vehicle TS {self.load_TS_rate} ")
+				self.log(f"DRYING PROCESS")
+				self.load_level -= self.load_level*pow(0.01,1/7)
+				self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
+				self.log(f"Vehicle load {tons_to_string(self.load_level)}, vehicle TS {self.load_TS_rate} ")
 
 	def record_distance_travelled(self, distance_driven):
 		"""
@@ -545,6 +567,7 @@ class WastePickupSimulation():
 						'load_capacity': vehicle.load_capacity,
 						'home_depot_index': vehicle.home_depot_index,
 						'max_route_duration': vehicle.max_route_duration,
+						'load_TS_rate' : vehicle.load_TS_rate
 					}, self.vehicles)),
 					'distance_matrix': self.config['distance_matrix'],
 					'duration_matrix': self.config['duration_matrix']
