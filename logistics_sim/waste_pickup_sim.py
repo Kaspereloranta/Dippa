@@ -213,8 +213,9 @@ class PickupSite(IndexedLocation):
 				self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
 
 	def TS_rate(self):
-		return float(self.TS_current)
-
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			return self.TS_current
+		return self.TS_initial
 
 # Vehicle
 class Vehicle(IndexedSimEntity):	
@@ -362,6 +363,7 @@ class Depot(IndexedLocation):
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
+		self.dilution_water = 0
 		self.storage_TS = 0
 
 		self.production_process = sim.env.process(self.produce_biogas_forever())
@@ -372,6 +374,10 @@ class Depot(IndexedLocation):
 	def produce_biogas_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
+			if self.storage_TS > 15:
+				# Amount of water to dilute the storage's content to TS=15% (analytical solution)
+				self.dilution_water += 14/3*self.storage_TS*self.storage_level/100 + pow(self.storage_TS,2)*self.storage_level
+				self.storage_TS = 15
 
 			if self.storage_level > 0:
 				self.storage_level -= self.consumption_rate
@@ -564,6 +570,7 @@ class WastePickupSimulation():
 						'overfilling_counter' : depot.overfilling_counter,
 						'unnecessary_imports_counter' : depot.unnecessary_imports_counter,
 						'stroage_TS' : depot.storage_TS,
+						'dilution_water' : depot.dilution_water
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
 						'location_index': terminal.location_index,

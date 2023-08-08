@@ -53,8 +53,8 @@ void from_json(const json &j, RoutingInputPickupSite &x)
   j.at("level").get_to(x.level);
   j.at("growth_rate").get_to(x.growth_rate);
   j.at("TS_initial").get_to(x.TS_initial);
-  // j.at("total_mass").get_to(x.total_mass);
-  // j.at("times_collected").get_to(x.times_collected);
+  j.at("total_mass").get_to(x.total_mass);
+  j.at("times_collected").get_to(x.times_collected);
   j.at("TS_current").get_to(x.TS_current);
   j.at("volume_loss_coefficient").get_to(x.volume_loss_coefficient);
   j.at("moisture_loss_coefficient").get_to(x.moisture_loss_coefficient);
@@ -73,6 +73,7 @@ struct RoutingInputDepot: public IndexedLocation
 	int production_stoppage_counter;
 	int overfilling_counter;
 	int unnecessary_imports_counter;
+  float dilution_water;
 };
 
 void from_json(const json &j, RoutingInputDepot &x)
@@ -87,6 +88,7 @@ void from_json(const json &j, RoutingInputDepot &x)
   j.at("production_stoppage_counter").get_to(x.production_stoppage_counter);
   j.at("overfilling_counter").get_to(x.overfilling_counter);
   j.at("unnecessary_imports_counter").get_to(x.unnecessary_imports_counter);
+   j.at("dilution_water").get_to(x.dilution_water);
 }
 
 struct RoutingInputTerminal: public IndexedLocation
@@ -305,6 +307,7 @@ struct DepotState {
 	int production_stoppage_counter = 0;
 	int overfilling_counter = 0;
 	int unnecessary_imports_counter = 0;
+  double dilution_water = 0;
 };
 
 std::string LogisticsSimulation::locationString(int locationIndex) {
@@ -414,19 +417,29 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
+      /*
       // Drying process within the vehicles
         vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
         vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
+      */
       }
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
+      /*
       // Drying process within the biogas plant
       if (depots[depotIndex].storage_level > 0){
 				depots[depotIndex].storage_level -= depots[depotIndex].storage_level*pow(0.01,1/7)
 				depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS.storage_TS/100)))*100
       }
+      */
       // Biogas production process (resource consumption):     
       if (depots[depotIndex].storage_level > 0){
+        // If dilution is needed
+        if (depots[depotIndex].storage_TS > 15){
+          // Amount of water to dilute the storage's content to TS=15% (analytical solution)
+				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*depots[depotIndex].storage_level/100 + pow(depots[depotIndex].storage_TS,2)*depots[depotIndex].storage_level
+				  depots[depotIndex].storage_TS = 15
+        }
         depots[depotIndex].storage_level -= depots[depotIndex].consumption_rate;
       }
       if (depots[depotIndex].storage_level =< 0){
@@ -486,13 +499,13 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
           }
       }
       */
-
+      /*
       // Drying process within the pickup sites
       for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
         pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
         pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
       }
-
+      */
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
@@ -713,8 +726,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 40000; // 40000
-  int numFinetuneGenerations = 20000; // 20000
+  int numGenerations = 2000000; // 40000
+  int numFinetuneGenerations = 1000000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
