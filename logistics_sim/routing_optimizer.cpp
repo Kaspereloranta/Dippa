@@ -437,12 +437,12 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         // If dilution is needed
         if (depots[depotIndex].storage_TS > 15){
           // Amount of water to dilute the storage's content to TS=15% (analytical solution)
-				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*depots[depotIndex].storage_level/100 + pow(depots[depotIndex].storage_TS,2)*depots[depotIndex].storage_level
-				  depots[depotIndex].storage_TS = 15
+				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*depots[depotIndex].storage_level/100 + pow(depots[depotIndex].storage_TS,2)*depots[depotIndex].storage_level;
+				  depots[depotIndex].storage_TS = 15;
         }
         depots[depotIndex].storage_level -= depots[depotIndex].consumption_rate;
       }
-      if (depots[depotIndex].storage_level =< 0){
+      if (depots[depotIndex].storage_level <= 0){
         depots[depotIndex].production_stoppage_counter += 1;
       }
       depots[depotIndex].storage_level = std::max(0.0,depots[depotIndex].storage_level);
@@ -547,7 +547,7 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     collectedAmount = (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100
+    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
 
   }
@@ -555,7 +555,7 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   {
   // The vehicle empties the site
     collectedAmount = pickupSites[pickupSiteIndex].level;
-    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100
+    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
     pickupSites[pickupSiteIndex].level = 0;
@@ -572,7 +572,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
 	depots[depotIndex].storage_TS = (depots[depotIndex].storage_TS/100*depots[depotIndex].storage_level +
                               vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
-                              /(depots[depotIndex].storage_level+vehicles[vehicleIndex].loadLevel)*100
+                              /(depots[depotIndex].storage_level+vehicles[vehicleIndex].loadLevel)*100;
 
   depots[depotIndex].storage_level += vehicles[vehicleIndex].loadLevel;
   depots[depotIndex].cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
@@ -588,13 +588,14 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
 
 // Calculate cost function from components
-double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime,  int productionStoppages, int overFillings, int unnecessaryImports) {
+double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime, double dilutionWater, int productionStoppages, int overFillings, int unnecessaryImports) {
 
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
-  + productionStoppages*500;
-  + overFillings*50,
+  + dilutionWater*10
+  + productionStoppages*500
+  + overFillings*50
   + unnecessaryImports*50;
 }
 
@@ -625,7 +626,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
         totalOdometerLowerBound += routingInput.distance_matrix[route[route.size() - 2]][route[route.size() - 1]];
       }
     }
-    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0, 0, 0, 0);
+    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0, 0, 0, 0, 0);
     if (costLowerBound >= earlyOutThreshold) return std::numeric_limits<double>::max();
   }
 
@@ -664,6 +665,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   int productionStoppages = 0;
   int overFillings = 0;
   int unnecessaryImports = 0;
+  double dilutionWater = 0;
 
   // Simulate
   simcpp20::simulation<> sim;
@@ -682,6 +684,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     productionStoppages += depots[depotIndex].production_stoppage_counter;
     overFillings += depots[depotIndex].overfilling_counter;
     unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
+    dilutionWater += depots[depotIndex].dilution_water;
     if (debug >= 2) printf("Biogas plant #%d production stoppages: %g h\n", depots[depotIndex].production_stoppage_counter);
     if (debug >= 2) printf("Biogas plant #%d unnecessary imports: %g h\n", depots[depotIndex].unnecessary_imports_counter);
     if (debug >= 2) printf("Biogas plant #%d overfillings: %g h\n", depots[depotIndex].overfilling_counter);
@@ -689,7 +692,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
   if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
-  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, productionStoppages, overFillings, unnecessaryImports);
+  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports);
 }
 
 // Simulation class constructor
