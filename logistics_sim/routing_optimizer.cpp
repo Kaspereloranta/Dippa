@@ -65,6 +65,7 @@ struct RoutingInputDepot: public IndexedLocation
 {
   static const LocationType locationType = LOCATION_TYPE_DEPOT;
 	double storage_level ;
+  double storage_TS;
 	double cumulative_biomass_received;
 	bool is_yearly_demand_satisfied;
 	double consumption_rate;
@@ -78,6 +79,7 @@ void from_json(const json &j, RoutingInputDepot &x)
 {
   j.at("location_index").get_to(x.location_index);
   j.at("storage_level").get_to(x.storage_level);
+  j.at("storage_TS").get_to(x.storage_TS);
   j.at("cumulative_biomass_received").get_to(x.cumulative_biomass_received);
   j.at("is_yearly_demand_satisfied").get_to(x.is_yearly_demand_satisfied);
   j.at("consumption_rate").get_to(x.consumption_rate);
@@ -295,6 +297,7 @@ struct VehicleState {
 // Depot state class definition
 struct DepotState {
 	double storage_level;
+  double storage_TS;
 	double cumulative_biomass_received = 0;
   bool is_yearly_demand_satisfied = false;
 	double consumption_rate;
@@ -416,14 +419,17 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
       }
 
-    }
-
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
-    // Biogas production process (resource consumption):     
+      // Drying process within the biogas plant
+      if (depots[depotIndex].storage_level > 0){
+				depots[depotIndex].storage_level -= depots[depotIndex].storage_level*pow(0.01,1/7)
+				depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS.storage_TS/100)))*100
+      }
+      // Biogas production process (resource consumption):     
       if (depots[depotIndex].storage_level > 0){
         depots[depotIndex].storage_level -= depots[depotIndex].consumption_rate;
       }
-      if (depots[depotIndex].storage_level < 0){
+      if (depots[depotIndex].storage_level =< 0){
         depots[depotIndex].production_stoppage_counter += 1;
       }
       depots[depotIndex].storage_level = std::max(0.0,depots[depotIndex].storage_level);
@@ -487,8 +493,6 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
       }
 
-      co_await sim.timeout(24*60);
-
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
@@ -498,8 +502,8 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if (debug >= 2) printf("%d%%, ", (int)floor(pickupSites[pickupSiteIndex].level / routingInput.pickup_sites[pickupSiteIndex].capacity * 100 + 0.5));
     }
     if (debug >= 2) printf("\n");
+  co_await sim.timeout(24*60);
   }
-
   co_return;
 }
 
@@ -548,11 +552,15 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
 
 void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
-
   if (depots[depotIndex].is_yearly_demand_satisfied) {
     depots[depotIndex].unnecessary_imports_counter++;
     return;
   }
+
+	depots[depotIndex].storage_TS = (depots[depotIndex].storage_TS/100*depots[depotIndex].storage_level +
+                              vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
+                              /(depots[depotIndex].storage_level+vehicles[vehicleIndex].loadLevel)*100
+
   depots[depotIndex].storage_level += vehicles[vehicleIndex].loadLevel;
   depots[depotIndex].cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
   if (depots[depotIndex].storage_level > depots[depotIndex].capacity ) {
@@ -628,6 +636,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   // Initialize depots
   for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
     depots[depotIndex].storage_level = routingInput.depots[depotIndex].storage_level;
+    depots[depotIndex].storage_TS = routingInput.depots[depotIndex].storage_TS;
     depots[depotIndex].cumulative_biomass_received = 0;
     depots[depotIndex].is_yearly_demand_satisfied = false;
     depots[depotIndex].consumption_rate = routingInput.depots[depotIndex].consumption_rate;

@@ -184,7 +184,6 @@ class PickupSite(IndexedLocation):
 		while True:
 			yield self.sim.env.timeout(24*60)
 			#self.put(self.daily_growth_rate)
-			#self.log(f"Level increase to {tons_to_string(self.level + self.daily_growth_rate)} / {tons_to_string(self.capacity)}  ({to_percentage_string((self.level + self.daily_growth_rate) / self.capacity)})")
 			# FOR GRASS AND STRAWS
 			if self.sim.config['sim_type'] == 1:
 				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
@@ -266,8 +265,6 @@ class Vehicle(IndexedSimEntity):
 	def put_load(self, value, ts):
 		self.update_TS(value,ts)
 		self.load_level += value
-		self.log(f"Load level increased to {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)} ({to_percentage_string(self.load_level/self.load_capacity)})")
-		self.log(f"Load TS-rate {self.load_TS_rate}" )
 		if (self.load_level > self.load_capacity):
 			self.warn("Overload")
 
@@ -323,9 +320,9 @@ class Vehicle(IndexedSimEntity):
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
 					depot = arrive_location
-					self.log(f"Dumped the load {tons_to_string(self.load_level)} at depot #{depot.index}")
-					depot.receive_biomass(self.load_level)
+					depot.receive_biomass(self.load_level,self.load_TS_rate)
 					self.load_level = 0
+					self.load_TS_rate = 0
 
 			# Mark as not moving at final destination
 			self.moving = False
@@ -337,11 +334,9 @@ class Vehicle(IndexedSimEntity):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
 				yield self.sim.env.timeout(24*60)
-				self.log(f"Vehicle load {tons_to_string(self.load_level)}, vehicle TS {self.load_TS_rate} ")
-				self.log(f"DRYING PROCESS")
-				self.load_level -= self.load_level*pow(0.01,1/7)
-				self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
-				self.log(f"Vehicle load {tons_to_string(self.load_level)}, vehicle TS {self.load_TS_rate} ")
+				if(self.load_level > 0):
+					self.load_level -= self.load_level*pow(0.01,1/7)
+					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
 
 	def record_distance_travelled(self, distance_driven):
 		"""
@@ -367,8 +362,12 @@ class Depot(IndexedLocation):
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
+		self.storage_TS = 0
 
 		self.production_process = sim.env.process(self.produce_biogas_forever())
+
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			self.drying_process = sim.env.process(self.storage_drying_daily_forever())
 
 	def produce_biogas_forever(self):
 		while True:
@@ -377,23 +376,30 @@ class Depot(IndexedLocation):
 			if self.storage_level > 0:
 				self.storage_level -= self.consumption_rate
 
-			if self.storage_level < 0:
+			if self.storage_level <= 0:
 				self.warn(f"Production stoppage!")
 				self.production_stoppage_counter += 1
+				self.storage_TS = 0
 
 			self.storage_level = max(0,self.storage_level)
 			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
+			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
 
-	def receive_biomass(self, received_amount):
+
+	def update_TS(self, amount, ts):
+		self.storage_TS = (self.storage_TS/100*self.storage_level + ts/100*amount)/(self.storage_level+amount)*100
+
+	def receive_biomass(self, received_amount, received_TS):
 		
 		if self.is_yearly_demand_satisfied:
 			self.unnecessary_imports_counter += 1
 			self.warn(f"Unnecessary import. Yearly demand already satisfied.")
 			return
 
+		self.update_TS(received_amount, received_TS)
+
 		self.storage_level += received_amount
 		self.cumulative_biomass_received += received_amount
-		self.log(f"Biomass received. Current storage level: {self.storage_level} tons.")
 
 		if self.storage_level > self.capacity:
 			self.warn(f"Overfilling at biogas facility!")
@@ -401,9 +407,15 @@ class Depot(IndexedLocation):
 
 		if self.cumulative_biomass_received >= self.capacity:
 			self.is_yearly_demand_satisfied = True
-			self.log(f"Yearly demand for biomass satisfied!")
-
-
+			self.warn(f"Yearly demand for biomass satisfied!")
+	
+	def storage_drying_daily_forever(self):
+		while True:
+			yield self.sim.env.timeout(24*60)
+			if(self.storage_level > 0):
+				self.storage_level -= self.storage_level*pow(0.01,1/7)
+				self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
+				
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
 
@@ -550,7 +562,8 @@ class WastePickupSimulation():
 						'capacity' : depot.capacity,
 						'production_stoppage_counter' : depot.production_stoppage_counter,
 						'overfilling_counter' : depot.overfilling_counter,
-						'unnecessary_imports_counter' : depot.unnecessary_imports_counter
+						'unnecessary_imports_counter' : depot.unnecessary_imports_counter,
+						'stroage_TS' : depot.storage_TS,
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
 						'location_index': terminal.location_index,
