@@ -2,6 +2,7 @@ import numpy as np
 import waste_pickup_sim
 import json
 import random
+# coding: utf-8
 
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
