@@ -623,7 +623,7 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
   + dilutionWater*1
-  + productionStoppages*500
+  + productionStoppages*1000000
   + overFillings*1000
   + unnecessaryImports*100;
 }
