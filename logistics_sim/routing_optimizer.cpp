@@ -708,13 +708,13 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
     dilutionWater += depots[depotIndex].dilution_water;
   }
-  if (debug >= 1) printf("Total overtime: %g h\n", totalOvertime/60);
-  if (debug >= 1) printf("Total odometer: %g km\n", totalOdometer/1000);
-  if (debug >= 1) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
-  if (debug >= 1) printf("Total production stoppages: %g h\n", float(productionStoppages));
-  if (debug >= 1) printf("Total unnecessary imports to the biogas plant: %g h\n", float(unnecessaryImports));
-  if (debug >= 1) printf("Total overfillings within the biogas plant: %g h\n", float(overFillings));
-  if (debug >= 1) printf("Total consumption of dilution water: %g h\n", dilutionWater);
+  if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
+  if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
+  if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
+  if (debug >= 2) printf("Total production stoppages: %g h\n", float(productionStoppages));
+  if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %g h\n", float(unnecessaryImports));
+  if (debug >= 2) printf("Total overfillings within the biogas plant: %g h\n", float(overFillings));
+  if (debug >= 2) printf("Total consumption of dilution water: %g h\n", dilutionWater);
   return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports);
 }
 
