@@ -580,7 +580,7 @@ class WastePickupSimulation():
 						'production_stoppage_counter' : depot.production_stoppage_counter,
 						'overfilling_counter' : depot.overfilling_counter,
 						'unnecessary_imports_counter' : depot.unnecessary_imports_counter,
-						'stroage_TS' : depot.storage_TS,
+						'storage_TS' : depot.storage_TS,
 						'dilution_water' : depot.dilution_water
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
