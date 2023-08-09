@@ -129,16 +129,18 @@ class PickupSite(IndexedLocation):
 		self.daily_growth_rate = sim.config['pickup_sites'][index]['daily_growth_rate']
 		self.levelListeners = []
 
-		if self.sim.config['sim_type'] == 1:
-			self.total_mass = sim.config['pickup_sites'][index]['total_mass']
-			self.times_collected = sim.config['pickup_sites'][index]['times_collected']
+		# Relevant only with grass and straw
+		self.total_mass = sim.config['pickup_sites'][index]['total_mass']
+		self.times_collected = sim.config['pickup_sites'][index]['times_collected']
+
+		# Relevant only if timecriticality is considered.
+		self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
+		self.moisture_loss = sim.config['pickup_sites'][index]['moisture_loss_coefficient']
 
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
 		if sim.config['isTimeCriticalityConsidered'] == 'True':
-			self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
-			self.moisture_loss = sim.config['pickup_sites'][index]['moisture_loss_coefficient']
 			self.drying_process = sim.env.process(self.dry_daily_forever())		
 
 	# Put some amount into the containers at the site
