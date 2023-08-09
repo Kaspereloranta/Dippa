@@ -616,8 +616,8 @@ class WastePickupSimulation():
 
 				filename = 'log/routing_optimizer_log.txt'
 				os.makedirs(os.path.dirname(filename), exist_ok=True)
-				#os.system(f"routing_optimizer > {filename}") # *** # Windows
-				os.system(f"bash -c 'routing_optimizer > {filename}'") # *** # Linux
+				# os.system(f"routing_optimizer > {filename}") # *** # Windows
+				os.system(f"./routing_optimizer > {filename}") # *** # Linux
 				with open('temp/routing_output.json') as infile:
 					self.routing_output = json.load(infile)
 
