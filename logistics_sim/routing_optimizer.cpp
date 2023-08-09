@@ -38,9 +38,9 @@ struct RoutingInputPickupSite: public IndexedLocation
   float capacity;
   float level;
   float growth_rate;
+  int max_num_visits;
   float total_mass;
   int times_collected;
-  int max_num_visits;
   float TS_initial;
   float TS_current;
   float volume_loss_coefficient;
@@ -52,27 +52,27 @@ void from_json(const json &j, RoutingInputPickupSite &x)
   j.at("capacity").get_to(x.capacity);
   j.at("level").get_to(x.level);
   j.at("growth_rate").get_to(x.growth_rate);
-  j.at("TS_initial").get_to(x.TS_initial);
-  j.at("total_mass").get_to(x.total_mass);
+  j.at("location_index").get_to(x.location_index);
+   j.at("total_mass").get_to(x.total_mass);
   j.at("times_collected").get_to(x.times_collected);
+  j.at("TS_initial").get_to(x.TS_initial);
   j.at("TS_current").get_to(x.TS_current);
   j.at("volume_loss_coefficient").get_to(x.volume_loss_coefficient);
   j.at("moisture_loss_coefficient").get_to(x.moisture_loss_coefficient);
-  j.at("location_index").get_to(x.location_index);
 }
 
 struct RoutingInputDepot: public IndexedLocation
 {
   static const LocationType locationType = LOCATION_TYPE_DEPOT;
 	double storage_level ;
-  double storage_TS;
-	double cumulative_biomass_received;
-	bool is_yearly_demand_satisfied;
-	double consumption_rate;
+  double cumulative_biomass_received;
+  bool is_yearly_demand_satisfied;
+  double consumption_rate;
 	double capacity;
 	int production_stoppage_counter;
 	int overfilling_counter;
 	int unnecessary_imports_counter;
+  double storage_TS;
   float dilution_water;
 };
 
@@ -80,7 +80,6 @@ void from_json(const json &j, RoutingInputDepot &x)
 {
   j.at("location_index").get_to(x.location_index);
   j.at("storage_level").get_to(x.storage_level);
-  j.at("storage_TS").get_to(x.storage_TS);
   j.at("cumulative_biomass_received").get_to(x.cumulative_biomass_received);
   j.at("is_yearly_demand_satisfied").get_to(x.is_yearly_demand_satisfied);
   j.at("consumption_rate").get_to(x.consumption_rate);
@@ -88,7 +87,8 @@ void from_json(const json &j, RoutingInputDepot &x)
   j.at("production_stoppage_counter").get_to(x.production_stoppage_counter);
   j.at("overfilling_counter").get_to(x.overfilling_counter);
   j.at("unnecessary_imports_counter").get_to(x.unnecessary_imports_counter);
-   j.at("dilution_water").get_to(x.dilution_water);
+  j.at("storage_TS").get_to(x.storage_TS);
+  j.at("dilution_water").get_to(x.dilution_water);
 }
 
 struct RoutingInputTerminal: public IndexedLocation
@@ -277,11 +277,15 @@ private:
 
 // Pickup site state class definition
 struct PickupSiteState {
+  float capacity;
   float level; // Material level
+  float growth_rate;
+  int locationIndex;
+  float total_mass;
   int times_collected = 0;
-  float TS_initial;
+  float TS_initial;  
   float TS_current;
-  float volume_loss_coefficient;
+  float  volume_loss_coefficient;
   float moisture_loss_coefficient;
 };
 
@@ -305,15 +309,15 @@ struct VehicleState {
 // Depot state class definition
 struct DepotState {
 	double storage_level;
-  double storage_TS = 15;
-	double cumulative_biomass_received = 0;
-  bool is_yearly_demand_satisfied = false;
-	double consumption_rate;
-	double capacity;
-	int production_stoppage_counter = 0;
-	int overfilling_counter = 0;
-	int unnecessary_imports_counter = 0;
-  double dilution_water = 0;
+  double storage_TS;
+	double cumulative_biomass_received;
+  bool is_yearly_demand_satisfied;
+  double consumption_rate;
+  double capacity;
+	int production_stoppage_counter;
+	int overfilling_counter;
+	int unnecessary_imports_counter;
+  double dilution_water;
 };
 
 std::string LogisticsSimulation::locationString(int locationIndex) {
@@ -373,6 +377,8 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
           vehicle.odometer += routingInput.distance_matrix[vehicle.locationIndex][vehicle.destinationLocationIndex];
           // Arrive at destination
           vehicle.moving = false;
+          if (debug >= 1) printf("Vehicle load : %f\n", vehicles[vehicleIndex].loadLevel);
+          if (debug >= 1) printf("Vehicle load's TS: %f\n", vehicles[vehicleIndex].load_TS_rate);
           vehicle.locationIndex = vehicle.destinationLocationIndex;
           if (debug >= 2) printf("%gh Vehicle #%d: arrive at %s\n", sim.now()/60, vehicleIndex, locationString(vehicle.locationIndex).c_str());
           // Do work depending on the arrived at location type          
@@ -421,6 +427,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
 simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &sim) {
 
   for (int day = 0; day < routingInput.sim_duration_days; day++) {
+
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
@@ -438,6 +445,12 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
+     if (debug >= 1) printf("Storage Level: %f\n", depots[depotIndex].storage_level);
+     if (debug >= 1) printf("Storage TS: %f\n", depots[depotIndex].storage_TS);
+     if (debug >= 1) printf("Dilution water consumed: %f\n", depots[depotIndex].dilution_water);
+     if (debug >= 1) printf("Production stoppages: %d\n", depots[depotIndex].production_stoppage_counter);
+     if (debug >= 1) printf("Overfillings: %d\n", depots[depotIndex].overfilling_counter);
+     if (debug >= 1) printf("Unnecessary imports counter: %d\n", depots[depotIndex].unnecessary_imports_counter);
       /*
       // Drying process within the biogas plant
       if (depots[depotIndex].storage_level > 0){
@@ -596,6 +609,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
                               vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
                               /(depots[depotIndex].storage_level+vehicles[vehicleIndex].loadLevel)*100;
 
+
   depots[depotIndex].storage_level += vehicles[vehicleIndex].loadLevel;
   depots[depotIndex].cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
 
@@ -666,20 +680,33 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   }
   // Initialize pickup sites
   for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
-    pickupSites[pickupSiteIndex].level = routingInput.pickup_sites[pickupSiteIndex].level;
+    PickupSiteState &pickupSiteState = pickupSites[pickupSiteIndex];
+    pickupSiteState.capacity = routingInput.pickup_sites[pickupSiteIndex].capacity;
+    pickupSiteState.level = routingInput.pickup_sites[pickupSiteIndex].level;
+    pickupSiteState.growth_rate = routingInput.pickup_sites[pickupSiteIndex].growth_rate;
+    pickupSiteState.locationIndex = routingInput.pickup_sites[pickupSiteIndex].location_index;
+    pickupSiteState.total_mass = routingInput.pickup_sites[pickupSiteIndex].total_mass;
+    pickupSiteState.times_collected = routingInput.pickup_sites[pickupSiteIndex].times_collected; // = 0
+    pickupSiteState.TS_initial = routingInput.pickup_sites[pickupSiteIndex].TS_initial;
+    pickupSiteState.TS_current = routingInput.pickup_sites[pickupSiteIndex].TS_current;
+    pickupSiteState.volume_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].volume_loss_coefficient; // = 0.01
+    pickupSiteState.moisture_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].moisture_loss_coefficient; // = 0.05
+
   }
 
   // Initialize depots
   for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
-    depots[depotIndex].storage_level = routingInput.depots[depotIndex].storage_level;
-    depots[depotIndex].storage_TS = routingInput.depots[depotIndex].storage_TS;
-    depots[depotIndex].cumulative_biomass_received = 0;
-    depots[depotIndex].is_yearly_demand_satisfied = false;
-    depots[depotIndex].consumption_rate = routingInput.depots[depotIndex].consumption_rate;
-    depots[depotIndex].capacity = routingInput.depots[depotIndex].capacity;
-    depots[depotIndex].production_stoppage_counter = 0;
-    depots[depotIndex].overfilling_counter = 0;
-    depots[depotIndex].unnecessary_imports_counter = 0;
+    DepotState &depotState = depots[depotIndex];
+    depotState.storage_level = routingInput.depots[depotIndex].storage_level;
+    depotState.cumulative_biomass_received = 0;
+    depotState.is_yearly_demand_satisfied = false;
+    depotState.consumption_rate = routingInput.depots[depotIndex].consumption_rate;
+    depotState.capacity = routingInput.depots[depotIndex].capacity;
+    depotState.production_stoppage_counter = 0;
+    depotState.overfilling_counter = 0;
+    depotState.unnecessary_imports_counter = 0;
+    depotState.storage_TS = routingInput.depots[depotIndex].storage_TS; // = 15
+    depotState.dilution_water = routingInput.depots[depotIndex].dilution_water; // = 0
   }  
   
   // Initialize cost components
@@ -787,7 +814,7 @@ int main() {
   LogisticsSimulation logisticsSim(routingInput);
   logisticsSim.costFunction(genome); // Get routeStartLoci
   json j = logisticsSim.routingOutput;
-  std::ofstream o("./temp/routing_output.json");
+  std::ofstream o("temp/routing_output.json");
   o << std::setw(4) << j << std::endl;
 
   return 0;
