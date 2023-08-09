@@ -707,14 +707,12 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		# However, overfilling is not fined in the cost function and mass is cumulated only 3 times a year, not daily basis
 		# Capacity and daily_growth attributes must have a reasonable values to allow c++ optimizer to run, in which max_num_visits
 		# is calculated for pickup sites, if capacity is very great and daily_growth_rate = 0 -> max_num_visits = 0 and nothing happens.
-		if sim_config['sim_type'] == 1:
-			pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
-			pickup_site_config['times_collected'] = 0
+		pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
+		pickup_site_config['times_collected'] = 0
 
 		# If biomasses is assumed to dry out over time
-		if sim_config['isTimeCriticalityConsidered'] == 'True':
-			pickup_site_config['volume_loss_coefficient'] = 0.01 # Weekly-basis
-			pickup_site_config['moisture_loss_coefficient'] = 0.05 # Weekly-basis
+		pickup_site_config['volume_loss_coefficient'] = 0.01 # Weekly-basis
+		pickup_site_config['moisture_loss_coefficient'] = 0.05 # Weekly-basis
 
 		sim_config['pickup_sites'].append(pickup_site_config)
 
