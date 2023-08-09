@@ -772,8 +772,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 2000000; // 40000
-  int numFinetuneGenerations = 1000000; // 20000
+  int numGenerations = 40000; // 40000
+  int numFinetuneGenerations = 20000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
