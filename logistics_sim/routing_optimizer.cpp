@@ -251,6 +251,12 @@ public:
   std::vector<PickupSiteState> pickupSites;
   std::vector<DepotState> depots;
   int totalNumPickupSiteOverloadDays;
+  double totalOdometer;
+  double totalOvertime;
+  double dilutionWater;
+  int productionStoppages;
+  int overFillings;
+  int unnecessaryImports;
 
   // Member functions
   double costFunction(const std::vector<int16_t> &genome, double earlyOutThreshold = std::numeric_limits<double>::max());
@@ -299,7 +305,7 @@ struct VehicleState {
 // Depot state class definition
 struct DepotState {
 	double storage_level;
-  double storage_TS;
+  double storage_TS = 15;
 	double cumulative_biomass_received = 0;
   bool is_yearly_demand_satisfied = false;
 	double consumption_rate;
@@ -393,6 +399,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 int depot_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
                 receive(vehicleIndex,depot_index);
                 vehicle.loadLevel = 0;
+                vehicle.load_TS_rate = 0;
               }
               break;
           }
@@ -419,8 +426,14 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       runVehicleRouteProcess(sim, vehicleIndex, day);
       /*
       // Drying process within the vehicles
-        vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
-        vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
+        if(vehicles[vehicleIndex].loadLevel > 0){
+          vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
+          vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
+        }
+				else {
+          vehicles[vehicleIndex].loadLevel = 0
+          vehicles[vehicleIndex].load_TS_rate = 0
+        }
       */
       }
 
@@ -429,7 +442,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       // Drying process within the biogas plant
       if (depots[depotIndex].storage_level > 0){
 				depots[depotIndex].storage_level -= depots[depotIndex].storage_level*pow(0.01,1/7)
-				depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS.storage_TS/100)))*100
+				depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS/100)))*100
+      }
+      else {
+        depots[depotIndex].storage_level = 0
+        depots[depotIndex].storage_TS = 0
       }
       */
       // Biogas production process (resource consumption):     
@@ -444,20 +461,19 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
       if (depots[depotIndex].storage_level <= 0){
         depots[depotIndex].production_stoppage_counter += 1;
+        depots[depotIndex].storage_TS = 0;
       }
       depots[depotIndex].storage_level = std::max(0.0,depots[depotIndex].storage_level);
-
     }
 
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
       
-      float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate*24*60;
-      pickupSites[pickupSiteIndex].level += put_amount;
-
+      float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate;
       // To update TS-rate of site
 			pickupSites[pickupSiteIndex].TS_current = (pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level 
                                                 + pickupSites[pickupSiteIndex].TS_initial/100*put_amount)/(pickupSites[pickupSiteIndex].level+put_amount)*100;
+      pickupSites[pickupSiteIndex].level += put_amount;
 
       // TODO: 
       // Calculation of accumulation with noises to variable put_amount (above) to enable calculating the new TS-rate.
@@ -502,8 +518,14 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       /*
       // Drying process within the pickup sites
       for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
-        pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
-        pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
+        if (pickupSites[pickupSiteIndex].level > 0){
+          pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
+          pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
+        }
+        else {
+          pickupSites[pickupSiteIndex].level = 0
+          pickupSites[pickupSiteIndex].TS_current = 0
+        }
       }
       */
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
@@ -545,11 +567,10 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   {
     // The vehicle cannot take everything
     collectedAmount = (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
-    pickupSites[pickupSiteIndex].level -= (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
-    if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
+    pickupSites[pickupSiteIndex].level -= collectedAmount;
+    if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, collectedAmount, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
     vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
-
   }
   else 
   {
@@ -559,6 +580,7 @@ double LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     vehicles[vehicleIndex].loadLevel += pickupSites[pickupSiteIndex].level;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
     pickupSites[pickupSiteIndex].level = 0;
+    pickupSites[pickupSiteIndex].TS_current = 0;
   }
   return collectedAmount;
 }
@@ -576,6 +598,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
   depots[depotIndex].storage_level += vehicles[vehicleIndex].loadLevel;
   depots[depotIndex].cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
+
   if (depots[depotIndex].storage_level > depots[depotIndex].capacity ) {
     depots[depotIndex].overfilling_counter++;
   }
@@ -589,14 +612,13 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex){
 
 // Calculate cost function from components
 double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime, double dilutionWater, int productionStoppages, int overFillings, int unnecessaryImports) {
-
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
   + dilutionWater*10
   + productionStoppages*500
-  + overFillings*50
-  + unnecessaryImports*50;
+  + overFillings*1000
+  + unnecessaryImports*100;
 }
 
 // Logistics simulation class member function: cost function

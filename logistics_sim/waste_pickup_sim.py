@@ -123,7 +123,9 @@ class PickupSite(IndexedLocation):
 
 		self.capacity = sim.config['pickup_sites'][index]['capacity']
 		self.level = sim.config['pickup_sites'][index]['level']
+		# If isTimeCriticalyConsidered = False, TS_initial = TS_current always.
 		self.TS_initial = sim.config['pickup_sites'][index]['TS-rate']
+		self.TS_current = sim.config['pickup_sites'][index]['TS-rate']
 		self.daily_growth_rate = sim.config['pickup_sites'][index]['daily_growth_rate']
 		self.levelListeners = []
 
@@ -131,24 +133,20 @@ class PickupSite(IndexedLocation):
 			self.total_mass = sim.config['pickup_sites'][index]['total_mass']
 			self.times_collected = sim.config['pickup_sites'][index]['times_collected']
 
-		if sim.config['isTimeCriticalityConsidered'] == 'True':
-					self.TS_current = sim.config['pickup_sites'][index]['TS-rate']
-					self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
-					self.moisture_loss = sim.config['pickup_sites'][index]['moisture_loss_coefficient']
-
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
-		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			self.drying_process = sim.env.process(self.dry_daily_forever())
+		if sim.config['isTimeCriticalityConsidered'] == 'True':
+			self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
+			self.moisture_loss = sim.config['pickup_sites'][index]['moisture_loss_coefficient']
+			self.drying_process = sim.env.process(self.dry_daily_forever())		
 
 	# Put some amount into the containers at the site
 	def put(self, amount):
 		listeners_to_message_maybe = list(filter(lambda x: self.level < x[1], self.levelListeners))
 
 		# To update TS-rate of site
-		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
+		self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
 
 		self.level += amount
 		listeners_to_message = list(filter(lambda x: self.level >= x[1], listeners_to_message_maybe))
@@ -161,7 +159,7 @@ class PickupSite(IndexedLocation):
 	def get(self, amount):
 		self.level -= amount
 
-	def estimate_when_full():
+	def estimate_when_full(self):
 		# Solve:
 		# { level_at_time_x = level_now + (time_x - time_now)*growth_rate
 		# { capacity = level_at_time_x
@@ -183,7 +181,8 @@ class PickupSite(IndexedLocation):
 	def grow_daily_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
-			#self.put(self.daily_growth_rate)
+			self.put(self.daily_growth_rate)			
+			''' 
 			# FOR GRASS AND STRAWS
 			if self.sim.config['sim_type'] == 1:
 				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
@@ -204,6 +203,7 @@ class PickupSite(IndexedLocation):
 			else: # MANURES
 				# TO ADD NOISE TO THE CUMULATION:
 				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
+			 '''
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -338,6 +338,9 @@ class Vehicle(IndexedSimEntity):
 				if(self.load_level > 0):
 					self.load_level -= self.load_level*pow(0.01,1/7)
 					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
+				else:
+					self.load_level = 0
+					self.load_TS_rate = 0
 
 	def record_distance_travelled(self, distance_driven):
 		"""
@@ -352,8 +355,10 @@ class Depot(IndexedLocation):
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['depots'][index]['location_index'])
 
-		# Biomass storage level, total biomass received, consumption rate (tons/day), production_stoppage_days 
-		# (storage_level < 0) and days of overfilling, and boolean for if the yearly demand is satisfied.
+		# Biomass storage level and TS-rate of storage, total biomass received, consumption rate (tons/day), production_stoppage_days 
+		# (storage_level < 0) and days of overfilling,  boolean for if the yearly demand is satisfied, counter for unnecessary imports 
+		# (imports that occured after satisfying yearly demand) amount of dilution water consumed druing the biogas production. 
+		# (Dilution water is required if TS > 15 %)
 
 		self.storage_level = sim.config['depots'][index]['storage_level']
 		self.cumulative_biomass_received = 0
@@ -364,7 +369,7 @@ class Depot(IndexedLocation):
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
 		self.dilution_water = 0
-		self.storage_TS = 0
+		self.storage_TS = 15 # Assuming that the storage's TS is within the acceptable range at the beginning of simulation.
 
 		self.production_process = sim.env.process(self.produce_biogas_forever())
 
@@ -374,12 +379,11 @@ class Depot(IndexedLocation):
 	def produce_biogas_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
-			if self.storage_TS > 15:
-				# Amount of water to dilute the storage's content to TS=15% (analytical solution)
-				self.dilution_water += 14/3*self.storage_TS*self.storage_level/100 + pow(self.storage_TS,2)*self.storage_level
-				self.storage_TS = 15
-
 			if self.storage_level > 0:
+				if self.storage_TS > 15:
+					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
+					self.dilution_water += 14/3*self.storage_TS*self.storage_level/100 + pow(self.storage_TS,2)*self.storage_level
+					self.storage_TS = 15
 				self.storage_level -= self.consumption_rate
 
 			if self.storage_level <= 0:
@@ -390,7 +394,6 @@ class Depot(IndexedLocation):
 			self.storage_level = max(0,self.storage_level)
 			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
 			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
-
 
 	def update_TS(self, amount, ts):
 		self.storage_TS = (self.storage_TS/100*self.storage_level + ts/100*amount)/(self.storage_level+amount)*100
@@ -416,12 +419,17 @@ class Depot(IndexedLocation):
 			self.warn(f"Yearly demand for biomass satisfied!")
 	
 	def storage_drying_daily_forever(self):
-		while True:
-			yield self.sim.env.timeout(24*60)
-			if(self.storage_level > 0):
-				self.storage_level -= self.storage_level*pow(0.01,1/7)
-				self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
-				
+		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			while True:
+				yield self.sim.env.timeout(24*60)
+				if(self.storage_level > 0):
+					self.storage_level -= self.storage_level*pow(0.01,1/7)
+					self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
+				else:
+					self.storage_level = 0
+					self.storage_TS = 0
+
+
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
 
@@ -717,9 +725,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		terminal_config = {
 			**terminal['properties'],
 			'lonlats': tuple(terminal['geometry']['coordinates']),
-			 'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
-			 'capacity' : sim_config['depot_capacity'],
-			 'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
+			'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
+			'capacity' : sim_config['depot_capacity'],
+			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['terminals'].append(terminal_config)
 		
