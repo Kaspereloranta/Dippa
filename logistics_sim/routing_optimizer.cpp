@@ -787,7 +787,7 @@ int main() {
   LogisticsSimulation logisticsSim(routingInput);
   logisticsSim.costFunction(genome); // Get routeStartLoci
   json j = logisticsSim.routingOutput;
-  std::ofstream o("temp/routing_output.json");
+  std::ofstream o("./temp/routing_output.json");
   o << std::setw(4) << j << std::endl;
 
   return 0;
