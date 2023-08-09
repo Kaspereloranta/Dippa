@@ -561,11 +561,12 @@ class WastePickupSimulation():
 						'level': pickup_site.level,
 						'growth_rate': pickup_site.daily_growth_rate/(24*60),
 						'location_index': pickup_site.location_index,
-                		**({'total_mass': pickup_site.total_mass, 'times_collected': pickup_site.times_collected}
-                   		if self.config['sim_type'] == 1 else {}),
-						**({'TS_initial': pickup_site.TS_initial, 'TS_current': pickup_site.TS_current, 
-	  						'volume_loss_coefficient': pickup_site.volume_loss, 'moisture_loss_coefficient' : pickup_site.moisture_loss}
-                   		if self.config['isTimeCriticalityConsidered'] == 'True' else {})
+						'total_mass': pickup_site.total_mass, 
+						'times_collected': pickup_site.times_collected,
+						'TS_initial': pickup_site.TS_initial, 
+						'TS_current': pickup_site.TS_current, 
+	  					'volume_loss_coefficient': pickup_site.volume_loss, 
+						'moisture_loss_coefficient' : pickup_site.moisture_loss
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index,
