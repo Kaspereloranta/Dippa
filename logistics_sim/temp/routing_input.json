@@ -3,7 +3,7 @@
         {
             "capacity": 117.54531293229732,
             "level": 35.22034838049044,
-            "growth_rate": 0.0003580205681417438,
+            "growth_rate": 0.005830620681165541,
             "location_index": 0,
             "total_mass": 39.18177097743244,
             "times_collected": 0,
@@ -15,7 +15,7 @@
         {
             "capacity": 106.00208771847836,
             "level": 80.622161042621,
-            "growth_rate": 0.0003228621092789911,
+            "growth_rate": 0.005258040065400712,
             "location_index": 1,
             "total_mass": 35.334029239492786,
             "times_collected": 0,
@@ -27,7 +27,7 @@
         {
             "capacity": 129.5087651789072,
             "level": 75.83970521794873,
-            "growth_rate": 0.0003944589582690887,
+            "growth_rate": 0.006424045891810872,
             "location_index": 2,
             "total_mass": 43.16958839296907,
             "times_collected": 0,
@@ -39,7 +39,7 @@
         {
             "capacity": 117.79746474980237,
             "level": 56.416361351496434,
-            "growth_rate": 0.0003587885744085111,
+            "growth_rate": 0.005843128211795752,
             "location_index": 3,
             "total_mass": 39.26582158326746,
             "times_collected": 0,
@@ -51,7 +51,7 @@
         {
             "capacity": 733.4806628072575,
             "level": 91.54932464160443,
-            "growth_rate": 0.0022340419797979333,
+            "growth_rate": 0.036382969385280635,
             "location_index": 4,
             "total_mass": 244.49355426908585,
             "times_collected": 0,
@@ -63,7 +63,7 @@
         {
             "capacity": 111.46147879608321,
             "level": 13.90990393660706,
-            "growth_rate": 0.00033949037157676417,
+            "growth_rate": 0.005528843194250159,
             "location_index": 5,
             "total_mass": 37.15382626536107,
             "times_collected": 0,
@@ -75,7 +75,7 @@
         {
             "capacity": 93.22559301527029,
             "level": 4.331903351079491,
-            "growth_rate": 0.00028394734714690025,
+            "growth_rate": 0.004624285367820947,
             "location_index": 6,
             "total_mass": 31.075197671756765,
             "times_collected": 0,
@@ -87,7 +87,7 @@
         {
             "capacity": 98.7753057175214,
             "level": 68.44545088331489,
-            "growth_rate": 0.0003008507118589224,
+            "growth_rate": 0.0048995687359881645,
             "location_index": 7,
             "total_mass": 32.92510190584047,
             "times_collected": 0,
@@ -99,7 +99,7 @@
         {
             "capacity": 169.64881628347823,
             "level": 81.58276015397159,
-            "growth_rate": 0.0005167178858536739,
+            "growth_rate": 0.008415119855331261,
             "location_index": 8,
             "total_mass": 56.54960542782607,
             "times_collected": 0,
@@ -111,7 +111,7 @@
         {
             "capacity": 208.48180506596,
             "level": 118.09619930930155,
-            "growth_rate": 0.0006349957512973929,
+            "growth_rate": 0.010341359378271825,
             "location_index": 9,
             "total_mass": 69.49393502198667,
             "times_collected": 0,
@@ -123,7 +123,7 @@
         {
             "capacity": 200.37523176028432,
             "level": 3.2996982521517326,
-            "growth_rate": 0.0006103046776324449,
+            "growth_rate": 0.00993924760715696,
             "location_index": 10,
             "total_mass": 66.79174392009477,
             "times_collected": 0,
@@ -135,7 +135,7 @@
         {
             "capacity": 187.54830818275613,
             "level": 145.52396149021533,
-            "growth_rate": 0.0005712363187827611,
+            "growth_rate": 0.009302991477319252,
             "location_index": 11,
             "total_mass": 62.51610272758538,
             "times_collected": 0,
@@ -147,7 +147,7 @@
         {
             "capacity": 5679.985083214585,
             "level": 3782.609425902522,
-            "growth_rate": 0.017300149498095104,
+            "growth_rate": 0.2817452918261203,
             "location_index": 12,
             "total_mass": 1893.3283610715282,
             "times_collected": 0,
@@ -159,7 +159,7 @@
         {
             "capacity": 170.360583049048,
             "level": 28.939371759413966,
-            "growth_rate": 0.0005188857914505603,
+            "growth_rate": 0.008450425746480555,
             "location_index": 13,
             "total_mass": 56.78686101634933,
             "times_collected": 0,
@@ -171,7 +171,7 @@
         {
             "capacity": 112.98840808060952,
             "level": 16.435290875231463,
-            "growth_rate": 0.00034414110648333795,
+            "growth_rate": 0.0056045837341572174,
             "location_index": 14,
             "total_mass": 37.662802693536506,
             "times_collected": 0,
@@ -183,7 +183,7 @@
         {
             "capacity": 272.7032232550452,
             "level": 40.01200079723448,
-            "growth_rate": 0.000830601922682277,
+            "growth_rate": 0.013526945597968514,
             "location_index": 15,
             "total_mass": 90.9010744183484,
             "times_collected": 0,
@@ -195,7 +195,7 @@
         {
             "capacity": 412.320149362136,
             "level": 100.3561656474783,
-            "growth_rate": 0.0012558484081449076,
+            "growth_rate": 0.020452388361217065,
             "location_index": 16,
             "total_mass": 137.44004978737868,
             "times_collected": 0,
@@ -207,7 +207,7 @@
         {
             "capacity": 133.066808048008,
             "level": 55.8621306879717,
-            "growth_rate": 0.0004052960771442739,
+            "growth_rate": 0.00660053611349246,
             "location_index": 17,
             "total_mass": 44.355602682669335,
             "times_collected": 0,
@@ -219,7 +219,7 @@
         {
             "capacity": 316.67779039582615,
             "level": 109.42991526085534,
-            "growth_rate": 0.0009645400535935252,
+            "growth_rate": 0.015708223729951693,
             "location_index": 18,
             "total_mass": 105.55926346527538,
             "times_collected": 0,
@@ -231,7 +231,7 @@
         {
             "capacity": 116.00440069595682,
             "level": 27.027089499098114,
-            "growth_rate": 0.0003533272438351511,
+            "growth_rate": 0.005754186542458175,
             "location_index": 19,
             "total_mass": 38.66813356531894,
             "times_collected": 0,
@@ -243,7 +243,7 @@
         {
             "capacity": 631.4019474077927,
             "level": 309.0600874038445,
-            "growth_rate": 0.0019231297131085305,
+            "growth_rate": 0.031319541042053214,
             "location_index": 20,
             "total_mass": 210.46731580259757,
             "times_collected": 0,
@@ -255,7 +255,7 @@
         {
             "capacity": 428.08230963084804,
             "level": 47.77188323779979,
-            "growth_rate": 0.0013038569372284601,
+            "growth_rate": 0.02123424154914921,
             "location_index": 21,
             "total_mass": 142.6941032102827,
             "times_collected": 0,
@@ -267,7 +267,7 @@
         {
             "capacity": 725.9612585863041,
             "level": 169.66855739190436,
-            "growth_rate": 0.0022111393109962964,
+            "growth_rate": 0.03600998306479683,
             "location_index": 22,
             "total_mass": 241.9870861954347,
             "times_collected": 0,
@@ -279,7 +279,7 @@
         {
             "capacity": 380.2606223142289,
             "level": 111.45038601843778,
-            "growth_rate": 0.00115820121318905,
+            "growth_rate": 0.018862134043364526,
             "location_index": 23,
             "total_mass": 126.75354077140963,
             "times_collected": 0,
@@ -291,7 +291,7 @@
         {
             "capacity": 614.6319844412801,
             "level": 224.2521595547361,
-            "growth_rate": 0.0018720516095311892,
+            "growth_rate": 0.03048769764093651,
             "location_index": 24,
             "total_mass": 204.87732814709338,
             "times_collected": 0,
@@ -303,7 +303,7 @@
         {
             "capacity": 137.359285726976,
             "level": 86.28096738154883,
-            "growth_rate": 0.0004183701441489278,
+            "growth_rate": 0.006813456633282539,
             "location_index": 25,
             "total_mass": 45.78642857565867,
             "times_collected": 0,
@@ -315,7 +315,7 @@
         {
             "capacity": 186.79685590129628,
             "level": 29.83874777048156,
-            "growth_rate": 0.0005689475386857221,
+            "growth_rate": 0.009265717058596046,
             "location_index": 26,
             "total_mass": 62.26561863376543,
             "times_collected": 0,
@@ -327,7 +327,7 @@
         {
             "capacity": 160.6999778083476,
             "level": 66.10997027308439,
-            "growth_rate": 0.000489461433383125,
+            "growth_rate": 0.00797122905795375,
             "location_index": 27,
             "total_mass": 53.5666592694492,
             "times_collected": 0,
@@ -339,7 +339,7 @@
         {
             "capacity": 347.7564239225294,
             "level": 164.81277755765674,
-            "growth_rate": 0.0010591996342669634,
+            "growth_rate": 0.017249822615204833,
             "location_index": 28,
             "total_mass": 115.91880797417646,
             "times_collected": 0,
@@ -351,7 +351,7 @@
         {
             "capacity": 305.3678693102609,
             "level": 11.347570848710356,
-            "growth_rate": 0.0009300921945366135,
+            "growth_rate": 0.015147215739596275,
             "location_index": 29,
             "total_mass": 101.78928977008697,
             "times_collected": 0,
@@ -363,7 +363,7 @@
         {
             "capacity": 251.6461322300908,
             "level": 122.30904970984025,
-            "growth_rate": 0.0007664660460224501,
+            "growth_rate": 0.012482447035222758,
             "location_index": 30,
             "total_mass": 83.88204407669694,
             "times_collected": 0,
@@ -375,7 +375,7 @@
         {
             "capacity": 493.0138865255651,
             "level": 67.25660877235022,
-            "growth_rate": 0.0015016261163668528,
+            "growth_rate": 0.024455053895117318,
             "location_index": 31,
             "total_mass": 164.33796217518838,
             "times_collected": 0,
@@ -387,7 +387,7 @@
         {
             "capacity": 753.8053223015204,
             "level": 39.22898961319677,
-            "growth_rate": 0.002295947009933968,
+            "growth_rate": 0.037391137018924624,
             "location_index": 32,
             "total_mass": 251.26844076717347,
             "times_collected": 0,
@@ -399,7 +399,7 @@
         {
             "capacity": 633.196470733277,
             "level": 480.6647786549281,
-            "growth_rate": 0.001928595488344533,
+            "growth_rate": 0.03140855509589668,
             "location_index": 33,
             "total_mass": 211.06549024442566,
             "times_collected": 0,
@@ -411,7 +411,7 @@
         {
             "capacity": 633.196470733277,
             "level": 489.147836295848,
-            "growth_rate": 0.001928595488344533,
+            "growth_rate": 0.03140855509589668,
             "location_index": 34,
             "total_mass": 211.06549024442566,
             "times_collected": 0,
@@ -423,7 +423,7 @@
         {
             "capacity": 722.3169685885787,
             "level": 467.1352975252226,
-            "growth_rate": 0.0022000394998433806,
+            "growth_rate": 0.03582921471173506,
             "location_index": 35,
             "total_mass": 240.77232286285957,
             "times_collected": 0,
@@ -435,7 +435,7 @@
         {
             "capacity": 583.0517153149099,
             "level": 142.08446450005903,
-            "growth_rate": 0.0017758641426501884,
+            "growth_rate": 0.028921216037445928,
             "location_index": 36,
             "total_mass": 194.35057177163662,
             "times_collected": 0,
@@ -447,7 +447,7 @@
         {
             "capacity": 649.3104099099606,
             "level": 50.73561630580602,
-            "growth_rate": 0.0019776754687803383,
+            "growth_rate": 0.03220785763442265,
             "location_index": 37,
             "total_mass": 216.4368033033202,
             "times_collected": 0,
@@ -459,7 +459,7 @@
         {
             "capacity": 5074.609456227574,
             "level": 2777.772309281443,
-            "growth_rate": 0.015456290985098604,
+            "growth_rate": 0.25171673890017726,
             "location_index": 38,
             "total_mass": 1691.5364854091913,
             "times_collected": 0,
@@ -471,7 +471,7 @@
         {
             "capacity": 564.8937747187056,
             "level": 198.91152291233186,
-            "growth_rate": 0.0017205585243625292,
+            "growth_rate": 0.02802052453961833,
             "location_index": 39,
             "total_mass": 188.29792490623518,
             "times_collected": 0,
@@ -483,7 +483,7 @@
         {
             "capacity": 512.5876191650339,
             "level": 50.04423059695077,
-            "growth_rate": 0.0015612439667550984,
+            "growth_rate": 0.02542597317286874,
             "location_index": 40,
             "total_mass": 170.86253972167796,
             "times_collected": 0,
@@ -495,7 +495,7 @@
         {
             "capacity": 637.1084715595609,
             "level": 252.38512348206194,
-            "growth_rate": 0.0019405106955395985,
+            "growth_rate": 0.0316026027559306,
             "location_index": 41,
             "total_mass": 212.36949051985366,
             "times_collected": 0,
@@ -507,7 +507,7 @@
         {
             "capacity": 534.0884671751168,
             "level": 14.693210024676905,
-            "growth_rate": 0.001626731442419337,
+            "growth_rate": 0.026492483490829204,
             "location_index": 42,
             "total_mass": 178.02948905837226,
             "times_collected": 0,
@@ -519,7 +519,7 @@
         {
             "capacity": 784.544185656411,
             "level": 570.7216274797266,
-            "growth_rate": 0.002389571715571427,
+            "growth_rate": 0.03891588222502038,
             "location_index": 43,
             "total_mass": 261.514728552137,
             "times_collected": 0,
@@ -531,7 +531,7 @@
         {
             "capacity": 1098.510200329741,
             "level": 227.41795954300903,
-            "growth_rate": 0.0033458522183532563,
+            "growth_rate": 0.05448959327032446,
             "location_index": 44,
             "total_mass": 366.17006677658037,
             "times_collected": 0,
@@ -543,7 +543,7 @@
         {
             "capacity": 802.2499166943423,
             "level": 425.20675794490194,
-            "growth_rate": 0.0024434999899315985,
+            "growth_rate": 0.03979414269317174,
             "location_index": 45,
             "total_mass": 267.4166388981141,
             "times_collected": 0,
@@ -555,7 +555,7 @@
         {
             "capacity": 5910.996125324647,
             "level": 1474.0183703882276,
-            "growth_rate": 0.018003765001597977,
+            "growth_rate": 0.293204172883167,
             "location_index": 46,
             "total_mass": 1970.3320417748826,
             "times_collected": 0,
@@ -567,7 +567,7 @@
         {
             "capacity": 178.35142188540544,
             "level": 74.20389684335336,
-            "growth_rate": 0.0005432243600310839,
+            "growth_rate": 0.008846796720506223,
             "location_index": 47,
             "total_mass": 59.45047396180181,
             "times_collected": 0,
@@ -579,7 +579,7 @@
         {
             "capacity": 154.0307734464865,
             "level": 67.36816574271205,
-            "growth_rate": 0.000469148310935936,
+            "growth_rate": 0.0076404153495281,
             "location_index": 48,
             "total_mass": 51.343591148828835,
             "times_collected": 0,
@@ -591,7 +591,7 @@
         {
             "capacity": 121.6032421945946,
             "level": 17.983120900816466,
-            "growth_rate": 0.0003703802454757389,
+            "growth_rate": 0.006031906854890605,
             "location_index": 49,
             "total_mass": 40.53441406486487,
             "times_collected": 0,
@@ -603,7 +603,7 @@
         {
             "capacity": 157.08169503460465,
             "level": 121.84319744700245,
-            "growth_rate": 0.0004784408352662179,
+            "growth_rate": 0.007791750745764119,
             "location_index": 50,
             "total_mass": 52.36056501153488,
             "times_collected": 0,
@@ -615,7 +615,7 @@
         {
             "capacity": 145.92389063351354,
             "level": 90.48831787407508,
-            "growth_rate": 0.00044445629457088675,
+            "growth_rate": 0.007238288225868727,
             "location_index": 51,
             "total_mass": 48.641296877837846,
             "times_collected": 0,
@@ -627,7 +627,7 @@
         {
             "capacity": 163.18353821084088,
             "level": 122.64860914382753,
-            "growth_rate": 0.0004970258839267814,
+            "growth_rate": 0.008094421538236155,
             "location_index": 52,
             "total_mass": 54.39451273694696,
             "times_collected": 0,
@@ -639,7 +639,7 @@
         {
             "capacity": 1288.994367262707,
             "level": 922.7419314990815,
-            "growth_rate": 0.003926030602042846,
+            "growth_rate": 0.06393821266184063,
             "location_index": 53,
             "total_mass": 429.66478908756903,
             "times_collected": 0,
@@ -651,7 +651,7 @@
         {
             "capacity": 145.92389063351354,
             "level": 69.79831289424708,
-            "growth_rate": 0.00044445629457088675,
+            "growth_rate": 0.007238288225868727,
             "location_index": 54,
             "total_mass": 48.641296877837846,
             "times_collected": 0,
@@ -663,7 +663,7 @@
         {
             "capacity": 205.28677520277776,
             "level": 151.39887108033864,
-            "growth_rate": 0.0006252643006907217,
+            "growth_rate": 0.010182875754106039,
             "location_index": 55,
             "total_mass": 68.42892506759259,
             "times_collected": 0,
@@ -675,7 +675,7 @@
         {
             "capacity": 235.18632584224224,
             "level": 16.649781137742423,
-            "growth_rate": 0.000716332620133535,
+            "growth_rate": 0.011665988385031857,
             "location_index": 56,
             "total_mass": 78.39544194741408,
             "times_collected": 0,
@@ -687,7 +687,7 @@
         {
             "capacity": 138.33994879623123,
             "level": 21.689807321602704,
-            "growth_rate": 0.0004213570565187354,
+            "growth_rate": 0.006862100634733692,
             "location_index": 57,
             "total_mass": 46.11331626541041,
             "times_collected": 0,
@@ -699,7 +699,7 @@
         {
             "capacity": 205.28677520277776,
             "level": 7.427651433286969,
-            "growth_rate": 0.0006252643006907217,
+            "growth_rate": 0.010182875754106039,
             "location_index": 58,
             "total_mass": 68.42892506759259,
             "times_collected": 0,
@@ -711,7 +711,7 @@
         {
             "capacity": 191.0780492135686,
             "level": 49.730787961799656,
-            "growth_rate": 0.000581987235665109,
+            "growth_rate": 0.009478077837974632,
             "location_index": 59,
             "total_mass": 63.69268307118953,
             "times_collected": 0,
@@ -723,7 +723,7 @@
         {
             "capacity": 246.34413024333332,
             "level": 76.59869509911324,
-            "growth_rate": 0.0007503171608288662,
+            "growth_rate": 0.012219450904927247,
             "location_index": 60,
             "total_mass": 82.11471008111111,
             "times_collected": 0,
@@ -735,7 +735,7 @@
         {
             "capacity": 191.60099018925925,
             "level": 41.59259453982018,
-            "growth_rate": 0.000583580013978007,
+            "growth_rate": 0.00950401737049897,
             "location_index": 61,
             "total_mass": 63.86699672975308,
             "times_collected": 0,
@@ -747,7 +747,7 @@
         {
             "capacity": 205.28677520277776,
             "level": 136.1030805947057,
-            "growth_rate": 0.0006252643006907217,
+            "growth_rate": 0.010182875754106039,
             "location_index": 62,
             "total_mass": 68.42892506759259,
             "times_collected": 0,
@@ -759,7 +759,7 @@
         {
             "capacity": 232.6583452298148,
             "level": 66.4013109150096,
-            "growth_rate": 0.0007086328741161513,
+            "growth_rate": 0.011540592521320179,
             "location_index": 63,
             "total_mass": 77.55278174327161,
             "times_collected": 0,
@@ -771,7 +771,7 @@
         {
             "capacity": 150.5436351487037,
             "level": 33.83432186164561,
-            "growth_rate": 0.00045852715383986264,
+            "growth_rate": 0.007467442219677762,
             "location_index": 64,
             "total_mass": 50.181211716234564,
             "times_collected": 0,
@@ -783,7 +783,7 @@
         {
             "capacity": 232.6583452298148,
             "level": 101.01021813624006,
-            "growth_rate": 0.0007086328741161513,
+            "growth_rate": 0.011540592521320179,
             "location_index": 65,
             "total_mass": 77.55278174327161,
             "times_collected": 0,
@@ -795,7 +795,7 @@
         {
             "capacity": 232.6583452298148,
             "level": 26.229757588337936,
-            "growth_rate": 0.0007086328741161513,
+            "growth_rate": 0.011540592521320179,
             "location_index": 66,
             "total_mass": 77.55278174327161,
             "times_collected": 0,
@@ -807,7 +807,7 @@
         {
             "capacity": 260.02991525685184,
             "level": 166.87617033982028,
-            "growth_rate": 0.0007920014475415808,
+            "growth_rate": 0.012898309288534316,
             "location_index": 67,
             "total_mass": 86.67663841895062,
             "times_collected": 0,
@@ -819,7 +819,7 @@
         {
             "capacity": 218.9725602162963,
             "level": 13.059636249865813,
-            "growth_rate": 0.0006669485874034367,
+            "growth_rate": 0.010861734137713111,
             "location_index": 68,
             "total_mass": 72.9908534054321,
             "times_collected": 0,
@@ -831,7 +831,7 @@
         {
             "capacity": 191.60099018925925,
             "level": 151.27081140600308,
-            "growth_rate": 0.000583580013978007,
+            "growth_rate": 0.00950401737049897,
             "location_index": 69,
             "total_mass": 63.86699672975308,
             "times_collected": 0,
@@ -843,7 +843,7 @@
         {
             "capacity": 191.60099018925925,
             "level": 118.37028997257251,
-            "growth_rate": 0.000583580013978007,
+            "growth_rate": 0.00950401737049897,
             "location_index": 70,
             "total_mass": 63.86699672975308,
             "times_collected": 0,
@@ -855,7 +855,7 @@
         {
             "capacity": 191.60099018925925,
             "level": 30.45929707846475,
-            "growth_rate": 0.000583580013978007,
+            "growth_rate": 0.00950401737049897,
             "location_index": 71,
             "total_mass": 63.86699672975308,
             "times_collected": 0,
@@ -867,7 +867,7 @@
         {
             "capacity": 11947.69031680159,
             "level": 52.78123622872691,
-            "growth_rate": 0.036390382300199774,
+            "growth_rate": 0.5926433688889677,
             "location_index": 72,
             "total_mass": 3982.5634389338634,
             "times_collected": 0,
@@ -879,7 +879,7 @@
         {
             "capacity": 25.681050233739136,
             "level": 16.753524726260217,
-            "growth_rate": 7.821957308034581e-05,
+            "growth_rate": 0.0012738616187370603,
             "location_index": 73,
             "total_mass": 8.560350077913045,
             "times_collected": 0,
@@ -891,7 +891,7 @@
         {
             "capacity": 22.51594254106604,
             "level": 12.732447471042805,
-            "growth_rate": 6.857925968891947e-05,
+            "growth_rate": 0.0011168622292195456,
             "location_index": 74,
             "total_mass": 7.505314180355346,
             "times_collected": 0,
@@ -903,7 +903,7 @@
         {
             "capacity": 23.91072759904221,
             "level": 13.944873450221792,
-            "growth_rate": 7.282750852534786e-05,
+            "growth_rate": 0.0011860479959842367,
             "location_index": 75,
             "total_mass": 7.97024253301407,
             "times_collected": 0,
@@ -915,7 +915,7 @@
         {
             "capacity": 145.90257906509396,
             "level": 90.02426619032691,
-            "growth_rate": 0.00044439138360469655,
+            "growth_rate": 0.007237231104419343,
             "location_index": 76,
             "total_mass": 48.63419302169799,
             "times_collected": 0,
@@ -927,7 +927,7 @@
         {
             "capacity": 37.7887968807392,
             "level": 2.2384466435876913,
-            "growth_rate": 0.00011509745638626705,
+            "growth_rate": 0.0018744442897192062,
             "location_index": 77,
             "total_mass": 12.596265626913066,
             "times_collected": 0,
@@ -939,7 +939,7 @@
         {
             "capacity": 27.243193523650344,
             "level": 7.812600971462345,
-            "growth_rate": 8.297756312028005e-05,
+            "growth_rate": 0.0013513488851017036,
             "location_index": 78,
             "total_mass": 9.081064507883449,
             "times_collected": 0,
@@ -951,7 +951,7 @@
         {
             "capacity": 49.0542263753276,
             "level": 4.547093660673618,
-            "growth_rate": 0.00014940980255643153,
+            "growth_rate": 0.002433245355919028,
             "location_index": 79,
             "total_mass": 16.351408791775867,
             "times_collected": 0,
@@ -963,7 +963,7 @@
         {
             "capacity": 29.07281038722299,
             "level": 20.074273796034966,
-            "growth_rate": 8.85502265692708e-05,
+            "growth_rate": 0.0014421036898424101,
             "location_index": 80,
             "total_mass": 9.690936795740997,
             "times_collected": 0,
@@ -975,7 +975,7 @@
         {
             "capacity": 29.099855355650757,
             "level": 14.510308267303998,
-            "growth_rate": 8.863260037661657e-05,
+            "growth_rate": 0.0014434452061334701,
             "location_index": 81,
             "total_mass": 9.69995178521692,
             "times_collected": 0,
@@ -987,7 +987,7 @@
         {
             "capacity": 17.68866020064405,
             "level": 4.682514178146226,
-            "growth_rate": 5.387627985088953e-05,
+            "growth_rate": 0.0008774137004287724,
             "location_index": 82,
             "total_mass": 5.896220066881351,
             "times_collected": 0,
@@ -999,7 +999,7 @@
         {
             "capacity": 20.087214713982622,
             "level": 1.0213681832495005,
-            "growth_rate": 6.11818186951225e-05,
+            "growth_rate": 0.000996389618749138,
             "location_index": 83,
             "total_mass": 6.695738237994207,
             "times_collected": 0,
@@ -1011,7 +1011,7 @@
         {
             "capacity": 21.70775053136411,
             "level": 5.400581327574409,
-            "growth_rate": 6.611766121882343e-05,
+            "growth_rate": 0.0010767733398494102,
             "location_index": 84,
             "total_mass": 7.235916843788036,
             "times_collected": 0,
@@ -1023,7 +1023,7 @@
         {
             "capacity": 26.364736433678416,
             "level": 6.858698062290528,
-            "growth_rate": 8.03019506386404e-05,
+            "growth_rate": 0.0013077746246864294,
             "location_index": 85,
             "total_mass": 8.788245477892806,
             "times_collected": 0,
@@ -1035,7 +1035,7 @@
         {
             "capacity": 232.68783276770574,
             "level": 135.81638432912987,
-            "growth_rate": 0.0007087226875234702,
+            "growth_rate": 0.011542055196810801,
             "location_index": 86,
             "total_mass": 77.56261092256858,
             "times_collected": 0,
@@ -1047,7 +1047,7 @@
         {
             "capacity": 42.17248908214169,
             "level": 21.50990839997247,
-            "growth_rate": 0.00012844934540126002,
+            "growth_rate": 0.0020918893393919486,
             "location_index": 87,
             "total_mass": 14.057496360713897,
             "times_collected": 0,
@@ -1059,7 +1059,7 @@
         {
             "capacity": 48.1144531155915,
             "level": 34.15020472499521,
-            "growth_rate": 0.00014654743273511057,
+            "growth_rate": 0.0023866296188289437,
             "location_index": 88,
             "total_mass": 16.0381510385305,
             "times_collected": 0,
@@ -1071,7 +1071,7 @@
         {
             "capacity": 36.465822983867746,
             "level": 13.775764697036799,
-            "growth_rate": 0.00011106793062825215,
+            "growth_rate": 0.0018088205845172493,
             "location_index": 89,
             "total_mass": 12.155274327955915,
             "times_collected": 0,
@@ -1083,7 +1083,7 @@
         {
             "capacity": 30.7874176751856,
             "level": 2.945598401001091,
-            "growth_rate": 9.377259282159358e-05,
+            "growth_rate": 0.0015271536545230953,
             "location_index": 90,
             "total_mass": 10.262472558395201,
             "times_collected": 0,
@@ -1095,7 +1095,7 @@
         {
             "capacity": 43.155046324571515,
             "level": 24.624089466694006,
-            "growth_rate": 0.00013144202706070758,
+            "growth_rate": 0.002140627297845809,
             "location_index": 91,
             "total_mass": 14.385015441523839,
             "times_collected": 0,
@@ -1107,7 +1107,7 @@
         {
             "capacity": 61.27744856163696,
             "level": 37.29517334646753,
-            "growth_rate": 0.00018663940229543422,
+            "growth_rate": 0.0030395559802399285,
             "location_index": 92,
             "total_mass": 20.42581618721232,
             "times_collected": 0,
@@ -1119,7 +1119,7 @@
         {
             "capacity": 55.10219949631632,
             "level": 24.742086490566184,
-            "growth_rate": 0.0001678307733196769,
+            "growth_rate": 0.002733244022634738,
             "location_index": 93,
             "total_mass": 18.367399832105438,
             "times_collected": 0,
@@ -1131,7 +1131,7 @@
         {
             "capacity": 60.78892902019841,
             "level": 37.493015343328274,
-            "growth_rate": 0.00018515146509563357,
+            "growth_rate": 0.003015323860128889,
             "location_index": 94,
             "total_mass": 20.262976340066135,
             "times_collected": 0,
@@ -1143,7 +1143,7 @@
         {
             "capacity": 48.405172177081,
             "level": 19.121808689842183,
-            "growth_rate": 0.00014743290745943287,
+            "growth_rate": 0.002401050207196478,
             "location_index": 95,
             "total_mass": 16.135057392360334,
             "times_collected": 0,
@@ -1155,7 +1155,7 @@
         {
             "capacity": 66.40937192635434,
             "level": 27.771487107635497,
-            "growth_rate": 0.00020227026049693696,
+            "growth_rate": 0.0032941156709501156,
             "location_index": 96,
             "total_mass": 22.13645730878478,
             "times_collected": 0,
@@ -1167,7 +1167,7 @@
         {
             "capacity": 63.61273055050518,
             "level": 21.757641280104803,
-            "growth_rate": 0.00019375222511727942,
+            "growth_rate": 0.0031553933804814075,
             "location_index": 97,
             "total_mass": 21.20424351683506,
             "times_collected": 0,
@@ -1179,7 +1179,7 @@
         {
             "capacity": 61.23657669257099,
             "level": 1.245264243458374,
-            "growth_rate": 0.0001865149143901407,
+            "growth_rate": 0.0030375286057822914,
             "location_index": 98,
             "total_mass": 20.412192230857,
             "times_collected": 0,
@@ -1191,7 +1191,7 @@
         {
             "capacity": 41.30175817906503,
             "level": 3.5648845018173683,
-            "growth_rate": 0.00012579726540894564,
+            "growth_rate": 0.0020486983223742578,
             "location_index": 99,
             "total_mass": 13.76725272635501,
             "times_collected": 0,
@@ -1203,7 +1203,7 @@
         {
             "capacity": 58.28527944584769,
             "level": 1.465487096405394,
-            "growth_rate": 0.0001775258267721969,
+            "growth_rate": 0.002891134893147207,
             "location_index": 100,
             "total_mass": 19.42842648194923,
             "times_collected": 0,
@@ -1215,7 +1215,7 @@
         {
             "capacity": 33.75744876885649,
             "level": 17.186873483363165,
-            "growth_rate": 0.00010281874015855413,
+            "growth_rate": 0.00167447662543931,
             "location_index": 101,
             "total_mass": 11.252482922952163,
             "times_collected": 0,
@@ -1227,7 +1227,7 @@
         {
             "capacity": 21.055490194601962,
             "level": 5.2951354217336615,
-            "growth_rate": 6.413100083638512e-05,
+            "growth_rate": 0.001044419156478272,
             "location_index": 102,
             "total_mass": 7.018496731533987,
             "times_collected": 0,
@@ -1239,7 +1239,7 @@
         {
             "capacity": 70.03104151324843,
             "level": 28.492588148301397,
-            "growth_rate": 0.0002133011741997089,
+            "growth_rate": 0.0034737619798238307,
             "location_index": 103,
             "total_mass": 23.34368050441614,
             "times_collected": 0,
@@ -1251,7 +1251,7 @@
         {
             "capacity": 67.07743891883962,
             "level": 48.701787775651326,
-            "growth_rate": 0.00020430506493311284,
+            "growth_rate": 0.0033272539146249813,
             "location_index": 104,
             "total_mass": 22.35914630627987,
             "times_collected": 0,
@@ -1263,7 +1263,7 @@
         {
             "capacity": 48.1144531155915,
             "level": 9.59564741717187,
-            "growth_rate": 0.00014654743273511057,
+            "growth_rate": 0.0023866296188289437,
             "location_index": 105,
             "total_mass": 16.0381510385305,
             "times_collected": 0,
@@ -1275,7 +1275,7 @@
         {
             "capacity": 37.37314353335332,
             "level": 12.269839908998145,
-            "growth_rate": 0.0001138314556936931,
+            "growth_rate": 0.0018538265641544307,
             "location_index": 106,
             "total_mass": 12.457714511117773,
             "times_collected": 0,
@@ -1287,7 +1287,7 @@
         {
             "capacity": 60.78892902019841,
             "level": 36.743315625618784,
-            "growth_rate": 0.00018515146509563357,
+            "growth_rate": 0.003015323860128889,
             "location_index": 107,
             "total_mass": 20.262976340066135,
             "times_collected": 0,
@@ -1299,7 +1299,7 @@
         {
             "capacity": 51.030480577142484,
             "level": 9.340544272164857,
-            "growth_rate": 0.00015542909532511722,
+            "growth_rate": 0.002531273838151909,
             "location_index": 108,
             "total_mass": 17.010160192380827,
             "times_collected": 0,
@@ -1311,7 +1311,7 @@
         {
             "capacity": 46.76919227074941,
             "level": 2.8802305630142175,
-            "growth_rate": 0.0001424500251911227,
+            "growth_rate": 0.002319900410255427,
             "location_index": 109,
             "total_mass": 15.589730756916468,
             "times_collected": 0,
@@ -1323,7 +1323,7 @@
         {
             "capacity": 66.28265748944426,
             "level": 15.364397048441699,
-            "growth_rate": 0.00020188431252876542,
+            "growth_rate": 0.0032878302326113224,
             "location_index": 110,
             "total_mass": 22.094219163148086,
             "times_collected": 0,
@@ -1335,7 +1335,7 @@
         {
             "capacity": 55.02966243976047,
             "level": 7.097562412553217,
-            "growth_rate": 0.00016760983930238935,
+            "growth_rate": 0.002729645954353198,
             "location_index": 111,
             "total_mass": 18.34322081325349,
             "times_collected": 0,
@@ -1347,7 +1347,7 @@
         {
             "capacity": 64.9812689526259,
             "level": 48.330346553198105,
-            "growth_rate": 0.00019792053165395315,
+            "growth_rate": 0.0032232772297929512,
             "location_index": 112,
             "total_mass": 21.660422984208633,
             "times_collected": 0,
@@ -1359,7 +1359,7 @@
         {
             "capacity": 292.6433976416172,
             "level": 189.19287486333144,
-            "growth_rate": 0.0008913358846296819,
+            "growth_rate": 0.014516041549683393,
             "location_index": 113,
             "total_mass": 97.5477992138724,
             "times_collected": 0,
@@ -1371,7 +1371,7 @@
         {
             "capacity": 1885.8272949165455,
             "level": 955.5920741840241,
-            "growth_rate": 0.005743869684809166,
+            "growth_rate": 0.09354302058117785,
             "location_index": 114,
             "total_mass": 628.6090983055152,
             "times_collected": 0,
@@ -1383,7 +1383,7 @@
         {
             "capacity": 16.673022733359456,
             "level": 11.623905785141334,
-            "growth_rate": 5.078284214595351e-05,
+            "growth_rate": 0.0008270348578055286,
             "location_index": 115,
             "total_mass": 5.557674244453152,
             "times_collected": 0,
@@ -1395,7 +1395,7 @@
         {
             "capacity": 1053.7629271201147,
             "level": 677.5038721583303,
-            "growth_rate": 0.0032095605723687706,
+            "growth_rate": 0.05226998646429141,
             "location_index": 116,
             "total_mass": 351.2543090400382,
             "times_collected": 0,
@@ -1407,7 +1407,7 @@
         {
             "capacity": 55.918708680622785,
             "level": 8.3462054170999,
-            "growth_rate": 0.00017031770431476237,
+            "growth_rate": 0.002773745470268987,
             "location_index": 117,
             "total_mass": 18.639569560207594,
             "times_collected": 0,
@@ -1419,7 +1419,7 @@
         {
             "capacity": 74.43035824844748,
             "level": 53.14678881238763,
-            "growth_rate": 0.0002267006525598425,
+            "growth_rate": 0.0036919820559745773,
             "location_index": 118,
             "total_mass": 24.81011941614916,
             "times_collected": 0,
@@ -1431,7 +1431,7 @@
         {
             "capacity": 7.189347538013887,
             "level": 3.102015055250539,
-            "growth_rate": 2.1897379197167055e-05,
+            "growth_rate": 0.00035661446121100634,
             "location_index": 119,
             "total_mass": 2.3964491793379623,
             "times_collected": 0,
@@ -1443,7 +1443,7 @@
         {
             "capacity": 53.197569789311345,
             "level": 34.363083204026076,
-            "growth_rate": 0.00016202963507953017,
+            "growth_rate": 0.002638768342723777,
             "location_index": 120,
             "total_mass": 17.732523263103783,
             "times_collected": 0,
@@ -1455,7 +1455,7 @@
         {
             "capacity": 85.4246921317432,
             "level": 61.23865873431838,
-            "growth_rate": 0.00026018729328625487,
+            "growth_rate": 0.004237335919233294,
             "location_index": 121,
             "total_mass": 28.474897377247732,
             "times_collected": 0,
@@ -1467,7 +1467,7 @@
         {
             "capacity": 106.2704947174798,
             "level": 27.035509285710148,
-            "growth_rate": 0.0003236796257233181,
+            "growth_rate": 0.005271353904636895,
             "location_index": 122,
             "total_mass": 35.42349823915993,
             "times_collected": 0,
@@ -1479,7 +1479,7 @@
         {
             "capacity": 59.7274743402707,
             "level": 5.258498798659377,
-            "growth_rate": 0.00018191847691359254,
+            "growth_rate": 0.002962672338307079,
             "location_index": 123,
             "total_mass": 19.90915811342357,
             "times_collected": 0,
@@ -1491,7 +1491,7 @@
         {
             "capacity": 267.3579421830385,
             "level": 48.752220806695945,
-            "growth_rate": 0.0008143212176627636,
+            "growth_rate": 0.013261802687650719,
             "location_index": 124,
             "total_mass": 89.11931406101284,
             "times_collected": 0,
@@ -1503,7 +1503,7 @@
         {
             "capacity": 123.6740280066106,
             "level": 42.25771248992412,
-            "growth_rate": 0.00037668746347042703,
+            "growth_rate": 0.006134624405089812,
             "location_index": 125,
             "total_mass": 41.22467600220353,
             "times_collected": 0,
@@ -1515,7 +1515,7 @@
         {
             "capacity": 134.1548778376793,
             "level": 87.79253679339992,
-            "growth_rate": 0.00040861012986622596,
+            "growth_rate": 0.006654507829249964,
             "location_index": 126,
             "total_mass": 44.718292612559765,
             "times_collected": 0,
@@ -1527,7 +1527,7 @@
         {
             "capacity": 127.91377954331205,
             "level": 88.07944165827065,
-            "growth_rate": 0.00038960093671817756,
+            "growth_rate": 0.006344929540838891,
             "location_index": 127,
             "total_mass": 42.637926514437346,
             "times_collected": 0,
@@ -1539,7 +1539,7 @@
         {
             "capacity": 37.306170638804055,
             "level": 0.2074858943198719,
-            "growth_rate": 0.00011362746905093827,
+            "growth_rate": 0.0018505044959724233,
             "location_index": 128,
             "total_mass": 12.435390212934685,
             "times_collected": 0,
@@ -1551,7 +1551,7 @@
         {
             "capacity": 129.9625379052518,
             "level": 53.1024125369936,
-            "growth_rate": 0.0003958410633079063,
+            "growth_rate": 0.0064465544595859025,
             "location_index": 129,
             "total_mass": 43.32084596841727,
             "times_collected": 0,
@@ -1563,7 +1563,7 @@
         {
             "capacity": 31.582326355115256,
             "level": 10.546248420528626,
-            "growth_rate": 9.619373280675944e-05,
+            "growth_rate": 0.001566583648567225,
             "location_index": 130,
             "total_mass": 10.527442118371752,
             "times_collected": 0,
@@ -1575,7 +1575,7 @@
         {
             "capacity": 19.767915868180495,
             "level": 3.5124868088409396,
-            "growth_rate": 6.0209295407469834e-05,
+            "growth_rate": 0.000980551382350223,
             "location_index": 131,
             "total_mass": 6.589305289393498,
             "times_collected": 0,
@@ -1587,7 +1587,7 @@
         {
             "capacity": 125.77019797282433,
             "level": 12.060392783714079,
-            "growth_rate": 0.00038307199674958675,
+            "growth_rate": 0.006238601089921842,
             "location_index": 132,
             "total_mass": 41.923399324274776,
             "times_collected": 0,
@@ -1599,7 +1599,7 @@
         {
             "capacity": 148.34149370642155,
             "level": 40.065871059170966,
-            "growth_rate": 0.0004518198516886621,
+            "growth_rate": 0.007358209013215354,
             "location_index": 133,
             "total_mass": 49.44716456880718,
             "times_collected": 0,
@@ -1611,7 +1611,7 @@
         {
             "capacity": 8.387572127682866,
             "level": 6.32697852116668,
-            "growth_rate": 2.554694239669489e-05,
+            "growth_rate": 0.00041605020474617385,
             "location_index": 134,
             "total_mass": 2.7958573758942884,
             "times_collected": 0,
@@ -1623,7 +1623,7 @@
         {
             "capacity": 8.045222244920302,
             "level": 2.0801915346534754,
-            "growth_rate": 2.4504210053972654e-05,
+            "growth_rate": 0.0003990685637361261,
             "location_index": 135,
             "total_mass": 2.6817407483067672,
             "times_collected": 0,
@@ -1635,7 +1635,7 @@
         {
             "capacity": 92.49150213131793,
             "level": 38.386979117347444,
-            "growth_rate": 0.0002817114465500668,
+            "growth_rate": 0.004587872129529659,
             "location_index": 136,
             "total_mass": 30.83050071043931,
             "times_collected": 0,
@@ -1647,7 +1647,7 @@
         {
             "capacity": 74.1485512328602,
             "level": 41.7022698330489,
-            "growth_rate": 0.00022584232222484224,
+            "growth_rate": 0.0036780035333760022,
             "location_index": 137,
             "total_mass": 24.716183744286734,
             "times_collected": 0,
@@ -1659,7 +1659,7 @@
         {
             "capacity": 104.80849831068694,
             "level": 30.489178053348798,
-            "growth_rate": 0.000319226663957989,
+            "growth_rate": 0.005198834241601535,
             "location_index": 138,
             "total_mass": 34.936166103562314,
             "times_collected": 0,
@@ -1671,7 +1671,7 @@
         {
             "capacity": 27.117008284873783,
             "level": 21.081458230588954,
-            "growth_rate": 8.259322698852882e-05,
+            "growth_rate": 0.0013450896966703265,
             "location_index": 139,
             "total_mass": 9.039002761624594,
             "times_collected": 0,
@@ -1683,7 +1683,7 @@
         {
             "capacity": 55.575687243352306,
             "level": 42.79093588153059,
-            "growth_rate": 0.0001692729265452982,
+            "growth_rate": 0.002756730518023428,
             "location_index": 140,
             "total_mass": 18.525229081117434,
             "times_collected": 0,
@@ -1695,7 +1695,7 @@
         {
             "capacity": 803.933020529254,
             "level": 161.93288127894016,
-            "growth_rate": 0.0024486264026841315,
+            "growth_rate": 0.03987762998657014,
             "location_index": 141,
             "total_mass": 267.97767350975136,
             "times_collected": 0,
@@ -1707,7 +1707,7 @@
         {
             "capacity": 7.531697420776451,
             "level": 2.996100231451699,
-            "growth_rate": 2.2940111539889288e-05,
+            "growth_rate": 0.0003735961022210541,
             "location_index": 142,
             "total_mass": 2.510565806925484,
             "times_collected": 0,
@@ -1719,7 +1719,7 @@
         {
             "capacity": 124.5657451802376,
             "level": 29.98330469671705,
-            "growth_rate": 0.0003794034636337646,
+            "growth_rate": 0.0061788564077498815,
             "location_index": 143,
             "total_mass": 41.5219150600792,
             "times_collected": 0,
@@ -1731,7 +1731,7 @@
         {
             "capacity": 97.38454591501262,
             "level": 22.191249762525914,
-            "growth_rate": 0.0002966147231816905,
+            "growth_rate": 0.004830582634673245,
             "location_index": 144,
             "total_mass": 32.461515305004205,
             "times_collected": 0,
@@ -1743,7 +1743,7 @@
         {
             "capacity": 59.44561823652625,
             "level": 1.7542139122787188,
-            "growth_rate": 0.00018105999706544303,
+            "growth_rate": 0.0029486913807800718,
             "location_index": 145,
             "total_mass": 19.815206078842085,
             "times_collected": 0,
@@ -1755,7 +1755,7 @@
         {
             "capacity": 739.9415976032217,
             "level": 360.83360570162296,
-            "growth_rate": 0.0022537207529337894,
+            "growth_rate": 0.03670345226206457,
             "location_index": 146,
             "total_mass": 246.6471992010739,
             "times_collected": 0,
@@ -1767,7 +1767,7 @@
         {
             "capacity": 48.6834856498427,
             "level": 19.57773361107138,
-            "growth_rate": 0.00014828059713036884,
+            "growth_rate": 0.0024148554389802927,
             "location_index": 147,
             "total_mass": 16.227828549947567,
             "times_collected": 0,
@@ -1779,7 +1779,7 @@
         {
             "capacity": 86.09294178313594,
             "level": 3.545565707547096,
-            "growth_rate": 0.000262222654066569,
+            "growth_rate": 0.0042704832233698385,
             "location_index": 148,
             "total_mass": 28.697647261045315,
             "times_collected": 0,
@@ -1791,7 +1791,7 @@
         {
             "capacity": 7.531697420776451,
             "level": 1.6789446847994913,
-            "growth_rate": 2.2940111539889288e-05,
+            "growth_rate": 0.0003735961022210541,
             "location_index": 149,
             "total_mass": 2.510565806925484,
             "times_collected": 0,
@@ -1803,7 +1803,7 @@
         {
             "capacity": 190.3830322168139,
             "level": 138.33473074353796,
-            "growth_rate": 0.0005798703466642723,
+            "growth_rate": 0.009443602788532434,
             "location_index": 150,
             "total_mass": 63.461010738937965,
             "times_collected": 0,
@@ -1815,7 +1815,7 @@
         {
             "capacity": 16.122007551712525,
             "level": 3.089774888348368,
-            "growth_rate": 4.910455516481641e-05,
+            "growth_rate": 0.0007997027555412959,
             "location_index": 151,
             "total_mass": 5.374002517237508,
             "times_collected": 0,
@@ -1827,7 +1827,7 @@
         {
             "capacity": 169.38913580829418,
             "level": 19.634893733268484,
-            "growth_rate": 0.0005159269487338395,
+            "growth_rate": 0.008402238879379671,
             "location_index": 152,
             "total_mass": 56.4630452694314,
             "times_collected": 0,
@@ -1839,7 +1839,7 @@
         {
             "capacity": 72.3250725634643,
             "level": 28.319765122770118,
-            "growth_rate": 0.00022028835454271538,
+            "growth_rate": 0.0035875532025527925,
             "location_index": 153,
             "total_mass": 24.10835752115477,
             "times_collected": 0,
@@ -1851,7 +1851,7 @@
         {
             "capacity": 53.10777469456784,
             "level": 41.87656179560341,
-            "growth_rate": 0.00016175613637478022,
+            "growth_rate": 0.0026343142209607063,
             "location_index": 154,
             "total_mass": 17.702591564855947,
             "times_collected": 0,
@@ -1863,7 +1863,7 @@
         {
             "capacity": 364.7292425231104,
             "level": 70.6277086616923,
-            "growth_rate": 0.0011108955973535282,
+            "growth_rate": 0.018091728299757456,
             "location_index": 155,
             "total_mass": 121.57641417437013,
             "times_collected": 0,
@@ -1875,7 +1875,7 @@
         {
             "capacity": 9.091837822024978,
             "level": 4.888757913145784,
-            "growth_rate": 2.7692001163575104e-05,
+            "growth_rate": 0.00045098401894965167,
             "location_index": 156,
             "total_mass": 3.0306126073416593,
             "times_collected": 0,
@@ -1887,7 +1887,7 @@
         {
             "capacity": 9.496953068049814,
             "level": 5.786452593986387,
-            "growth_rate": 2.892590481252989e-05,
+            "growth_rate": 0.00047107902123262965,
             "location_index": 157,
             "total_mass": 3.1656510226832713,
             "times_collected": 0,
@@ -1899,7 +1899,7 @@
         {
             "capacity": 5.031875031569557,
             "level": 0.9566099393430946,
-            "growth_rate": 1.5326130091281543e-05,
+            "growth_rate": 0.0002495969757722995,
             "location_index": 158,
             "total_mass": 1.6772916771898523,
             "times_collected": 0,
@@ -1911,7 +1911,7 @@
         {
             "capacity": 257.93346916884906,
             "level": 150.26509528234314,
-            "growth_rate": 0.0007856160732482001,
+            "growth_rate": 0.012794318907184972,
             "location_index": 159,
             "total_mass": 85.97782305628301,
             "times_collected": 0,
@@ -1923,7 +1923,7 @@
         {
             "capacity": 94.21251411457632,
             "level": 27.71981886593259,
-            "growth_rate": 0.00028695332028075147,
+            "growth_rate": 0.004673239787429381,
             "location_index": 160,
             "total_mass": 31.40417137152544,
             "times_collected": 0,
@@ -1935,7 +1935,7 @@
         {
             "capacity": 23.522036157546715,
             "level": 11.898496487879829,
-            "growth_rate": 7.164362864749852e-05,
+            "growth_rate": 0.0011667676665449759,
             "location_index": 161,
             "total_mass": 7.840678719182239,
             "times_collected": 0,
@@ -1947,7 +1947,7 @@
         {
             "capacity": 94.50305549286102,
             "level": 47.89639472993043,
-            "growth_rate": 0.0002878382538159753,
+            "growth_rate": 0.004687651562145885,
             "location_index": 162,
             "total_mass": 31.50101849762034,
             "times_collected": 0,
@@ -1959,7 +1959,7 @@
         {
             "capacity": 12.153420838071094,
             "level": 5.209196167956102,
-            "growth_rate": 3.701699816663954e-05,
+            "growth_rate": 0.0006028482558567011,
             "location_index": 163,
             "total_mass": 4.051140279357031,
             "times_collected": 0,
@@ -1971,7 +1971,7 @@
         {
             "capacity": 270.0833050299479,
             "level": 19.508607605350893,
-            "growth_rate": 0.0008226221522598317,
+            "growth_rate": 0.01339698933680297,
             "location_index": 164,
             "total_mass": 90.02776834331597,
             "times_collected": 0,
@@ -1983,7 +1983,7 @@
         {
             "capacity": 10.443161410844846,
             "level": 6.9785590306559415,
-            "growth_rate": 3.180787466753426e-05,
+            "growth_rate": 0.0005180139588712722,
             "location_index": 165,
             "total_mass": 3.4810538036149485,
             "times_collected": 0,
@@ -1995,7 +1995,7 @@
         {
             "capacity": 291.20995851798835,
             "level": 74.73147953105345,
-            "growth_rate": 0.0008869699028934831,
+            "growth_rate": 0.014444938418551009,
             "location_index": 166,
             "total_mass": 97.06998617266278,
             "times_collected": 0,
@@ -2007,7 +2007,7 @@
         {
             "capacity": 94.50305549286102,
             "level": 14.101255311010561,
-            "growth_rate": 0.0002878382538159753,
+            "growth_rate": 0.004687651562145885,
             "location_index": 167,
             "total_mass": 31.50101849762034,
             "times_collected": 0,
@@ -2019,7 +2019,7 @@
         {
             "capacity": 85.7164265261707,
             "level": 2.796079540138505,
-            "growth_rate": 0.00026107586052074406,
+            "growth_rate": 0.004251806871337832,
             "location_index": 168,
             "total_mass": 28.57214217539023,
             "times_collected": 0,
@@ -2031,7 +2031,7 @@
         {
             "capacity": 2.961335161699979,
             "level": 1.3998656395709828,
-            "growth_rate": 9.019661189388337e-06,
+            "growth_rate": 0.00014689162508432435,
             "location_index": 169,
             "total_mass": 0.9871117205666596,
             "times_collected": 0,
@@ -2043,7 +2043,7 @@
         {
             "capacity": 277.43140251894255,
             "level": 150.38210496220537,
-            "growth_rate": 0.0008450030534811846,
+            "growth_rate": 0.013761478299550722,
             "location_index": 170,
             "total_mass": 92.47713417298085,
             "times_collected": 0,
@@ -2055,7 +2055,7 @@
         {
             "capacity": 2721.521861010503,
             "level": 36.115311243090346,
-            "growth_rate": 0.008289235687775655,
+            "growth_rate": 0.13499612405806066,
             "location_index": 171,
             "total_mass": 907.1739536701676,
             "times_collected": 0,
@@ -2071,7 +2071,7 @@
             "storage_level": 2536.752682216905,
             "cumulative_biomass_received": 0,
             "is_yearly_demand_satisfied": false,
-            "consumption_rate": 61.40350877192982,
+            "consumption_rate": 1000.0,
             "capacity": 14000,
             "production_stoppage_counter": 0,
             "overfilling_counter": 0,
@@ -2086,7 +2086,7 @@
             "storage_level": 5735.442252951947,
             "cumulative_biomass_received": 0,
             "is_yearly_demand_satisfied": false,
-            "consumption_rate": 61.40350877192982,
+            "consumption_rate": 1000.0,
             "capacity": 14000,
             "production_stoppage_counter": 0,
             "overfilling_counter": 0,
