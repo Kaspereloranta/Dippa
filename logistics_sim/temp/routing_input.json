@@ -2,1048 +2,2082 @@
     "pickup_sites": [
         {
             "capacity": 117.54531293229732,
-            "level": 124.2087476608731,
+            "level": 35.22034838049044,
             "growth_rate": 0.0003580205681417438,
-            "location_index": 0
+            "location_index": 0,
+            "total_mass": 39.18177097743244,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 106.00208771847836,
-            "level": 147.15027744012062,
+            "level": 80.622161042621,
             "growth_rate": 0.0003228621092789911,
-            "location_index": 1
+            "location_index": 1,
+            "total_mass": 35.334029239492786,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 129.5087651789072,
-            "level": 163.62129877737289,
+            "level": 75.83970521794873,
             "growth_rate": 0.0003944589582690887,
-            "location_index": 2
+            "location_index": 2,
+            "total_mass": 43.16958839296907,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 117.79746474980237,
-            "level": 117.88777591721099,
+            "level": 56.416361351496434,
             "growth_rate": 0.0003587885744085111,
-            "location_index": 3
+            "location_index": 3,
+            "total_mass": 39.26582158326746,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 733.4806628072575,
-            "level": 680.4352491983086,
+            "level": 91.54932464160443,
             "growth_rate": 0.0022340419797979333,
-            "location_index": 4
+            "location_index": 4,
+            "total_mass": 244.49355426908585,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 111.46147879608321,
-            "level": 92.54934401662412,
+            "level": 13.90990393660706,
             "growth_rate": 0.00033949037157676417,
-            "location_index": 5
+            "location_index": 5,
+            "total_mass": 37.15382626536107,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 93.22559301527029,
-            "level": 81.20469459355303,
+            "level": 4.331903351079491,
             "growth_rate": 0.00028394734714690025,
-            "location_index": 6
+            "location_index": 6,
+            "total_mass": 31.075197671756765,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 98.7753057175214,
-            "level": 131.85024241297137,
+            "level": 68.44545088331489,
             "growth_rate": 0.0003008507118589224,
-            "location_index": 7
+            "location_index": 7,
+            "total_mass": 32.92510190584047,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 169.64881628347823,
-            "level": 201.88572228388108,
+            "level": 81.58276015397159,
             "growth_rate": 0.0005167178858536739,
-            "location_index": 8
+            "location_index": 8,
+            "total_mass": 56.54960542782607,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 208.48180506596,
-            "level": 261.26116678197843,
+            "level": 118.09619930930155,
             "growth_rate": 0.0006349957512973929,
-            "location_index": 9
+            "location_index": 9,
+            "total_mass": 69.49393502198667,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 200.37523176028432,
-            "level": 170.87532079573077,
+            "level": 3.2996982521517326,
             "growth_rate": 0.0006103046776324449,
-            "location_index": 10
+            "location_index": 10,
+            "total_mass": 66.79174392009477,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 187.54830818275613,
-            "level": 262.7157119323706,
+            "level": 145.52396149021533,
             "growth_rate": 0.0005712363187827611,
-            "location_index": 11
+            "location_index": 11,
+            "total_mass": 62.51610272758538,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 5679.985083214585,
-            "level": 7483.13764781069,
+            "level": 3782.609425902522,
             "growth_rate": 0.017300149498095104,
-            "location_index": 12
+            "location_index": 12,
+            "total_mass": 1893.3283610715282,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 170.360583049048,
-            "level": 163.60514930386373,
+            "level": 28.939371759413966,
             "growth_rate": 0.0005188857914505603,
-            "location_index": 13
+            "location_index": 13,
+            "total_mass": 56.78686101634933,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 112.98840808060952,
-            "level": 106.26665316024265,
+            "level": 16.435290875231463,
             "growth_rate": 0.00034414110648333795,
-            "location_index": 14
+            "location_index": 14,
+            "total_mass": 37.662802693536506,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 272.7032232550452,
-            "level": 257.5122276313915,
+            "level": 40.01200079723448,
             "growth_rate": 0.000830601922682277,
-            "location_index": 15
+            "location_index": 15,
+            "total_mass": 90.9010744183484,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 412.320149362136,
-            "level": 415.76018515072616,
+            "level": 100.3561656474783,
             "growth_rate": 0.0012558484081449076,
-            "location_index": 16
+            "location_index": 16,
+            "total_mass": 137.44004978737868,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 133.066808048008,
-            "level": 152.14031726017765,
+            "level": 55.8621306879717,
             "growth_rate": 0.0004052960771442739,
-            "location_index": 17
+            "location_index": 17,
+            "total_mass": 44.355602682669335,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 316.67779039582615,
-            "level": 343.9991367554125,
+            "level": 109.42991526085534,
             "growth_rate": 0.0009645400535935252,
-            "location_index": 18
+            "location_index": 18,
+            "total_mass": 105.55926346527538,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 116.00440069595682,
-            "level": 116.92134587965893,
+            "level": 27.027089499098114,
             "growth_rate": 0.0003533272438351511,
-            "location_index": 19
+            "location_index": 19,
+            "total_mass": 38.66813356531894,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 631.4019474077927,
-            "level": 750.3413650946925,
+            "level": 309.0600874038445,
             "growth_rate": 0.0019231297131085305,
-            "location_index": 20
+            "location_index": 20,
+            "total_mass": 210.46731580259757,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 428.08230963084804,
-            "level": 391.3796795244244,
+            "level": 47.77188323779979,
             "growth_rate": 0.0013038569372284601,
-            "location_index": 21
+            "location_index": 21,
+            "total_mass": 142.6941032102827,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 725.9612585863041,
-            "level": 731.1700241074245,
+            "level": 169.66855739190436,
             "growth_rate": 0.0022111393109962964,
-            "location_index": 22
+            "location_index": 22,
+            "total_mass": 241.9870861954347,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 380.2606223142289,
-            "level": 399.54373673792685,
+            "level": 111.45038601843778,
             "growth_rate": 0.00115820121318905,
-            "location_index": 23
+            "location_index": 23,
+            "total_mass": 126.75354077140963,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 614.6319844412801,
-            "level": 674.2600523647724,
+            "level": 224.2521595547361,
             "growth_rate": 0.0018720516095311892,
-            "location_index": 24
+            "location_index": 24,
+            "total_mass": 204.87732814709338,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 137.359285726976,
-            "level": 177.44101904950492,
+            "level": 86.28096738154883,
             "growth_rate": 0.0004183701441489278,
-            "location_index": 25
+            "location_index": 25,
+            "total_mass": 45.78642857565867,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 186.79685590129628,
-            "level": 177.94543744590726,
+            "level": 29.83874777048156,
             "growth_rate": 0.0005689475386857221,
-            "location_index": 26
+            "location_index": 26,
+            "total_mass": 62.26561863376543,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 160.6999778083476,
-            "level": 182.61904453555604,
+            "level": 66.10997027308439,
             "growth_rate": 0.000489461433383125,
-            "location_index": 27
+            "location_index": 27,
+            "total_mass": 53.5666592694492,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 347.7564239225294,
-            "level": 410.19488449557366,
+            "level": 164.81277755765674,
             "growth_rate": 0.0010591996342669634,
-            "location_index": 28
+            "location_index": 28,
+            "total_mass": 115.91880797417646,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 305.3678693102609,
-            "level": 263.45052790225134,
+            "level": 11.347570848710356,
             "growth_rate": 0.0009300921945366135,
-            "location_index": 29
+            "location_index": 29,
+            "total_mass": 101.78928977008697,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 251.6461322300908,
-            "level": 298.5756532027424,
+            "level": 122.30904970984025,
             "growth_rate": 0.0007664660460224501,
-            "location_index": 30
+            "location_index": 30,
+            "total_mass": 83.88204407669694,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 493.0138865255651,
-            "level": 460.66397134107154,
+            "level": 67.25660877235022,
             "growth_rate": 0.0015016261163668528,
-            "location_index": 31
+            "location_index": 31,
+            "total_mass": 164.33796217518838,
+            "times_collected": 0,
+            "TS_initial": 35.0,
+            "TS_current": 35.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 753.8053223015204,
-            "level": 656.9524055358149,
+            "level": 39.22898961319677,
             "growth_rate": 0.002295947009933968,
-            "location_index": 32
+            "location_index": 32,
+            "total_mass": 251.26844076717347,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 633.196470733277,
-            "level": 876.4375790030006,
+            "level": 480.6647786549281,
             "growth_rate": 0.001928595488344533,
-            "location_index": 33
+            "location_index": 33,
+            "total_mass": 211.06549024442566,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 633.196470733277,
-            "level": 884.6217294734735,
+            "level": 489.147836295848,
             "growth_rate": 0.001928595488344533,
-            "location_index": 34
+            "location_index": 34,
+            "total_mass": 211.06549024442566,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 722.3169685885787,
-            "level": 945.1597481890998,
+            "level": 467.1352975252226,
             "growth_rate": 0.0022000394998433806,
-            "location_index": 35
+            "location_index": 35,
+            "total_mass": 240.77232286285957,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 583.0517153149099,
-            "level": 593.342713719566,
+            "level": 142.08446450005903,
             "growth_rate": 0.0017758641426501884,
-            "location_index": 36
+            "location_index": 36,
+            "total_mass": 194.35057177163662,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 649.3104099099606,
-            "level": 579.0949562451242,
+            "level": 50.73561630580602,
             "growth_rate": 0.0019776754687803383,
-            "location_index": 37
+            "location_index": 37,
+            "total_mass": 216.4368033033202,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 5074.609456227574,
-            "level": 6262.560378401623,
+            "level": 2777.772309281443,
             "growth_rate": 0.015456290985098604,
-            "location_index": 38
+            "location_index": 38,
+            "total_mass": 1691.5364854091913,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 564.8937747187056,
-            "level": 615.9872287834527,
+            "level": 198.91152291233186,
             "growth_rate": 0.0017205585243625292,
-            "location_index": 39
+            "location_index": 39,
+            "total_mass": 188.29792490623518,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 512.5876191650339,
-            "level": 465.9190042588924,
+            "level": 50.04423059695077,
             "growth_rate": 0.0015612439667550984,
-            "location_index": 40
+            "location_index": 40,
+            "total_mass": 170.86253972167796,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 637.1084715595609,
-            "level": 719.0450825468268,
+            "level": 252.38512348206194,
             "growth_rate": 0.0019405106955395985,
-            "location_index": 41
+            "location_index": 41,
+            "total_mass": 212.36949051985366,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 534.0884671751168,
-            "level": 455.8418434510135,
+            "level": 14.693210024676905,
             "growth_rate": 0.001626731442419337,
-            "location_index": 42
+            "location_index": 42,
+            "total_mass": 178.02948905837226,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 784.544185656411,
-            "level": 1038.8615322549156,
+            "level": 570.7216274797266,
             "growth_rate": 0.002389571715571427,
-            "location_index": 43
+            "location_index": 43,
+            "total_mass": 261.514728552137,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 1098.510200329741,
-            "level": 1080.9602114221493,
+            "level": 227.41795954300903,
             "growth_rate": 0.0033458522183532563,
-            "location_index": 44
+            "location_index": 44,
+            "total_mass": 366.17006677658037,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 802.2499166943423,
-            "level": 978.064537762016,
+            "level": 425.20675794490194,
             "growth_rate": 0.0024434999899315985,
-            "location_index": 45
+            "location_index": 45,
+            "total_mass": 267.4166388981141,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 5910.996125324647,
-            "level": 6006.115529342802,
+            "level": 1474.0183703882276,
             "growth_rate": 0.018003765001597977,
-            "location_index": 46
+            "location_index": 46,
+            "total_mass": 1970.3320417748826,
+            "times_collected": 0,
+            "TS_initial": 30.0,
+            "TS_current": 30.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 178.35142188540544,
-            "level": 203.46759764885596,
+            "level": 74.20389684335336,
             "growth_rate": 0.0005432243600310839,
-            "location_index": 47
+            "location_index": 47,
+            "total_mass": 59.45047396180181,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 154.0307734464865,
-            "level": 178.1977227139754,
+            "level": 67.36816574271205,
             "growth_rate": 0.000469148310935936,
-            "location_index": 48
+            "location_index": 48,
+            "total_mass": 51.343591148828835,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 121.6032421945946,
-            "level": 114.6367252155387,
+            "level": 17.983120900816466,
             "growth_rate": 0.0003703802454757389,
-            "location_index": 49
+            "location_index": 49,
+            "total_mass": 40.53441406486487,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 157.08169503460465,
-            "level": 219.36576768221585,
+            "level": 121.84319744700245,
             "growth_rate": 0.0004784408352662179,
-            "location_index": 50
+            "location_index": 50,
+            "total_mass": 52.36056501153488,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 145.92389063351354,
-            "level": 188.07641027642774,
+            "level": 90.48831787407508,
             "growth_rate": 0.00044445629457088675,
-            "location_index": 51
+            "location_index": 51,
+            "total_mass": 48.641296877837846,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 163.18353821084088,
-            "level": 225.39609240108507,
+            "level": 122.64860914382753,
             "growth_rate": 0.0004970258839267814,
-            "location_index": 52
+            "location_index": 52,
+            "total_mass": 54.39451273694696,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 1288.994367262707,
-            "level": 1749.8981124984828,
+            "level": 922.7419314990815,
             "growth_rate": 0.003926030602042846,
-            "location_index": 53
+            "location_index": 53,
+            "total_mass": 429.66478908756903,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 145.92389063351354,
-            "level": 172.48228828399604,
+            "level": 69.79831289424708,
             "growth_rate": 0.00044445629457088675,
-            "location_index": 54
+            "location_index": 54,
+            "total_mass": 48.641296877837846,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 205.28677520277776,
-            "level": 281.0342468853659,
+            "level": 151.39887108033864,
             "growth_rate": 0.0006252643006907217,
-            "location_index": 55
+            "location_index": 55,
+            "total_mass": 68.42892506759259,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 235.18632584224224,
-            "level": 208.85870405428992,
+            "level": 16.649781137742423,
             "growth_rate": 0.000716332620133535,
-            "location_index": 56
+            "location_index": 56,
+            "total_mass": 78.39544194741408,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 138.33994879623123,
-            "level": 131.33048596784616,
+            "level": 21.689807321602704,
             "growth_rate": 0.0004213570565187354,
-            "location_index": 57
+            "location_index": 57,
+            "total_mass": 46.11331626541041,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 205.28677520277776,
-            "level": 176.98438842163847,
+            "level": 7.427651433286969,
             "growth_rate": 0.0006252643006907217,
-            "location_index": 58
+            "location_index": 58,
+            "total_mass": 68.42892506759259,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 191.0780492135686,
-            "level": 196.65574750923057,
+            "level": 49.730787961799656,
             "growth_rate": 0.000581987235665109,
-            "location_index": 59
+            "location_index": 59,
+            "total_mass": 63.69268307118953,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 246.34413024333332,
-            "level": 261.3802060857257,
+            "level": 76.59869509911324,
             "growth_rate": 0.0007503171608288662,
-            "location_index": 60
+            "location_index": 60,
+            "total_mass": 82.11471008111111,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 191.60099018925925,
-            "level": 190.34333700839514,
+            "level": 41.59259453982018,
             "growth_rate": 0.000583580013978007,
-            "location_index": 61
+            "location_index": 61,
+            "total_mass": 63.86699672975308,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 205.28677520277776,
-            "level": 270.08819279322836,
+            "level": 136.1030805947057,
             "growth_rate": 0.0006252643006907217,
-            "location_index": 62
+            "location_index": 62,
+            "total_mass": 68.42892506759259,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 232.6583452298148,
-            "level": 242.27670631683773,
+            "level": 66.4013109150096,
             "growth_rate": 0.0007086328741161513,
-            "location_index": 63
+            "location_index": 63,
+            "total_mass": 77.55278174327161,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 150.5436351487037,
-            "level": 150.17707898125212,
+            "level": 33.83432186164561,
             "growth_rate": 0.00045852715383986264,
-            "location_index": 64
+            "location_index": 64,
+            "total_mass": 50.181211716234564,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 232.6583452298148,
-            "level": 267.7930124456774,
+            "level": 101.01021813624006,
             "growth_rate": 0.0007086328741161513,
-            "location_index": 65
+            "location_index": 65,
+            "total_mass": 77.55278174327161,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 232.6583452298148,
-            "level": 214.08961083061075,
+            "level": 26.229757588337936,
             "growth_rate": 0.0007086328741161513,
-            "location_index": 66
+            "location_index": 66,
+            "total_mass": 77.55278174327161,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 260.02991525685184,
-            "level": 337.71736308814343,
+            "level": 166.87617033982028,
             "growth_rate": 0.0007920014475415808,
-            "location_index": 67
+            "location_index": 67,
+            "total_mass": 86.67663841895062,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 218.9725602162963,
-            "level": 193.4322184205531,
+            "level": 13.059636249865813,
             "growth_rate": 0.0006669485874034367,
-            "location_index": 68
+            "location_index": 68,
+            "total_mass": 72.9908534054321,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 191.60099018925925,
-            "level": 270.0361286304479,
+            "level": 151.27081140600308,
             "growth_rate": 0.000583580013978007,
-            "location_index": 69
+            "location_index": 69,
+            "total_mass": 63.86699672975308,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 191.60099018925925,
-            "level": 245.89025040768342,
+            "level": 118.37028997257251,
             "growth_rate": 0.000583580013978007,
-            "location_index": 70
+            "location_index": 70,
+            "total_mass": 63.86699672975308,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 191.60099018925925,
-            "level": 182.16077144626257,
+            "level": 30.45929707846475,
             "growth_rate": 0.000583580013978007,
-            "location_index": 71
+            "location_index": 71,
+            "total_mass": 63.86699672975308,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 11947.69031680159,
-            "level": 10053.050682453068,
+            "level": 52.78123622872691,
             "growth_rate": 0.036390382300199774,
-            "location_index": 72
+            "location_index": 72,
+            "total_mass": 3982.5634389338634,
+            "times_collected": 0,
+            "TS_initial": 68.0,
+            "TS_current": 68.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 25.681050233739136,
-            "level": 33.53600318442817,
+            "level": 16.753524726260217,
             "growth_rate": 7.821957308034581e-05,
-            "location_index": 73
+            "location_index": 73,
+            "total_mass": 8.560350077913045,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 22.51594254106604,
-            "level": 28.08479223401143,
+            "level": 12.732447471042805,
             "growth_rate": 6.857925968891947e-05,
-            "location_index": 74
+            "location_index": 74,
+            "total_mass": 7.505314180355346,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 23.91072759904221,
-            "level": 30.12233737076464,
+            "level": 13.944873450221792,
             "growth_rate": 7.282750852534786e-05,
-            "location_index": 75
+            "location_index": 75,
+            "total_mass": 7.97024253301407,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 145.90257906509396,
-            "level": 187.41743607666902,
+            "level": 90.02426619032691,
             "growth_rate": 0.00044439138360469655,
-            "location_index": 76
+            "location_index": 76,
+            "total_mass": 48.63419302169799,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 37.7887968807392,
-            "level": 33.48463093143287,
+            "level": 2.2384466435876913,
             "growth_rate": 0.00011509745638626705,
-            "location_index": 77
+            "location_index": 77,
+            "total_mass": 12.596265626913066,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 27.243193523650344,
-            "level": 28.604045478204377,
+            "level": 7.812600971462345,
             "growth_rate": 8.297756312028005e-05,
-            "location_index": 78
+            "location_index": 78,
+            "total_mass": 9.081064507883449,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 49.0542263753276,
-            "level": 44.369150429811825,
+            "level": 4.547093660673618,
             "growth_rate": 0.00014940980255643153,
-            "location_index": 79
+            "location_index": 79,
+            "total_mass": 16.351408791775867,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 29.07281038722299,
-            "level": 39.009235861228504,
+            "level": 20.074273796034966,
             "growth_rate": 8.85502265692708e-05,
-            "location_index": 80
+            "location_index": 80,
+            "total_mass": 9.690936795740997,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 29.099855355650757,
-            "level": 34.758594585707556,
+            "level": 14.510308267303998,
             "growth_rate": 8.863260037661657e-05,
-            "location_index": 81
+            "location_index": 81,
+            "total_mass": 9.69995178521692,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 17.68866020064405,
-            "level": 18.255949799547174,
+            "level": 4.682514178146226,
             "growth_rate": 5.387627985088953e-05,
-            "location_index": 82
+            "location_index": 82,
+            "total_mass": 5.896220066881351,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 20.087214713982622,
-            "level": 17.624612864707355,
+            "level": 1.0213681832495005,
             "growth_rate": 6.11818186951225e-05,
-            "location_index": 83
+            "location_index": 83,
+            "total_mass": 6.695738237994207,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 21.70775053136411,
-            "level": 22.099598703932305,
+            "level": 5.400581327574409,
             "growth_rate": 6.611766121882343e-05,
-            "location_index": 84
+            "location_index": 84,
+            "total_mass": 7.235916843788036,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 26.364736433678416,
-            "level": 27.013826751122043,
+            "level": 6.858698062290528,
             "growth_rate": 8.03019506386404e-05,
-            "location_index": 85
+            "location_index": 85,
+            "total_mass": 8.788245477892806,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 232.68783276770574,
-            "level": 292.7928036827579,
+            "level": 135.81638432912987,
             "growth_rate": 0.0007087226875234702,
-            "location_index": 86
+            "location_index": 86,
+            "total_mass": 77.56261092256858,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 42.17248908214169,
-            "level": 50.960312653259656,
+            "level": 21.50990839997247,
             "growth_rate": 0.00012844934540126002,
-            "location_index": 87
+            "location_index": 87,
+            "total_mass": 14.057496360713897,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 48.1144531155915,
-            "level": 64.9542541584837,
+            "level": 34.15020472499521,
             "growth_rate": 0.00014654743273511057,
-            "location_index": 88
+            "location_index": 88,
+            "total_mass": 16.0381510385305,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 36.465822983867746,
-            "level": 40.603821171504116,
+            "level": 13.775764697036799,
             "growth_rate": 0.00011106793062825215,
-            "location_index": 89
+            "location_index": 89,
+            "total_mass": 12.155274327955915,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 30.7874176751856,
-            "level": 27.805000855662716,
+            "level": 2.945598401001091,
             "growth_rate": 9.377259282159358e-05,
-            "location_index": 90
+            "location_index": 90,
+            "total_mass": 10.262472558395201,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 43.155046324571515,
-            "level": 53.86457541370048,
+            "level": 24.624089466694006,
             "growth_rate": 0.00013144202706070758,
-            "location_index": 91
+            "location_index": 91,
+            "total_mass": 14.385015441523839,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 61.27744856163696,
-            "level": 78.2954743249531,
+            "level": 37.29517334646753,
             "growth_rate": 0.00018663940229543422,
-            "location_index": 92
+            "location_index": 92,
+            "total_mass": 20.42581618721232,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 55.10219949631632,
-            "level": 63.9413379536592,
+            "level": 24.742086490566184,
             "growth_rate": 0.0001678307733196769,
-            "location_index": 93
+            "location_index": 93,
+            "total_mass": 18.367399832105438,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 60.78892902019841,
-            "level": 78.0935409064068,
+            "level": 37.493015343328274,
             "growth_rate": 0.00018515146509563357,
-            "location_index": 94
+            "location_index": 94,
+            "total_mass": 20.262976340066135,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 48.405172177081,
-            "level": 54.51293311650836,
+            "level": 19.121808689842183,
             "growth_rate": 0.00014743290745943287,
-            "location_index": 95
+            "location_index": 95,
+            "total_mass": 16.135057392360334,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 66.40937192635434,
-            "level": 75.67225551265038,
+            "level": 27.771487107635497,
             "growth_rate": 0.00020227026049693696,
-            "location_index": 96
+            "location_index": 96,
+            "total_mass": 22.13645730878478,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 63.61273055050518,
-            "level": 69.14307887913552,
+            "level": 21.757641280104803,
             "growth_rate": 0.00019375222511727942,
-            "location_index": 97
+            "location_index": 97,
+            "total_mass": 21.20424351683506,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 61.23657669257099,
-            "level": 52.05360262084926,
+            "level": 1.245264243458374,
             "growth_rate": 0.0001865149143901407,
-            "location_index": 98
+            "location_index": 98,
+            "total_mass": 20.412192230857,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 41.30175817906503,
-            "level": 37.15769029512334,
+            "level": 3.5648845018173683,
             "growth_rate": 0.00012579726540894564,
-            "location_index": 99
+            "location_index": 99,
+            "total_mass": 13.76725272635501,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 58.28527944584769,
-            "level": 49.85583399937708,
+            "level": 1.465487096405394,
             "growth_rate": 0.0001775258267721969,
-            "location_index": 100
+            "location_index": 100,
+            "total_mass": 19.42842648194923,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 33.75744876885649,
-            "level": 40.67041441046887,
+            "level": 17.186873483363165,
             "growth_rate": 0.00010281874015855413,
-            "location_index": 101
+            "location_index": 101,
+            "total_mass": 11.252482922952163,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 21.055490194601962,
-            "level": 21.441478906744912,
+            "level": 5.2951354217336615,
             "growth_rate": 6.413100083638512e-05,
-            "location_index": 102
+            "location_index": 102,
+            "total_mass": 7.018496731533987,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 70.03104151324843,
-            "level": 79.5622376669346,
+            "level": 28.492588148301397,
             "growth_rate": 0.0002133011741997089,
-            "location_index": 103
+            "location_index": 103,
+            "total_mass": 23.34368050441614,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 67.07743891883962,
-            "level": 91.33376238635066,
+            "level": 48.701787775651326,
             "growth_rate": 0.00020430506493311284,
-            "location_index": 104
+            "location_index": 104,
+            "total_mass": 22.35914630627987,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 48.1144531155915,
-            "level": 47.160403053656665,
+            "level": 9.59564741717187,
             "growth_rate": 0.00014654743273511057,
-            "location_index": 105
+            "location_index": 105,
+            "total_mass": 16.0381510385305,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 37.37314353335332,
-            "level": 40.01812197267372,
+            "level": 12.269839908998145,
             "growth_rate": 0.0001138314556936931,
-            "location_index": 106
+            "location_index": 106,
+            "total_mass": 12.457714511117773,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 60.78892902019841,
-            "level": 77.59391520021234,
+            "level": 36.743315625618784,
             "growth_rate": 0.00018515146509563357,
-            "location_index": 107
+            "location_index": 107,
+            "total_mass": 20.262976340066135,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 51.030480577142484,
-            "level": 49.4945365887827,
+            "level": 9.340544272164857,
             "growth_rate": 0.00015542909532511722,
-            "location_index": 108
+            "location_index": 108,
+            "total_mass": 17.010160192380827,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 46.76919227074941,
-            "level": 41.04309982952015,
+            "level": 2.8802305630142175,
             "growth_rate": 0.0001424500251911227,
-            "location_index": 109
+            "location_index": 109,
+            "total_mass": 15.589730756916468,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 66.28265748944426,
-            "level": 66.68155656735733,
+            "level": 15.364397048441699,
             "growth_rate": 0.00020188431252876542,
-            "location_index": 110
+            "location_index": 110,
+            "total_mass": 22.094219163148086,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 55.02966243976047,
-            "level": 51.34098336323825,
+            "level": 7.097562412553217,
             "growth_rate": 0.00016760983930238935,
-            "location_index": 111
+            "location_index": 111,
+            "total_mass": 18.34322081325349,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 64.9812689526259,
-            "level": 89.53837610830104,
+            "level": 48.330346553198105,
             "growth_rate": 0.00019792053165395315,
-            "location_index": 112
+            "location_index": 112,
+            "total_mass": 21.660422984208633,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 292.6433976416172,
-            "level": 382.40540014932753,
+            "level": 189.19287486333144,
             "growth_rate": 0.0008913358846296819,
-            "location_index": 113
+            "location_index": 113,
+            "total_mass": 97.5477992138724,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 1885.8272949165455,
-            "level": 2266.1088710434838,
+            "level": 955.5920741840241,
             "growth_rate": 0.005743869684809166,
-            "location_index": 114
+            "location_index": 114,
+            "total_mass": 628.6090983055152,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 16.673022733359456,
-            "level": 22.36684390191468,
+            "level": 11.623905785141334,
             "growth_rate": 5.078284214595351e-05,
-            "location_index": 115
+            "location_index": 115,
+            "total_mass": 5.557674244453152,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 1053.7629271201147,
-            "level": 1372.300965626584,
+            "level": 677.5038721583303,
             "growth_rate": 0.0032095605723687706,
-            "location_index": 116
+            "location_index": 116,
+            "total_mass": 351.2543090400382,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 55.918708680622785,
-            "level": 53.15322926481175,
+            "level": 8.3462054170999,
             "growth_rate": 0.00017031770431476237,
-            "location_index": 117
+            "location_index": 117,
+            "total_mass": 18.639569560207594,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 74.43035824844748,
-            "level": 100.96886697768569,
+            "level": 53.14678881238763,
             "growth_rate": 0.0002267006525598425,
-            "location_index": 118
+            "location_index": 118,
+            "total_mass": 24.81011941614916,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 7.189347538013887,
-            "level": 8.279443476538711,
+            "level": 3.102015055250539,
             "growth_rate": 2.1897379197167055e-05,
-            "location_index": 119
+            "location_index": 119,
+            "total_mass": 2.3964491793379623,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 53.197569789311345,
-            "level": 69.34671701550344,
+            "level": 34.363083204026076,
             "growth_rate": 0.00016202963507953017,
-            "location_index": 120
+            "location_index": 120,
+            "total_mass": 17.732523263103783,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 85.4246921317432,
-            "level": 115.59793207785944,
+            "level": 61.23865873431838,
             "growth_rate": 0.00026018729328625487,
-            "location_index": 121
+            "location_index": 121,
+            "total_mass": 28.474897377247732,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 106.2704947174798,
-            "level": 108.56570496084056,
+            "level": 27.035509285710148,
             "growth_rate": 0.0003236796257233181,
-            "location_index": 122
+            "location_index": 122,
+            "total_mass": 35.42349823915993,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 59.7274743402707,
-            "level": 53.5660411780629,
+            "level": 5.258498798659377,
             "growth_rate": 0.00018191847691359254,
-            "location_index": 123
+            "location_index": 123,
+            "total_mass": 19.90915811342357,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 267.3579421830385,
-            "level": 260.1622247129338,
+            "level": 48.752220806695945,
             "growth_rate": 0.0008143212176627636,
-            "location_index": 124
+            "location_index": 124,
+            "total_mass": 89.11931406101284,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 123.6740280066106,
-            "level": 133.67517582062203,
+            "level": 42.25771248992412,
             "growth_rate": 0.00037668746347042703,
-            "location_index": 125
+            "location_index": 125,
+            "total_mass": 41.22467600220353,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 134.1548778376793,
-            "level": 175.47857149670452,
+            "level": 87.79253679339992,
             "growth_rate": 0.00040861012986622596,
-            "location_index": 126
+            "location_index": 126,
+            "total_mass": 44.718292612559765,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 127.91377954331205,
-            "level": 171.53478407587747,
+            "level": 88.07944165827065,
             "growth_rate": 0.00038960093671817756,
-            "location_index": 127
+            "location_index": 127,
+            "total_mass": 42.637926514437346,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 37.306170638804055,
-            "level": 31.293913269694347,
+            "level": 0.2074858943198719,
             "growth_rate": 0.00011362746905093827,
-            "location_index": 128
+            "location_index": 128,
+            "total_mass": 12.435390212934685,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 129.9625379052518,
-            "level": 146.83973238748456,
+            "level": 53.1024125369936,
             "growth_rate": 0.0003958410633079063,
-            "location_index": 129
+            "location_index": 129,
+            "total_mass": 43.32084596841727,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 31.582326355115256,
-            "level": 34.17369436160973,
+            "level": 10.546248420528626,
             "growth_rate": 9.619373280675944e-05,
-            "location_index": 130
+            "location_index": 130,
+            "total_mass": 10.527442118371752,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 19.767915868180495,
-            "level": 19.120442819279734,
+            "level": 3.5124868088409396,
             "growth_rate": 6.0209295407469834e-05,
-            "location_index": 131
+            "location_index": 131,
+            "total_mass": 6.589305289393498,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 125.77019797282433,
-            "level": 114.1304128899113,
+            "level": 12.060392783714079,
             "growth_rate": 0.00038307199674958675,
-            "location_index": 132
+            "location_index": 132,
+            "total_mass": 41.923399324274776,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 148.34149370642155,
-            "level": 153.73449893640174,
+            "level": 40.065871059170966,
             "growth_rate": 0.0004518198516886621,
-            "location_index": 133
+            "location_index": 133,
+            "total_mass": 49.44716456880718,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 8.387572127682866,
-            "level": 11.605588449128938,
+            "level": 6.32697852116668,
             "growth_rate": 2.554694239669489e-05,
-            "location_index": 134
+            "location_index": 134,
+            "total_mass": 2.7958573758942884,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 8.045222244920302,
-            "level": 8.228091660280665,
+            "level": 2.0801915346534754,
             "growth_rate": 2.4504210053972654e-05,
-            "location_index": 135
+            "location_index": 135,
+            "total_mass": 2.6817407483067672,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 92.49150213131793,
-            "level": 105.60934768317246,
+            "level": 38.386979117347444,
             "growth_rate": 0.0002817114465500668,
-            "location_index": 136
+            "location_index": 136,
+            "total_mass": 30.83050071043931,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 74.1485512328602,
-            "level": 92.42770002359136,
+            "level": 41.7022698330489,
             "growth_rate": 0.00022584232222484224,
-            "location_index": 137
+            "location_index": 137,
+            "total_mass": 24.716183744286734,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 104.80849831068694,
-            "level": 110.21235743585716,
+            "level": 30.489178053348798,
             "growth_rate": 0.000319226663957989,
-            "location_index": 138
+            "location_index": 138,
+            "total_mass": 34.936166103562314,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 27.117008284873783,
-            "level": 38.01860809278717,
+            "level": 21.081458230588954,
             "growth_rate": 8.259322698852882e-05,
-            "location_index": 139
+            "location_index": 139,
+            "total_mass": 9.039002761624594,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 55.575687243352306,
-            "level": 77.5241105933779,
+            "level": 42.79093588153059,
             "growth_rate": 0.0001692729265452982,
-            "location_index": 140
+            "location_index": 140,
+            "total_mass": 18.525229081117434,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 803.933020529254,
-            "level": 785.9021955508291,
+            "level": 161.93288127894016,
             "growth_rate": 0.0024486264026841315,
-            "location_index": 141
+            "location_index": 141,
+            "total_mass": 267.97767350975136,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 7.531697420776451,
-            "level": 8.510819656688213,
+            "level": 2.996100231451699,
             "growth_rate": 2.2940111539889288e-05,
-            "location_index": 142
+            "location_index": 142,
+            "total_mass": 2.510565806925484,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 124.5657451802376,
-            "level": 125.85755811810378,
+            "level": 29.98330469671705,
             "growth_rate": 0.0003794034636337646,
-            "location_index": 143
+            "location_index": 143,
+            "total_mass": 41.5219150600792,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 97.38454591501262,
-            "level": 97.55033373917674,
+            "level": 22.191249762525914,
             "growth_rate": 0.0002966147231816905,
-            "location_index": 144
+            "location_index": 144,
+            "total_mass": 32.461515305004205,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 59.44561823652625,
-            "level": 51.21788068583191,
+            "level": 1.7542139122787188,
             "growth_rate": 0.00018105999706544303,
-            "location_index": 145
+            "location_index": 145,
+            "total_mass": 19.815206078842085,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 739.9415976032217,
-            "level": 883.8128416438752,
+            "level": 360.83360570162296,
             "growth_rate": 0.0022537207529337894,
-            "location_index": 146
+            "location_index": 146,
+            "total_mass": 246.6471992010739,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 48.6834856498427,
-            "level": 54.90260620757779,
+            "level": 19.57773361107138,
             "growth_rate": 0.00014828059713036884,
-            "location_index": 147
+            "location_index": 147,
+            "total_mass": 16.227828549947567,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 86.09294178313594,
-            "level": 74.57270598651033,
+            "level": 3.545565707547096,
             "growth_rate": 0.000262222654066569,
-            "location_index": 148
+            "location_index": 148,
+            "total_mass": 28.697647261045315,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 7.531697420776451,
-            "level": 7.517077388705957,
+            "level": 1.6789446847994913,
             "growth_rate": 2.2940111539889288e-05,
-            "location_index": 149
+            "location_index": 149,
+            "total_mass": 2.510565806925484,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 190.3830322168139,
-            "level": 259.82080975847384,
+            "level": 138.33473074353796,
             "growth_rate": 0.0005798703466642723,
-            "location_index": 150
+            "location_index": 150,
+            "total_mass": 63.461010738937965,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 16.122007551712525,
-            "level": 15.758613968671309,
+            "level": 3.089774888348368,
             "growth_rate": 4.910455516481641e-05,
-            "location_index": 151
+            "location_index": 151,
+            "total_mass": 5.374002517237508,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 169.38913580829418,
-            "level": 156.10042791981257,
+            "level": 19.634893733268484,
             "growth_rate": 0.0005159269487338395,
-            "location_index": 152
+            "location_index": 152,
+            "total_mass": 56.4630452694314,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 72.3250725634643,
-            "level": 81.29188148379711,
+            "level": 28.319765122770118,
             "growth_rate": 0.00022028835454271538,
-            "location_index": 153
+            "location_index": 153,
+            "total_mass": 24.10835752115477,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 53.10777469456784,
-            "level": 74.49353802629939,
+            "level": 41.87656179560341,
             "growth_rate": 0.00016175613637478022,
-            "location_index": 154
+            "location_index": 154,
+            "total_mass": 17.702591564855947,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 364.7292425231104,
-            "level": 355.3615466400756,
+            "level": 70.6277086616923,
             "growth_rate": 0.0011108955973535282,
-            "location_index": 155
+            "location_index": 155,
+            "total_mass": 121.57641417437013,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 9.091837822024978,
-            "level": 11.184871045926744,
+            "level": 4.888757913145784,
             "growth_rate": 2.7692001163575104e-05,
-            "location_index": 156
+            "location_index": 156,
+            "total_mass": 3.0306126073416593,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 9.496953068049814,
-            "level": 12.107226540104836,
+            "level": 5.786452593986387,
             "growth_rate": 2.892590481252989e-05,
-            "location_index": 157
+            "location_index": 157,
+            "total_mass": 3.1656510226832713,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 5.031875031569557,
-            "level": 4.879435111418201,
+            "level": 0.9566099393430946,
             "growth_rate": 1.5326130091281543e-05,
-            "location_index": 158
+            "location_index": 158,
+            "total_mass": 1.6772916771898523,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 257.93346916884906,
-            "level": 325.07967737666763,
+            "level": 150.26509528234314,
             "growth_rate": 0.0007856160732482001,
-            "location_index": 159
+            "location_index": 159,
+            "total_mass": 85.97782305628301,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 94.21251411457632,
-            "level": 99.21825798535835,
+            "level": 27.71981886593259,
             "growth_rate": 0.00028695332028075147,
-            "location_index": 160
+            "location_index": 160,
+            "total_mass": 31.40417137152544,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 23.522036157546715,
-            "level": 28.284089504293227,
+            "level": 11.898496487879829,
             "growth_rate": 7.164362864749852e-05,
-            "location_index": 161
+            "location_index": 161,
+            "total_mass": 7.840678719182239,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 94.50305549286102,
-            "level": 113.38178578518243,
+            "level": 47.89639472993043,
             "growth_rate": 0.0002878382538159753,
-            "location_index": 162
+            "location_index": 162,
+            "total_mass": 31.50101849762034,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 12.153420838071094,
-            "level": 13.972894017661632,
+            "level": 5.209196167956102,
             "growth_rate": 3.701699816663954e-05,
-            "location_index": 163
+            "location_index": 163,
+            "total_mass": 4.051140279357031,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 270.0833050299479,
-            "level": 240.9676121875643,
+            "level": 19.508607605350893,
             "growth_rate": 0.0008226221522598317,
-            "location_index": 164
+            "location_index": 164,
+            "total_mass": 90.02776834331597,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 10.443161410844846,
-            "level": 13.77723328365376,
+            "level": 6.9785590306559415,
             "growth_rate": 3.180787466753426e-05,
-            "location_index": 165
+            "location_index": 165,
+            "total_mass": 3.4810538036149485,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 291.20995851798835,
-            "level": 298.6815543025912,
+            "level": 74.73147953105345,
             "growth_rate": 0.0008869699028934831,
-            "location_index": 166
+            "location_index": 166,
+            "total_mass": 97.06998617266278,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 94.50305549286102,
-            "level": 89.04447806081545,
+            "level": 14.101255311010561,
             "growth_rate": 0.0002878382538159753,
-            "location_index": 167
+            "location_index": 167,
+            "total_mass": 31.50101849762034,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 85.7164265261707,
-            "level": 73.65587956263462,
+            "level": 2.796079540138505,
             "growth_rate": 0.00026107586052074406,
-            "location_index": 168
+            "location_index": 168,
+            "total_mass": 28.57214217539023,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 2.961335161699979,
-            "level": 3.5040942643885917,
+            "level": 1.3998656395709828,
             "growth_rate": 9.019661189388337e-06,
-            "location_index": 169
+            "location_index": 169,
+            "total_mass": 0.9871117205666596,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 277.43140251894255,
-            "level": 341.32767585330424,
+            "level": 150.38210496220537,
             "growth_rate": 0.0008450030534811846,
-            "location_index": 170
+            "location_index": 170,
+            "total_mass": 92.47713417298085,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         },
         {
             "capacity": 2721.521861010503,
-            "level": 2290.7136059990353,
+            "level": 36.115311243090346,
             "growth_rate": 0.008289235687775655,
-            "location_index": 171
+            "location_index": 171,
+            "total_mass": 907.1739536701676,
+            "times_collected": 0,
+            "TS_initial": 21.0,
+            "TS_current": 21.0,
+            "volume_loss_coefficient": 0.01,
+            "moisture_loss_coefficient": 0.05
         }
     ],
     "depots": [
         {
             "location_index": 173,
-            "storage_level": 0,
+            "storage_level": 2536.752682216905,
             "cumulative_biomass_received": 0,
             "is_yearly_demand_satisfied": false,
             "consumption_rate": 61.40350877192982,
             "capacity": 14000,
-            "production_stoppage_counter": 1,
+            "production_stoppage_counter": 0,
             "overfilling_counter": 0,
-            "unnecessary_imports_counter": 0
+            "unnecessary_imports_counter": 0,
+            "storage_TS": 15,
+            "dilution_water": 0
         }
     ],
     "terminals": [
@@ -1063,52 +2097,62 @@
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         },
         {
             "load_capacity": 45,
             "home_depot_index": 0,
-            "max_route_duration": 495
+            "max_route_duration": 495,
+            "load_TS_rate": 0.0
         }
     ],
     "distance_matrix": [
