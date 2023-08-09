@@ -377,8 +377,6 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
           vehicle.odometer += routingInput.distance_matrix[vehicle.locationIndex][vehicle.destinationLocationIndex];
           // Arrive at destination
           vehicle.moving = false;
-          if (debug >= 1) printf("Vehicle load : %f\n", vehicles[vehicleIndex].loadLevel);
-          if (debug >= 1) printf("Vehicle load's TS: %f\n", vehicles[vehicleIndex].load_TS_rate);
           vehicle.locationIndex = vehicle.destinationLocationIndex;
           if (debug >= 2) printf("%gh Vehicle #%d: arrive at %s\n", sim.now()/60, vehicleIndex, locationString(vehicle.locationIndex).c_str());
           // Do work depending on the arrived at location type          
@@ -445,12 +443,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
 
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
-     if (debug >= 1) printf("Storage Level: %f\n", depots[depotIndex].storage_level);
-     if (debug >= 1) printf("Storage TS: %f\n", depots[depotIndex].storage_TS);
-     if (debug >= 1) printf("Dilution water consumed: %f\n", depots[depotIndex].dilution_water);
-     if (debug >= 1) printf("Production stoppages: %d\n", depots[depotIndex].production_stoppage_counter);
-     if (debug >= 1) printf("Overfillings: %d\n", depots[depotIndex].overfilling_counter);
-     if (debug >= 1) printf("Unnecessary imports counter: %d\n", depots[depotIndex].unnecessary_imports_counter);
+
       /*
       // Drying process within the biogas plant
       if (depots[depotIndex].storage_level > 0){
