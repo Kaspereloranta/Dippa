@@ -53,7 +53,7 @@ void from_json(const json &j, RoutingInputPickupSite &x)
   j.at("level").get_to(x.level);
   j.at("growth_rate").get_to(x.growth_rate);
   j.at("location_index").get_to(x.location_index);
-   j.at("total_mass").get_to(x.total_mass);
+  j.at("total_mass").get_to(x.total_mass);
   j.at("times_collected").get_to(x.times_collected);
   j.at("TS_initial").get_to(x.TS_initial);
   j.at("TS_current").get_to(x.TS_current);
@@ -623,7 +623,7 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   + totalNumPickupSiteOverloadDays*50.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
   + dilutionWater*1
-  + productionStoppages*1000000
+  + productionStoppages*10000000
   + overFillings*1000
   + unnecessaryImports*100;
 }
