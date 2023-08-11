@@ -380,9 +380,9 @@ class Depot(IndexedLocation):
 		# Number witin each Depot's variable represents the type of biomass of interest
 		# 1=Grass and straw, 2=Dry manure, 3=Slurry manure
 
-		self.storage_level_1 = sim.config['depots']['index']['storage_level_1']
-		self.storage_level_2 = sim.config['depots']['index']['storage_level_2']
-		self.storage_level_3 = sim.config['depots']['index']['storage_level_3']
+		self.storage_level_1 = sim.config['depots'][index]['storage_level_1']
+		self.storage_level_2 = sim.config['depots'][index]['storage_level_2']
+		self.storage_level_3 = sim.config['depots'][index]['storage_level_3']
 
 		self.cumulative_biomass_received_1 = 0
 		self.cumulative_biomass_received_2 = 0
@@ -396,9 +396,9 @@ class Depot(IndexedLocation):
 		self.consumption_rate_2 = sim.config['depots'][index]['consumption_rate_2']
 		self.consumption_rate_3 = sim.config['depots'][index]['consumption_rate_3']
 
-		self.capacity_1 = sim.config['depots']['index']['grass_capacity']
-		self.capacity_2 = sim.config['depots']['index']['drymanure_capacity']
-		self.capacity_3 = sim.config['depots']['index']['slurrymanure_capacity']
+		self.capacity_1 = sim.config['depots'][index]['capacity_1']
+		self.capacity_2 = sim.config['depots'][index]['capacity_2']
+		self.capacity_3 = sim.config['depots'][index]['capacity_3']
 
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
@@ -521,11 +521,11 @@ class Terminal(IndexedLocation):
 		# Biomass storage level, total biomass received, consumption rate (tons/day), production_stoppage_days 
 		# (storage_level < 0) and days of overfilling, and boolean for if the yearly demand is satisfied.
 
-		self.storage_level = sim.config['terminals'][index]['storage_level']
-		self.cumulative_biomass_received = 0
-		self.is_yearly_demand_satisfied = False
-		self.consumption_rate = sim.config['terminals'][index]['consumption_rate']
-		self.capacity = sim.config['terminals'][index]['capacity']
+		#self.storage_level = sim.config['terminals'][index]['storage_level']
+		#self.cumulative_biomass_received = 0
+		#self.is_yearly_demand_satisfied = False
+		#self.consumption_rate = sim.config['terminals'][index]['consumption_rate']
+		#self.capacity = sim.config['terminals'][index]['capacity']
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
@@ -676,11 +676,11 @@ class WastePickupSimulation():
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
 						'location_index': terminal.location_index,
-						'storage_level': terminal.storage_level,
-						'cumulative_biomass_received' : terminal.cumulative_biomass_received,
-						'is_yearly_demand_satisfied' : terminal.is_yearly_demand_satisfied,
-						'consumption_rate' : terminal.consumption_rate,
-						'capacity' : terminal.capacity,
+					#	'storage_level': terminal.storage_level,
+					#	'cumulative_biomass_received' : terminal.cumulative_biomass_received,
+					#	'is_yearly_demand_satisfied' : terminal.is_yearly_demand_satisfied,
+					#	'consumption_rate' : terminal.consumption_rate,
+					#	'capacity' : terminal.capacity,
 						'production_stoppage_counter' : terminal.production_stoppage_counter,
 						'overfilling_counter' : terminal.overfilling_counter,
 						'unnecessary_imports_counter' : terminal.unnecessary_imports_counter
