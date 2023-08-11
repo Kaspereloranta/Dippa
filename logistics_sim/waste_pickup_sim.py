@@ -224,6 +224,9 @@ class PickupSite(IndexedLocation):
 	def biomass_type(self):
 		return self.type
 
+	def give_collection_rate(self):
+		return self.collection_rate
+
 # Vehicle
 class Vehicle(IndexedSimEntity):	
 
@@ -309,30 +312,27 @@ class Vehicle(IndexedSimEntity):
 				if isinstance(arrive_location, PickupSite):
 					# Arrived at a pickup site
 					pickup_site = arrive_location
-					
-					# TO CONSIDER THE LINEAR COMPONENT OF THE PICKUP DURATION BASED:
-					# collection_rate = 1/1.6 # Slurry manure
-					collection_rate = 1/1 # Dry manure
-					# collection_rate = 1/1.2 # Grass and straws
-					
-					if pickup_site.level > 0:
-						if self.load_level + pickup_site.level > self.load_capacity: 
-							# Can only take some
-							get_amount = self.load_capacity - self.load_level
-							pickup_site.get(get_amount)
-							loadTS = pickup_site.TS_rate()
-							self.put_load(get_amount,loadTS)
-							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
+					if pickup_site.biomass_type() == self.vehicle_type():
+						if pickup_site.level > 0:
+							if self.load_level + pickup_site.level > self.load_capacity: 
+								# Can only take some
+								get_amount = self.load_capacity - self.load_level
+								pickup_site.get(get_amount)
+								loadTS = pickup_site.TS_rate()
+								self.put_load(get_amount,loadTS)
+								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
+							else:
+								# Can take all
+								get_amount = pickup_site.level
+								pickup_site.get(get_amount)
+								loadTS = pickup_site.TS_rate()
+								self.put_load(get_amount,loadTS)
+								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
+							self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
-							# Can take all
-							get_amount = pickup_site.level
-							pickup_site.get(get_amount)
-							loadTS = pickup_site.TS_rate()
-							self.put_load(get_amount,loadTS)
-							yield self.sim.env.timeout(self.pickup_duration + get_amount*collection_rate)
-						self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
+							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 					else:
-						self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
+						self.warn(f"Vehicle arrived at WRONG SITE!")
 
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
@@ -364,6 +364,8 @@ class Vehicle(IndexedSimEntity):
 		"""
 		self.vehicle_odometer =+ distance_driven
 
+	def vehicle_type(self):
+		return self.type
 
 # Depot where the vehicles start from in the beginning of the day and go to at the end of the day
 class Depot(IndexedLocation):
