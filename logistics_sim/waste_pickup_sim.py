@@ -235,6 +235,15 @@ class Vehicle(IndexedSimEntity):
 		self.load_capacity = sim.config['vehicle_template']['load_capacity']
 		self.load_level = 0.0
 		self.load_TS_rate = sim.config ['vehicle_template']['load_TS_rate']
+		
+		# Types of a vehicle. 1=Can pick grass and straws, 2=can pick dry manures, 
+		# 3=can pick slurry manures
+		if index % 3 == 0:
+			self.type = 3
+		elif index % 2 == 0:
+			self.type = 2
+		else:
+			self.type = 1
 
 		# Work shift
 		self.max_route_duration = sim.config['vehicle_template']['max_route_duration']
@@ -604,7 +613,8 @@ class WastePickupSimulation():
 						'load_capacity': vehicle.load_capacity,
 						'home_depot_index': vehicle.home_depot_index,
 						'max_route_duration': vehicle.max_route_duration,
-						'load_TS_rate' : vehicle.load_TS_rate
+						'load_TS_rate' : vehicle.load_TS_rate,
+						'type' : vehicle.type
 					}, self.vehicles)),
 					'distance_matrix': self.config['distance_matrix'],
 					'duration_matrix': self.config['duration_matrix']
