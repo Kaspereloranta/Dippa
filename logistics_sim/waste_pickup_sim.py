@@ -700,9 +700,34 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			'capacity': pickup_site['properties']['Clustermasses'],
 			'daily_growth_rate' : pickup_site['properties']['Clustermasses']/sim_config['sim_runtime_days'], # Ks. myös rivit 164-171 (Kohina täällä)
 			'level' : pickup_site['properties']['Clustermasses']*np.random.uniform(0, 0.8),
-			'TS_initial' : pickup_site['properties']['TS-rate']
+			'TS_initial' : pickup_site['properties']['TS-rate'],
+			'type' : sim_config['biomass_type_mapping'][pickup_site['properties']['Type']]
 		}
-		
+		if pickup_site_config[type] == 1:
+			pickup_site_config['daily_growth_rate'] = pickup_site['properties']['Clustermasses']/3
+			pickup_site_config['accumulation_days'] = [0]*(sim_config['sim_runtime_days'])
+
+			# To randomize with sites have grass and straw to collect at the beginning of simulation.
+			if random.randint(1,10) <= 4:
+				pickup_site_config['level'] = pickup_site['properties']['Clustermasses']/3
+			else:
+				pickup_site_config['level'] = 0
+
+			# Randomize when the cuttings occur within a site
+			pickup_site_config['accumulation_days'][random.randint(97,111)] = 1
+			pickup_site_config['accumulation_days'][random.randint(126,140)] = 1
+			pickup_site_config['accumulation_days'][random.randint(155,169)] = 1
+
+			pickup_site_config['collection_rate'] = 1/1.2 # Grass and straws
+
+		elif pickup_site_config[type] == 2:
+			pickup_site_config['accumulation_days'] = [1]*(sim_config['sim_runtime_days'])
+			pickup_site_config['collection_rate'] = 1/1 # Dry manure
+
+		elif pickup_site_config[type] == 3:
+			pickup_site_config['accumulation_days'] = [1]*(sim_config['sim_runtime_days'])
+			pickup_site_config['collection_rate'] = 1/1.6 # Slurry manure
+
 		# FOR GRASS AND STRAWS
 		# New pickup_site attributes total_mass is and times_collected are defined, 
 		# to raise level 0 -> total_mass 3 times a year
@@ -710,7 +735,6 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		# However, overfilling is not fined in the cost function and mass is cumulated only 3 times a year, not daily basis
 		# Capacity and daily_growth attributes must have a reasonable values to allow c++ optimizer to run, in which max_num_visits
 		# is calculated for pickup sites, if capacity is very great and daily_growth_rate = 0 -> max_num_visits = 0 and nothing happens.
-		pickup_site_config['total_mass'] = pickup_site['properties']['Clustermasses']/3
 		pickup_site_config['times_collected'] = 0
 
 		# If biomasses is assumed to dry out over time
