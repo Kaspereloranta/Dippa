@@ -415,15 +415,16 @@ class Depot(IndexedLocation):
 	def storage_sum(self):
 		return self.storage_level_1 + self.storage_level_2 + self.storage_level_3
 	
-	def biomass_consumption(self):
-		self.storage_level_1 -= self.consumption_rate_1
-		self.storage_level_2 -= self.consumption_rate_2
-		self.storage_level_3 -= self.consumption_rate_3
-	
 	def avoid_negative_storage_levels(self):
 		self.storage_level_1 = max(0,self.storage_level_1)
 		self.storage_level_2 = max(0,self.storage_level_2)
 		self.storage_level_3 = max(0,self.storage_level_3)
+
+	def biomass_consumption(self):
+		self.storage_level_1 -= self.consumption_rate_1
+		self.storage_level_2 -= self.consumption_rate_2
+		self.storage_level_3 -= self.consumption_rate_3
+		self.avoid_negative_storage_levels()
 
 	def produce_biogas_forever(self):
 		while True:
@@ -440,7 +441,6 @@ class Depot(IndexedLocation):
 				self.production_stoppage_counter += 1
 				self.storage_TS = 0
 
-			self.avoid_negative_storage_levels()
 			self.log(f"Total storage of biogas facility: {self.storage_sum()} tons.")			
 			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
 
@@ -506,6 +506,7 @@ class Depot(IndexedLocation):
 					else:
 						self.storage_level_3 = 0					
 					self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
+					self.avoid_negative_storage_levels()
 				else:
 					self.storage_level_1 = 0								
 					self.storage_level_2 = 0
@@ -657,8 +658,12 @@ class WastePickupSimulation():
 						'storage_level_1': depot.storage_level_1,
 						'storage_level_2': depot.storage_level_2,
 						'storage_level_3': depot.storage_level_3,
-						'cumulative_biomass_received' : depot.cumulative_biomass_received,
-						'is_yearly_demand_satisfied' : depot.is_yearly_demand_satisfied,
+						'cumulative_biomass_received_1' : depot.cumulative_biomass_received_1,
+						'cumulative_biomass_received_2' : depot.cumulative_biomass_received_2,
+						'cumulative_biomass_received_3' : depot.cumulative_biomass_received_3,
+						'is_yearly_demand_satisfied_1' : depot.is_yearly_demand_satisfied_1,
+						'is_yearly_demand_satisfied_2' : depot.is_yearly_demand_satisfied_2,
+						'is_yearly_demand_satisfied_3' : depot.is_yearly_demand_satisfied_3,
 						'consumption_rate_1' : depot.consumption_rate_1,
 						'consumption_rate_2' : depot.consumption_rate_2,
 						'consumption_rate_3' : depot.consumption_rate_3,
