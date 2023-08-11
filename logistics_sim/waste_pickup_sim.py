@@ -127,11 +127,10 @@ class PickupSite(IndexedLocation):
 		self.TS_initial = sim.config['pickup_sites'][index]['TS-rate']
 		self.TS_current = sim.config['pickup_sites'][index]['TS-rate']
 		self.daily_growth_rate = sim.config['pickup_sites'][index]['daily_growth_rate']
+		self.type = sim.config['pickup_sites'][index]['type'] # 1=GRASS, 2=DRYMANURE, 3=SLURRYMANURE
+		self.accumulation_days = sim.config['pickup_sites'][index]['accumulation_days']
+		self.collection_rate =  sim.config['pickup_sites'][index]['collection_rate']
 		self.levelListeners = []
-
-		# Relevant only with grass and straw
-		self.total_mass = sim.config['pickup_sites'][index]['total_mass']
-		self.times_collected = sim.config['pickup_sites'][index]['times_collected']
 
 		# Relevant only if timecriticality is considered.
 		self.volume_loss = sim.config['pickup_sites'][index]['volume_loss_coefficient']
@@ -563,10 +562,11 @@ class WastePickupSimulation():
 						'level': pickup_site.level,
 						'growth_rate': pickup_site.daily_growth_rate/(24*60),
 						'location_index': pickup_site.location_index,
-						'total_mass': pickup_site.total_mass, 
-						'times_collected': pickup_site.times_collected,
 						'TS_initial': pickup_site.TS_initial, 
 						'TS_current': pickup_site.TS_current, 
+						'type' : pickup_site.type,
+						'accumulation_days' : pickup_site.accumulation_days,
+						'collection_rate' : pickup_site.collection_rate,
 	  					'volume_loss_coefficient': pickup_site.volume_loss, 
 						'moisture_loss_coefficient' : pickup_site.moisture_loss
 					}, self.pickup_sites)),
