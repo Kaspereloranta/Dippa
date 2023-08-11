@@ -378,11 +378,29 @@ class Depot(IndexedLocation):
 		# (imports that occured after satisfying yearly demand) amount of dilution water consumed druing the biogas production. 
 		# (Dilution water is required if TS > 15 %)
 
-		self.storage_level = sim.config['depots'][index]['storage_level']
-		self.cumulative_biomass_received = 0
-		self.is_yearly_demand_satisfied = False
-		self.consumption_rate = sim.config['depots'][index]['consumption_rate']
-		self.capacity = sim.config['depots'][index]['capacity']
+		# Number witin each Depot's variable represents the type of biomass of interest
+		# 1=Grass and straw, 2=Dry manure, 3=Slurry manure
+
+		self.storage_level_1 = sim.config['depots']['index']['storage_level_1']
+		self.storage_level_2 = sim.config['depots']['index']['storage_level_2']
+		self.storage_level_3 = sim.config['depots']['index']['storage_level_3']
+
+		self.cumulative_biomass_received_1 = 0
+		self.cumulative_biomass_received_2 = 0
+		self.cumulative_biomass_received_3 = 0
+
+		self.is_yearly_demand_satisfied_1 = False
+		self.is_yearly_demand_satisfied_2 = False
+		self.is_yearly_demand_satisfied_3 = False
+
+		self.consumption_rate_1 = sim.config['depots'][index]['consumption_rate_1']
+		self.consumption_rate_2 = sim.config['depots'][index]['consumption_rate_2']
+		self.consumption_rate_3 = sim.config['depots'][index]['consumption_rate_3']
+
+		self.capacity_1 = sim.config['depots']['index']['grass_capacity']
+		self.capacity_2 = sim.config['depots']['index']['drymanure_capacity']
+		self.capacity_3 = sim.config['depots']['index']['slurrymanure_capacity']
+
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
@@ -394,57 +412,104 @@ class Depot(IndexedLocation):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			self.drying_process = sim.env.process(self.storage_drying_daily_forever())
 
+	def storage_sum(self):
+		return self.storage_level_1 + self.storage_level_2 + self.storage_level_3
+	
+	def biomass_consumption(self):
+		self.storage_level_1 -= self.consumption_rate_1
+		self.storage_level_2 -= self.consumption_rate_2
+		self.storage_level_3 -= self.consumption_rate_3
+	
+	def avoid_negative_storage_levels(self):
+		self.storage_level_1 = max(0,self.storage_level_1)
+		self.storage_level_2 = max(0,self.storage_level_2)
+		self.storage_level_3 = max(0,self.storage_level_3)
+
 	def produce_biogas_forever(self):
 		while True:
 			yield self.sim.env.timeout(24*60)
-			if self.storage_level > 0:
+			if self.storage_sum() > 0:
 				if self.storage_TS > 15:
 					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
-					self.dilution_water += 14/3*self.storage_TS*self.storage_level/100 + pow(self.storage_TS,2)*self.storage_level
+					self.dilution_water += 14/3*self.storage_TS*self.storage_sum()/100 + pow(self.storage_TS,2)*self.storage_sum()
 					self.storage_TS = 15
-				self.storage_level -= self.consumption_rate
+				self.biomass_consumption()
 
-			if self.storage_level <= 0:
+			if self.storage_sum() <= 0:
 				self.warn(f"Production stoppage!")
 				self.production_stoppage_counter += 1
 				self.storage_TS = 0
 
-			self.storage_level = max(0,self.storage_level)
-			self.log(f"Storage level of biogas facility: {self.storage_level} tons.")			
+			self.avoid_negative_storage_levels()
+			self.log(f"Total storage of biogas facility: {self.storage_sum()} tons.")			
 			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
 
 	def update_TS(self, amount, ts):
-		self.storage_TS = (self.storage_TS/100*self.storage_level + ts/100*amount)/(self.storage_level+amount)*100
+		self.storage_TS = (self.storage_TS/100*self.storage_sum() + ts/100*amount)/(self.storage_sum()+amount)*100
 
-	def receive_biomass(self, received_amount, received_TS):
-		
-		if self.is_yearly_demand_satisfied:
+	def receive_biomass(self, received_amount, received_TS, type):
+		biomass_mapping = {
+            1: (self.storage_level_1, self.cumulative_biomass_received_1, self.is_yearly_demand_satisfied_1, self.capacity_1),
+            2: (self.storage_level_2, self.cumulative_biomass_received_2, self.is_yearly_demand_satisfied_2, self.capacity_2),
+            3: (self.storage_level_3, self.cumulative_biomass_received_3, self.is_yearly_demand_satisfied_3, self.capacity_3),
+        }
+
+		storage_level, cumulative_biomass_received, is_yearly_demand_satisfied, capacity = biomass_mapping[type]
+
+		if is_yearly_demand_satisfied:
 			self.unnecessary_imports_counter += 1
 			self.warn(f"Unnecessary import. Yearly demand already satisfied.")
 			return
 
 		self.update_TS(received_amount, received_TS)
 
-		self.storage_level += received_amount
-		self.cumulative_biomass_received += received_amount
+		storage_level += received_amount
+		cumulative_biomass_received += received_amount
 
-		if self.storage_level > self.capacity:
+		if storage_level > capacity:
 			self.warn(f"Overfilling at biogas facility!")
 			self.overfilling_counter += 1
 
-		if self.cumulative_biomass_received >= self.capacity:
-			self.is_yearly_demand_satisfied = True
+		if cumulative_biomass_received >= capacity:
+			is_yearly_demand_satisfied = True
 			self.warn(f"Yearly demand for biomass satisfied!")
-	
+
+	  # Assign the modified values back to the original attributes
+		if type == 1:
+			self.storage_level_1 = storage_level
+			self.cumulative_biomass_received_1 = cumulative_biomass_received
+			self.is_yearly_demand_satisfied_1 = is_yearly_demand_satisfied
+		elif type == 2:
+			self.storage_level_2 = storage_level
+			self.cumulative_biomass_received_2 = cumulative_biomass_received
+			self.is_yearly_demand_satisfied_2 = is_yearly_demand_satisfied
+		elif type == 3:
+			self.storage_level_3 = storage_level
+			self.cumulative_biomass_received_3 = cumulative_biomass_received
+			self.is_yearly_demand_satisfied_3 = is_yearly_demand_satisfied
+
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
 				yield self.sim.env.timeout(24*60)
-				if(self.storage_level > 0):
-					self.storage_level -= self.storage_level*pow(0.01,1/7)
+				if(self.storage_sum() > 0):
+					if(self.storage_level_1 > 0):
+						self.storage_level_1 -= self.storage_level_1*pow(0.01,1/7)
+					else:
+						self.storage_level_1 = 0
+					if(self.storage_level_2 > 0):
+							self.storage_level_2 -= self.storage_level_2*pow(0.01,1/7)
+					else:
+							self.storage_level_2 = 0
+					if(self.storage_level_3 > 0):
+						self.storage_level_3 -= self.storage_level_3*pow(0.01,1/7)
+					else:
+						self.storage_level_3 = 0					
 					self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
 				else:
-					self.storage_level = 0
+					self.storage_level_1 = 0								
+					self.storage_level_2 = 0
+					self.storage_level_3 = 0
 					self.storage_TS = 0
 
 
@@ -589,11 +654,17 @@ class WastePickupSimulation():
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index,
-						'storage_level': depot.storage_level,
+						'storage_level_1': depot.storage_level_1,
+						'storage_level_2': depot.storage_level_2,
+						'storage_level_3': depot.storage_level_3,
 						'cumulative_biomass_received' : depot.cumulative_biomass_received,
 						'is_yearly_demand_satisfied' : depot.is_yearly_demand_satisfied,
-						'consumption_rate' : depot.consumption_rate,
-						'capacity' : depot.capacity,
+						'consumption_rate_1' : depot.consumption_rate_1,
+						'consumption_rate_2' : depot.consumption_rate_2,
+						'consumption_rate_3' : depot.consumption_rate_3,
+						'capacity_1' : depot.capacity_1,
+						'capacity_2' : depot.capacity_2,
+						'capacity_3' : depot.capacity_3,
 						'production_stoppage_counter' : depot.production_stoppage_counter,
 						'overfilling_counter' : depot.overfilling_counter,
 						'unnecessary_imports_counter' : depot.unnecessary_imports_counter,
@@ -761,9 +832,15 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		terminal_config = {
 			**terminal['properties'],
 			'lonlats': tuple(terminal['geometry']['coordinates']),
-			'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
-			'capacity' : sim_config['depot_capacity'],
-			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
+			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
+			'capacity_1' : sim_config['grass_capacity'],
+			'capacity_2' : sim_config['drymanure_capacity'],
+			'capacity_3' : sim_config['slurrymanure_capacity'],
+			'consumption_rate_1' : sim_config['grass_capacity'] / sim_config['sim_runtime_days'],
+			'consumption_rate_2' : sim_config['drymanure_capacity'] / sim_config['sim_runtime_days'],
+			'consumption_rate_3' : sim_config['slurrymanure_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['terminals'].append(terminal_config)
 		
@@ -775,9 +852,15 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			**depot['properties'],
 			**sim_config['depots'][index],
 			'lonlats': tuple(depot['geometry']['coordinates']),
-			'storage_level' : sim_config['depot_capacity']*np.random.uniform(0, 0.8),
-			'capacity' : sim_config['depot_capacity'],
-			'consumption_rate' : sim_config['depot_capacity'] / sim_config['sim_runtime_days']
+			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
+			'capacity_1' : sim_config['grass_capacity'],
+			'capacity_2' : sim_config['drymanure_capacity'],
+			'capacity_3' : sim_config['slurrymanure_capacity'],
+			'consumption_rate_1' : sim_config['grass_capacity'] / sim_config['sim_runtime_days'],
+			'consumption_rate_2' : sim_config['drymanure_capacity'] / sim_config['sim_runtime_days'],
+			'consumption_rate_3' : sim_config['slurrymanure_capacity'] / sim_config['sim_runtime_days']
 		}
 		sim_config['depots'][index] = depot_config
 

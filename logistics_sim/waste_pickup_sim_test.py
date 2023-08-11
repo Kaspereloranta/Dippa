@@ -13,7 +13,9 @@ sim_config = {
 	'sim_runtime_days': 228, # Simulation runtime in days, kalenterivuoden 2022 tyopaivat
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', # <-- TÄÄLLÄ HAETAAN KAIKKI SITET SISÄLTÄVÄ TIEDOSTO
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
-	'depot_capacity' : 14000, # yearly targeted input for facility # <-- TARVITAAN KÄYTÄNNÖSSÄ 2 KAPASITEETTIA (VAI 3?)
+	'grass_capacity' : 28000,
+	'drymanure_capacity': 14000,
+	'slurrymanure_capacity': 14000,
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', 
 	'vehicle_template': {
 		'load_capacity': 45, # Keskim. arvaus
