@@ -180,9 +180,12 @@ class PickupSite(IndexedLocation):
 		self.levelListeners = filter(lambda x: x[0] != listener, self.levelListeners)
 
 	def grow_daily_forever(self):
+		day = 0
 		while True:
 			yield self.sim.env.timeout(24*60)
-			self.put(self.daily_growth_rate)			
+			if(self.accumulation_days[day]==1):	
+				self.put(self.daily_growth_rate)
+			day += 1			
 			''' 
 			# FOR GRASS AND STRAWS
 			if self.sim.config['sim_type'] == 1:
@@ -217,6 +220,9 @@ class PickupSite(IndexedLocation):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			return self.TS_current
 		return self.TS_initial
+
+	def biomass_type(self):
+		return self.type
 
 # Vehicle
 class Vehicle(IndexedSimEntity):	
