@@ -265,7 +265,6 @@ class Vehicle(IndexedSimEntity):
 
 		self.log(f"At {type(sim.locations[self.location_index]).__name__} #{sim.locations[self.location_index].index}")
 
-
 	# Get current location
 	def get_lonlat(self):
 		if self.moving == False:
@@ -337,7 +336,7 @@ class Vehicle(IndexedSimEntity):
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
 					depot = arrive_location
-					depot.receive_biomass(self.load_level,self.load_TS_rate)
+					depot.receive_biomass(self.load_level,self.load_TS_rate,self.type)
 					self.load_level = 0
 					self.load_TS_rate = 0
 
@@ -512,7 +511,6 @@ class Depot(IndexedLocation):
 					self.storage_level_2 = 0
 					self.storage_level_3 = 0
 					self.storage_TS = 0
-
 
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
