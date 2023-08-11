@@ -4,31 +4,47 @@ import json
 import random
 # coding: utf-8
 
+# BIOMASS_TYPES 1=GRASS AND STRAWS, 2=DRY MANURES, 3=SLURRY MANURES
+
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
-	'sim_type': 2, # 1=Grass and straws, 2=manures
+	'sim_type': 2, # 1=Grass and straws, 2=manures   # <--- EI TARVITA YLEISTYKSEN MYÖTÄ
 	'isTimeCriticalityConsidered' :  'False', # Boolean
 	'sim_runtime_days': 228, # Simulation runtime in days, kalenterivuoden 2022 tyopaivat
-	'pickup_sites_filename': 'geo_data/nearest_pickup_sitesKuivalannat.geojson',
+	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', # <-- TÄÄLLÄ HAETAAN KAIKKI SITET SISÄLTÄVÄ TIEDOSTO
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
-	'depot_capacity' : 14000, # yearly targeted input for facility
+	'grass_capacity' : 28000,
+	'drymanure_capacity': 14000,
+	'slurrymanure_capacity': 14000,
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', 
 	'vehicle_template': {
 		'load_capacity': 45, # Keskim. arvaus
 		'max_route_duration': 8*60 + 15, # Minutes (9h - 45min break = 8h 15min) 
 		'break_duration': 45, # Minutes # Break Happens after 1/2 of drivetime 
 		'num_breaks_per_shift': 1,
-		'pickup_duration': 10, # Minutes # Tama 10 min = keruiden asetusaika, sama kaikille biomassoille. Simulaatiossa ja optimoinnissa huomioidaan keruun keston lineaarinen komponentti.
-							  # Vakiokomponenttia yllapidetaan myos: routing_optimizer.cpp rivi 22
-							  # Lin. kommponentti simulaatiossa: waste_pickup_sim.py rivit 254 ja 266  
-							  #  Lin. kommponentti optimoijassa: LogisticsSimulation::pickup
+		'pickup_duration': 10, # Minutes # Tama 10 min = keruiden asetusaika, sama kaikille biomassoille. 
+							   # Simulaatiossa keruun kesto asetusaika + pickup_amount*pickup_rate
 		'load_TS_rate': 0.0
+							# Tarvitaan autolle tyyppimuuttuja joka määrää mitä massoja voi hakea, tämä luodaan esiprosessoinnissa
 	},
 	'depots': [
 		{
-			'num_vehicles': 10 # TESTAA MYOS ERI ARVOILLA
+			'num_vehicles': 9 # TESTAA MYOS ERI ARVOILLA (nyt jako autotyypeittäin 3-3-3)
 		}
-	]
+	],
+	'biomass_type_mapping':{
+		'Hevoset ja ponit, kuivalanta yhteensa varastosta': 2,
+		'Nautojen lietelanta elainsuojasta 2015': 3,
+		'Lihakarjan lietelanta elainsuojasta' : 3,
+		'Lihakarjan kuivalanta yhteensa varastosta': 2,
+		'Broilerit, kalkkunat ja muu siipikarja kuivalanta yhteensa varastosta' : 2,
+		'Emakot ja porsaat lietelanta elainsuojasta' : 3,
+		'Sikojenkuivalantavarastosta2016' : 2,
+		'Emakot ja porsaat kuivalanta yhteensa varastosta' : 2,
+		'Sivuvirta: Kesantonurmi' : 1,
+		'Sivuvirta: Olki' : 1,
+		'Sivuvirta: Kuivaheinanurmet': 1
+	}
 }
 
 def hypothesis_test():
