@@ -346,6 +346,7 @@ struct VehicleState {
   float overtime; // Total overtime accumulated
   float load_TS_rate;
   int type;
+  int wrong_sites_visited;
 
   // Vehicle en route or not
   bool enRoute; // true: vehicle is en route, so no new route can be started, false: vehicle can start a new route
@@ -446,7 +447,8 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                   co_await sim.timeout(pickup_duration + pickupSites[pickup_site_index].collection_rate*collectedAmount);            
                 }
                 else{
-                 // TODO: VEHICLE / PICKUP SITE TO CALCULATE HOW MANY TIMES VEHICLE VISITED WRONG TYPE OF SITE. 
+                 // TODO: VEHICLE / PICKUP SITE TO CALCULATE HOW MANY TIMES VEHICLE VISITED WRONG TYPE OF SITE.
+                 vehicles[vehicleIndex].wrong_sites_visited++; 
                 }
               }
               break;
@@ -575,8 +577,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
 
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
+        // With grass and straws, overfillings are not fined at the sites, since they are stored as baled on the fields. (=infinite storage).
+        if (pickupSites[pickupSiteIndex].type != 1){
         totalNumPickupSiteOverloadDays++;
         if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
+        }
       }
     }
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
@@ -699,14 +704,15 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
 }
 
 // Calculate cost function from components
-double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime, double dilutionWater, int productionStoppages, int overFillings, int unnecessaryImports) {
+double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime, double dilutionWater, int productionStoppages, int overFillings, int unnecessaryImports, int wrongSitesVisited) {
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*500.0 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
   + dilutionWater*100
   + productionStoppages*10000000
   + overFillings*1000
-  + unnecessaryImports*100;
+  + unnecessaryImports*100
+  + wrongSitesVisited*50;
 }
 
 // Logistics simulation class member function: cost function
@@ -736,7 +742,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
         totalOdometerLowerBound += routingInput.distance_matrix[route[route.size() - 2]][route[route.size() - 1]];
       }
     }
-    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0, 0, 0, 0, 0);
+    double costLowerBound = costFunctionFromComponents(totalOdometerLowerBound, 0, 0, 0, 0, 0, 0, 0);
     if (costLowerBound >= earlyOutThreshold) return std::numeric_limits<double>::max();
   }
 
@@ -749,6 +755,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     vehicleState.overtime = 0;
     vehicleState.load_TS_rate = routingInput.vehicles[vehicleIndex].load_TS_rate;
     vehicleState.type = routingInput.vehicles[vehicleIndex].type;
+    vehicleState.wrong_sites_visited = 0;
     vehicleState.enRoute = false;
     vehicleState.moving = false;
     vehicleState.locationIndex = routingInput.depots[routingInput.vehicles[vehicleIndex].home_depot_index].location_index;
@@ -810,11 +817,13 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   sim.run();
   double totalOvertime = 0;
   double totalOdometer = 0;
+  int wrongSitesVisited = 0;
   for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
     totalOvertime += vehicles[vehicleIndex].overtime;
     if (debug >= 2) printf("Vehicle #%d overtime: %g h\n", vehicleIndex, vehicles[vehicleIndex].overtime/60);
     if (debug >= 2) printf("Vehicle #%d odometer reading: %g km\n", vehicleIndex, vehicles[vehicleIndex].odometer/1000);
     totalOdometer += vehicles[vehicleIndex].odometer;
+    wrongSitesVisited += vehicles[vehicleIndex].wrong_sites_visited;
   }
   for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
     productionStoppages += depots[depotIndex].production_stoppage_counter;
@@ -825,11 +834,12 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
   if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
-  if (debug >= 2) printf("Total production stoppages: %g h\n", float(productionStoppages));
-  if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %g h\n", float(unnecessaryImports));
-  if (debug >= 2) printf("Total overfillings within the biogas plant: %g h\n", float(overFillings));
-  if (debug >= 2) printf("Total consumption of dilution water: %g h\n", dilutionWater);
-  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports);
+  if (debug >= 2) printf("Total production stoppages: %g times.\n", float(productionStoppages));
+  if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %g times.\n", float(unnecessaryImports));
+  if (debug >= 2) printf("Total overfillings within the biogas plant: %g times.\n", float(overFillings));
+  if (debug >= 2) printf("Total consumption of dilution water: %g tons.\n", dilutionWater);
+  if (debug >= 2) printf("Wrong sites visited total by vehicles: %g times.\n", wrongSitesVisited);
+  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports, wrongSitesVisited);
 }
 
 // Simulation class constructor
