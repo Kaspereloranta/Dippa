@@ -241,7 +241,12 @@ void preprocess_routing_input(RoutingInput &x) {
   x.num_pickup_site_visits_in_genome = 0;
   for (int i = 0; i < x.pickup_sites.size(); i++) {
     RoutingInputPickupSite site = x.pickup_sites[i];
-    site.max_num_visits = (int)ceil((site.growth_rate*x.sim_duration + site.level)/(site.capacity*0.8));
+    if(site.type == 1){
+      site.max_num_visits = (int)ceil((site.growth_rate*3 + site.level)/(site.capacity*0.8));
+    }
+    else{    
+      site.max_num_visits = (int)ceil((site.growth_rate*x.sim_duration + site.level)/(site.capacity*0.8));
+    }
     for (int j = x.num_pickup_site_visits_in_genome; j < x.num_pickup_site_visits_in_genome + site.max_num_visits; j++) {
       x.gene_to_pickup_site_index.push_back(i);
     }
