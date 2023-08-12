@@ -234,7 +234,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 228; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
+  x.output_num_days = 14; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
@@ -242,7 +242,7 @@ void preprocess_routing_input(RoutingInput &x) {
   for (int i = 0; i < x.pickup_sites.size(); i++) {
     RoutingInputPickupSite site = x.pickup_sites[i];
     if(site.type == 1){
-      site.max_num_visits = (int)ceil((site.growth_rate*3 + site.level)/(site.capacity*0.8));
+      site.max_num_visits = (int)ceil((site.growth_rate + site.level)/(site.capacity*0.8));
     }
     else{    
       site.max_num_visits = (int)ceil((site.growth_rate*x.sim_duration + site.level)/(site.capacity*0.8));

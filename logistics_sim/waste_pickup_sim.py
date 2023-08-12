@@ -829,9 +829,16 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 				pickup_site_config['level'] = 0
 
 			# Randomize when the cuttings occur within a site
-			pickup_site_config['accumulation_days'][random.randint(97,111)] = 1
-			pickup_site_config['accumulation_days'][random.randint(126,140)] = 1
-			pickup_site_config['accumulation_days'][random.randint(155,169)] = 1
+
+			# Sim-length = 2 weeks
+			if sim_config['sim_runtime_days']==14:
+				pickup_site_config['accumulation_days'][random.randint(1,14)-1] = 1
+		
+			# Sim-length = 1 year
+			if sim_config['sim_runtime_days']==228:
+				pickup_site_config['accumulation_days'][random.randint(97,111)] = 1
+				pickup_site_config['accumulation_days'][random.randint(126,140)] = 1
+				pickup_site_config['accumulation_days'][random.randint(155,169)] = 1
 
 			pickup_site_config['collection_rate'] = 1/1.2 # Grass and straws
 
