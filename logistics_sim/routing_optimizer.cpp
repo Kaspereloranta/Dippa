@@ -23,7 +23,7 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
-int debug = 2; // 0: no printf, 1: printf for genetic algo, 2: all printf
+int debug = 1; // 0: no printf, 1: printf for genetic algo, 2: all printf
 const float pickup_duration = 10;
 
 enum LocationType {LOCATION_TYPE_DEPOT, LOCATION_TYPE_PICKUP_SITE, LOCATION_TYPE_TERMINAL};
