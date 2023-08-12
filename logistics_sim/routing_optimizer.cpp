@@ -834,11 +834,11 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
   if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
-  if (debug >= 2) printf("Total production stoppages: %g times.\n", float(productionStoppages));
-  if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %g times.\n", float(unnecessaryImports));
-  if (debug >= 2) printf("Total overfillings within the biogas plant: %g times.\n", float(overFillings));
+  if (debug >= 2) printf("Total production stoppages: %d times.\n", productionStoppages);
+  if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %d times.\n", unnecessaryImports);
+  if (debug >= 2) printf("Total overfillings within the biogas plant: %d times.\n", overFillings);
   if (debug >= 2) printf("Total consumption of dilution water: %g tons.\n", dilutionWater);
-  if (debug >= 2) printf("Wrong sites visited total by vehicles: %g times.\n", wrongSitesVisited);
+  if (debug >= 2) printf("Wrong sites visited total by vehicles: %d times.\n", wrongSitesVisited);
   return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports, wrongSitesVisited);
 }
 
