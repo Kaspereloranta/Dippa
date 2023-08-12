@@ -8,7 +8,6 @@ import random
 
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
-	'sim_type': 2, # 1=Grass and straws, 2=manures   # <--- EI TARVITA YLEISTYKSEN MYÖTÄ
 	'isTimeCriticalityConsidered' :  'False', # Boolean
 	'sim_runtime_days': 228, # Simulation runtime in days, kalenterivuoden 2022 tyopaivat
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', # <-- TÄÄLLÄ HAETAAN KAIKKI SITET SISÄLTÄVÄ TIEDOSTO

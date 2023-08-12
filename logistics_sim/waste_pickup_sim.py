@@ -159,6 +159,9 @@ class PickupSite(IndexedLocation):
 	# Get some amount from the containers at the site
 	def get(self, amount):
 		self.level -= amount
+		if self.level <= 0:
+			self.level = 0
+			self.TS_current = 0
 
 	def estimate_when_full(self):
 		# Solve:
@@ -186,35 +189,17 @@ class PickupSite(IndexedLocation):
 			if(self.accumulation_days[day]==1):	
 				self.put(self.daily_growth_rate)
 			day += 1			
-			''' 
-			# FOR GRASS AND STRAWS
-			if self.sim.config['sim_type'] == 1:
-				if (138240 <= self.sim.env.now <= 158400 and self.times_collected == 0):
-					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
-					self.put(self.total_mass*isFulfilled)
-					if isFulfilled==1:
-						self.times_collected += 1
-				elif (180000 <= self.sim.env.now <= 200160 and self.times_collected == 1):
-					isFulfilled = random.choices([0,1],[13,1],k=1)[0]
-					self.put(self.total_mass*isFulfilled)
-					if isFulfilled==1:
-						self.times_collected += 1
-				elif (221760 <= self.sim.env.now <= 241920 and self.times_collected == 2):
-					isFulfilled = random.choices([0,1],[13,1],k=1)[0]					
-					self.put(self.total_mass*isFulfilled)
-					if isFulfilled==1:
-						self.times_collected += 1
-			else: # MANURES
-				# TO ADD NOISE TO THE CUMULATION:
-				self.put(self.daily_growth_rate + np.clip(np.random.normal(0,1),-10,10)/20*self.daily_growth_rate)
-			 '''
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
 				yield self.sim.env.timeout(24*60)
-				self.level -= self.level*pow(self.volume_loss,1/7)
-				self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
+				if self.level > 0:
+					self.level -= self.level*pow(self.volume_loss,1/7)
+					self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
+				else:
+					self.level = 0
+					self.TS_current = 0
 
 	def TS_rate(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -518,18 +503,39 @@ class Terminal(IndexedLocation):
 	def __init__(self, sim, index):
 		super().__init__(sim, index, sim.config['terminals'][index]['location_index'])
 
-		# Biomass storage level, total biomass received, consumption rate (tons/day), production_stoppage_days 
-		# (storage_level < 0) and days of overfilling, and boolean for if the yearly demand is satisfied.
+		# Biomass storage level and TS-rate of storage, total biomass received, consumption rate (tons/day), production_stoppage_days 
+		# (storage_level < 0) and days of overfilling,  boolean for if the yearly demand is satisfied, counter for unnecessary imports 
+		# (imports that occured after satisfying yearly demand) amount of dilution water consumed druing the biogas production. 
+		# (Dilution water is required if TS > 15 %)
 
-		#self.storage_level = sim.config['terminals'][index]['storage_level']
-		#self.cumulative_biomass_received = 0
-		#self.is_yearly_demand_satisfied = False
-		#self.consumption_rate = sim.config['terminals'][index]['consumption_rate']
-		#self.capacity = sim.config['terminals'][index]['capacity']
+		# Number witin each Depot's variable represents the type of biomass of interest
+		# 1=Grass and straw, 2=Dry manure, 3=Slurry manure
+
+		self.storage_level_1 = sim.config['terminals'][index]['storage_level_1']
+		self.storage_level_2 = sim.config['terminals'][index]['storage_level_2']
+		self.storage_level_3 = sim.config['terminals'][index]['storage_level_3']
+
+		self.cumulative_biomass_received_1 = 0
+		self.cumulative_biomass_received_2 = 0
+		self.cumulative_biomass_received_3 = 0
+
+		self.is_yearly_demand_satisfied_1 = False
+		self.is_yearly_demand_satisfied_2 = False
+		self.is_yearly_demand_satisfied_3 = False
+
+		self.consumption_rate_1 = sim.config['terminals'][index]['consumption_rate_1']
+		self.consumption_rate_2 = sim.config['terminals'][index]['consumption_rate_2']
+		self.consumption_rate_3 = sim.config['terminals'][index]['consumption_rate_3']
+
+		self.capacity_1 = sim.config['terminals'][index]['capacity_1']
+		self.capacity_2 = sim.config['terminals'][index]['capacity_2']
+		self.capacity_3 = sim.config['terminals'][index]['capacity_3']
+
 		self.production_stoppage_counter = 0
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
-
+		self.dilution_water = 0
+		self.storage_TS = 15 # Assuming that the storage's TS is within the acceptable range at the beginning of simulation.
 
 # Simulation
 class WastePickupSimulation():
@@ -641,7 +647,7 @@ class WastePickupSimulation():
 					'pickup_sites': list(map(lambda pickup_site: {
 						'capacity': pickup_site.capacity,
 						'level': pickup_site.level,
-						'growth_rate': pickup_site.daily_growth_rate/(24*60),
+						'growth_rate': pickup_site.daily_growth_rate,
 						'location_index': pickup_site.location_index,
 						'TS_initial': pickup_site.TS_initial, 
 						'TS_current': pickup_site.TS_current, 
@@ -676,14 +682,26 @@ class WastePickupSimulation():
 					}, self.depots)),
 					'terminals': list(map(lambda terminal: {
 						'location_index': terminal.location_index,
-					#	'storage_level': terminal.storage_level,
-					#	'cumulative_biomass_received' : terminal.cumulative_biomass_received,
-					#	'is_yearly_demand_satisfied' : terminal.is_yearly_demand_satisfied,
-					#	'consumption_rate' : terminal.consumption_rate,
-					#	'capacity' : terminal.capacity,
+						'storage_level_1': terminal.storage_level_1,
+						'storage_level_2': terminal.storage_level_2,
+						'storage_level_3': terminal.storage_level_3,
+						'cumulative_biomass_received_1' : terminal.cumulative_biomass_received_1,
+						'cumulative_biomass_received_2' : terminal.cumulative_biomass_received_2,
+						'cumulative_biomass_received_3' : terminal.cumulative_biomass_received_3,
+						'is_yearly_demand_satisfied_1' : terminal.is_yearly_demand_satisfied_1,
+						'is_yearly_demand_satisfied_2' : terminal.is_yearly_demand_satisfied_2,
+						'is_yearly_demand_satisfied_3' : terminal.is_yearly_demand_satisfied_3,
+						'consumption_rate_1' : terminal.consumption_rate_1,
+						'consumption_rate_2' : terminal.consumption_rate_2,
+						'consumption_rate_3' : terminal.consumption_rate_3,
+						'capacity_1' : terminal.capacity_1,
+						'capacity_2' : terminal.capacity_2,
+						'capacity_3' : terminal.capacity_3,
 						'production_stoppage_counter' : terminal.production_stoppage_counter,
 						'overfilling_counter' : terminal.overfilling_counter,
-						'unnecessary_imports_counter' : terminal.unnecessary_imports_counter
+						'unnecessary_imports_counter' : terminal.unnecessary_imports_counter,
+						'storage_TS' : terminal.storage_TS,
+						'dilution_water' : terminal.dilution_water
 					}, self.terminals)),
 					'vehicles': list(map(lambda vehicle: {
 						'load_capacity': vehicle.load_capacity,
@@ -790,7 +808,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			**pickup_site['properties'],
 			'lonlats': tuple(pickup_site['geometry']['coordinates']),
 			'capacity': pickup_site['properties']['Clustermasses'],
-			'daily_growth_rate' : pickup_site['properties']['Clustermasses']/sim_config['sim_runtime_days'], # Ks. myös rivit 164-171 (Kohina täällä)
+			'daily_growth_rate' : pickup_site['properties']['Clustermasses']/sim_config['sim_runtime_days'], 
 			'level' : pickup_site['properties']['Clustermasses']*np.random.uniform(0, 0.8),
 			'TS_initial' : pickup_site['properties']['TS-rate'],
 			'type' : sim_config['biomass_type_mapping'][pickup_site['properties']['Type']],
@@ -804,7 +822,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			pickup_site_config['daily_growth_rate'] = pickup_site['properties']['Clustermasses']/3
 			pickup_site_config['accumulation_days'] = [0]*(sim_config['sim_runtime_days'])
 
-			# To randomize with sites have grass and straw to collect at the beginning of simulation.
+			# To randomize wich sites have grass and straw to collect at the beginning of simulation.
 			if random.randint(1,10) <= 4:
 				pickup_site_config['level'] = pickup_site['properties']['Clustermasses']/3
 			else:
