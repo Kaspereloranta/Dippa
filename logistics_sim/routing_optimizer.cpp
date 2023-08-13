@@ -242,7 +242,7 @@ void preprocess_routing_input(RoutingInput &x) {
   preprocess_indexed_locations<RoutingInputDepot>(x, x.depots);
   preprocess_indexed_locations<RoutingInputTerminal>(x, x.terminals);
   // Simulation length
-  x.output_num_days = 14; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
+  x.output_num_days = 228; // Get routes for 228 days # <- SIMULOINNIN PITUUS ! ! 
   x.sim_duration_days = x.output_num_days + 0; // 0 days marginal
   x.sim_duration = x.sim_duration_days*24*60; // * 24h/day * 60min/h
   // The relationship between genes and pickup sites
@@ -560,6 +560,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)/100 + pow(depots[depotIndex].storage_TS,2)*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3);
 				  depots[depotIndex].storage_TS = 15;
         }
+        
         depots[depotIndex].storage_level_1 -= depots[depotIndex].consumption_rate_1;
         depots[depotIndex].storage_level_2 -= depots[depotIndex].consumption_rate_2;
         depots[depotIndex].storage_level_3 -= depots[depotIndex].consumption_rate_3;
