@@ -188,7 +188,8 @@ class PickupSite(IndexedLocation):
 			yield self.sim.env.timeout(24*60)
 			if(self.accumulation_days[day]==1):	
 				self.put(self.daily_growth_rate)
-			day += 1			
+			day += 1
+			self.warn_if_full()			
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -211,6 +212,10 @@ class PickupSite(IndexedLocation):
 
 	def give_collection_rate(self):
 		return self.collection_rate
+
+	def warn_if_full(self):
+		if self.level >= self.capacity:
+			self.warn(f"Pickusite #{self.index}, of type #{self.type}, is full.")
 
 # Vehicle
 class Vehicle(IndexedSimEntity):	
@@ -316,12 +321,13 @@ class Vehicle(IndexedSimEntity):
 						else:
 							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 					else:
-						self.warn(f"Vehicle arrived at WRONG SITE!")
+						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
 
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
 					depot = arrive_location
 					depot.receive_biomass(self.load_level,self.load_TS_rate,self.type)
+					self.log(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")			
 					self.load_level = 0
 					self.load_TS_rate = 0
 
@@ -417,6 +423,7 @@ class Depot(IndexedLocation):
 				if self.storage_TS > 15:
 					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
 					self.dilution_water += 14/3*self.storage_TS*self.storage_sum()/100 + pow(self.storage_TS,2)*self.storage_sum()
+					self.warn(f"Dilution water consumed. Total consumption: ", self.dilution_water)
 					self.storage_TS = 15
 				self.biomass_consumption()
 
