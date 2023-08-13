@@ -354,6 +354,7 @@ struct PickupSiteState {
   float collection_rate;
   float volume_loss_coefficient;
   float moisture_loss_coefficient;
+  int overFillDays;
 };
 
 // Vehicle state class definition and member function definitions
@@ -599,6 +600,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         // With grass and straws, overfillings are not fined at the sites, since they are stored as baled on the fields. (=infinite storage).
         if (pickupSites[pickupSiteIndex].type != 1){
           totalNumPickupSiteOverloadDays++;
+          pickupSites[pickupSiteIndex].overFillDays++;
           if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
         }
       }
@@ -793,6 +795,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     pickupSiteState.collection_rate = routingInput.pickup_sites[pickupSiteIndex].collection_rate;
     pickupSiteState.volume_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].volume_loss_coefficient; // = 0.01
     pickupSiteState.moisture_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].moisture_loss_coefficient; // = 0.05
+    pickupSiteState.overFillDays = 0;
   }
 
   // Initialize depots
@@ -827,6 +830,8 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
   int unnecessaryImports = 0;
   float dilutionWater = 0;
 
+  int overFillDaysSites = 0;
+
   // Simulate
   simcpp20::simulation<> sim;
   this->sim = &sim;
@@ -849,15 +854,18 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     unnecessaryImports += depots[depotIndex].unnecessary_imports_counter;
     dilutionWater += depots[depotIndex].dilution_water;
   }
+  for(int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++){
+    overFillDaysSites += pickupSites[pickupSiteIndex].overFillDays;
+  }
   if (debug >= 2) printf("Total overtime: %g h\n", totalOvertime/60);
   if (debug >= 2) printf("Total odometer: %g km\n", totalOdometer/1000);
-  if (debug >= 2) printf("Total pickup site overload days: %d\n", totalNumPickupSiteOverloadDays);
+  if (debug >= 2) printf("Total pickup site overload days: %d\n", overFillDaysSites);
   if (debug >= 2) printf("Total production stoppages: %d times.\n", productionStoppages);
   if (debug >= 2) printf("Total unnecessary imports to the biogas plant: %d times.\n", unnecessaryImports);
   if (debug >= 2) printf("Total overfillings within the biogas plant: %d times.\n", overFillings);
   if (debug >= 2) printf("Total consumption of dilution water: %g tons.\n", dilutionWater);
   if (debug >= 2) printf("Wrong sites visited total by vehicles: %d times.\n", wrongSitesVisited);
-  return costFunctionFromComponents(totalOdometer, totalNumPickupSiteOverloadDays, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports, wrongSitesVisited);
+  return costFunctionFromComponents(totalOdometer, overFillDaysSites, totalOvertime, dilutionWater, productionStoppages, overFillings, unnecessaryImports, wrongSitesVisited);
 }
 
 // Simulation class constructor
