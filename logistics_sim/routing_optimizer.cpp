@@ -725,10 +725,10 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
 // Calculate cost function from components
 double costFunctionFromComponents(double totalOdometer, double totalNumPickupSiteOverloadDays, double totalOvertime, float dilutionWater, int productionStoppages, int overFillings, int unnecessaryImports, int wrongSitesVisited) {
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
-  + totalNumPickupSiteOverloadDays*5000 // Penalty of 50 eur / overload day / pickup site
+  + totalNumPickupSiteOverloadDays*50 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
   + dilutionWater*100
-  + productionStoppages*100000000
+//  + productionStoppages*100000000
   + overFillings*1000
   + unnecessaryImports*100
   + wrongSitesVisited*50;
