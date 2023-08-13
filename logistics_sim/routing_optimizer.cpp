@@ -22,7 +22,7 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
-int debug = 1; // 0: no printf, 1: printf for genetic algo, 2: all printf
+int debug = 2; // 0: no printf, 1: printf for genetic algo, 2: all printf
 const float pickup_duration = 10;
 
 enum LocationType {LOCATION_TYPE_DEPOT, LOCATION_TYPE_PICKUP_SITE, LOCATION_TYPE_TERMINAL};
@@ -793,7 +793,6 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     pickupSiteState.collection_rate = routingInput.pickup_sites[pickupSiteIndex].collection_rate;
     pickupSiteState.volume_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].volume_loss_coefficient; // = 0.01
     pickupSiteState.moisture_loss_coefficient = routingInput.pickup_sites[pickupSiteIndex].moisture_loss_coefficient; // = 0.05
-
   }
 
   // Initialize depots
@@ -840,6 +839,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     totalOvertime += vehicles[vehicleIndex].overtime;
     if (debug >= 2) printf("Vehicle #%d overtime: %g h\n", vehicleIndex, vehicles[vehicleIndex].overtime/60);
     if (debug >= 2) printf("Vehicle #%d odometer reading: %g km\n", vehicleIndex, vehicles[vehicleIndex].odometer/1000);
+    if (debug >= 2) printf("Vehicle #%d wrong visits: %n times.", vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited);
     totalOdometer += vehicles[vehicleIndex].odometer;
     wrongSitesVisited += vehicles[vehicleIndex].wrong_sites_visited;
   }
