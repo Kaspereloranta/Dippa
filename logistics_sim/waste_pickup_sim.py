@@ -189,7 +189,6 @@ class PickupSite(IndexedLocation):
 			if(self.accumulation_days[day]==1):	
 				self.put(self.daily_growth_rate)
 			day += 1
-			self.warn_if_full()			
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -213,9 +212,6 @@ class PickupSite(IndexedLocation):
 	def give_collection_rate(self):
 		return self.collection_rate
 
-	def warn_if_full(self):
-		if self.level >= self.capacity:
-			self.warn(f"Pickusite #{self.index}, of type #{self.type}, is full.")
 
 # Vehicle
 class Vehicle(IndexedSimEntity):	
