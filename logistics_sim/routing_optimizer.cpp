@@ -597,10 +597,10 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 
       if (pickupSites[pickupSiteIndex].level > routingInput.pickup_sites[pickupSiteIndex].capacity) {
         // With grass and straws, overfillings are not fined at the sites, since they are stored as baled on the fields. (=infinite storage).
-    //    if (pickupSites[pickupSiteIndex].type != 1){
-        totalNumPickupSiteOverloadDays++;
-        if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
-        //}
+        if (pickupSites[pickupSiteIndex].type != 1){
+          totalNumPickupSiteOverloadDays++;
+          if (debug >= 2) printf("%gh WARNING Site %d overload\n", sim.now()/60, pickupSiteIndex);
+        }
       }
     }
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
