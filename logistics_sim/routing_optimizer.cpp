@@ -839,7 +839,7 @@ double LogisticsSimulation::costFunction(const std::vector<int16_t> &genome, dou
     totalOvertime += vehicles[vehicleIndex].overtime;
     if (debug >= 2) printf("Vehicle #%d overtime: %g h\n", vehicleIndex, vehicles[vehicleIndex].overtime/60);
     if (debug >= 2) printf("Vehicle #%d odometer reading: %g km\n", vehicleIndex, vehicles[vehicleIndex].odometer/1000);
-    if (debug >= 2) printf("Vehicle #%d wrong visits: %n times.", vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited);
+    if (debug >= 2) printf("Vehicle #%d wrong visits: %d times.", vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited);
     totalOdometer += vehicles[vehicleIndex].odometer;
     wrongSitesVisited += vehicles[vehicleIndex].wrong_sites_visited;
   }
