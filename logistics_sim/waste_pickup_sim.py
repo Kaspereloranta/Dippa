@@ -284,14 +284,15 @@ class Vehicle(IndexedSimEntity):
 				self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level)/(self.load_level+value)
 			self.load_distribution[Exact_type] = value/(self.load_level+value)
 		
-		self.log(f"Load distribution: {self.load_distribution}")
+		# self.log(f"Load distribution: {self.load_distribution}")
 
 		self.load_level += value
 		if (self.load_level > self.load_capacity):
 			self.warn("Overload")
 
 	def update_TS(self,amount,ts):
-		self.load_TS_rate = (self.load_TS_rate/100*self.load_level + ts/100*amount)/(self.load_level+amount)*100
+		if self.load_level + amount > 0:
+			self.load_TS_rate = (self.load_TS_rate/100*self.load_level + ts/100*amount)/(self.load_level+amount)*100
 
 	# Assign route for vehicle
 	def assign_route(self, route):
@@ -333,15 +334,17 @@ class Vehicle(IndexedSimEntity):
 							self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
 							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
+							return
 					else:
 						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
-
+						return
+					
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
 					depot = arrive_location
 					depot.receive_biomass(self.load_level, self.load_TS_rate, self.type, self.load_distribution)
 					self.log(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")
-					self.log(f"Vehicle #{self.index} load distribution: {self.load_distribution}")			
+				#	self.log(f"Vehicle #{self.index} load distribution: {self.load_distribution}")			
 					self.load_level = 0
 					self.load_distribution.clear()
 					self.load_TS_rate = 0
@@ -451,7 +454,7 @@ class Depot(IndexedLocation):
 				if self.storage_TS > 15:
 					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
 					self.dilution_water += 14/3*self.storage_TS*self.storage_sum()/100 + pow(self.storage_TS,2)*self.storage_sum()
-					self.warn(f"Dilution water consumed. Total consumption: ", self.dilution_water)
+					self.warn(f"Dilution water consumed. Total consumption: {self.dilution_water}")
 					self.storage_TS = 15
 				self.biomass_consumption()
 
@@ -459,13 +462,13 @@ class Depot(IndexedLocation):
 				self.warn(f"Production stoppage!")
 				self.production_stoppage_counter += 1
 				self.storage_TS = 0
-				self.storage_distribution.clear()
 
-			self.log(f"Total storage of biogas facility: {self.storage_sum()} tons.")			
-			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
+			self.warn(f"Total storage of biogas facility: {self.storage_sum()} tons.")			
+			self.warn(f"TS rate of biogas facility: {self.storage_TS}")			
 
 	def update_TS(self, amount, ts):
-		self.storage_TS = (self.storage_TS/100*self.storage_sum() + ts/100*amount)/(self.storage_sum()+amount)*100
+		if self.storage_sum() + amount > 0:
+			self.storage_TS = (self.storage_TS/100*self.storage_sum() + ts/100*amount)/(self.storage_sum()+amount)*100
 
 	def update_storage_distribution(self, storagelevel, amount, load_distribution, type):
 		# To maintain the information regarding to load distribution to actual biomass types.	
@@ -493,7 +496,7 @@ class Depot(IndexedLocation):
 		self.update_TS(received_amount, received_TS)
 		# To update the storage distribution within the exact biomass types
 		self.update_storage_distribution(storage_level, received_amount, load_distribution, type-1)
-		self.log(f"Storage distribution: {self.storage_distribution}")
+		self.warn(f"Storage distribution: {self.storage_distribution}")
 
 		storage_level += received_amount
 		cumulative_biomass_received += received_amount
@@ -655,8 +658,9 @@ class WastePickupSimulation():
 		self.pickup_site_logs = [[] for _ in self.pickup_sites]
 
 	def site_full(self, site):
-		self.warn(f"Site #{site.index} is full.")
-
+		# self.warn(f"Site #{site.index} is full.")
+		return
+	
 	def vehicle_animation_tracking(self):
 		while True:
 			#self.log(f"Vehicle locations: {', '.join(map(lambda x: lonlat_to_string(x.get_lonlat()), self.vehicles))}")
@@ -844,7 +848,7 @@ class WastePickupSimulation():
 		with open(f'{filename}', 'w') as f:
 			json.dump(self.sim_records, f, indent=4)
 
-		print(f"Simulaton record saved to {filename}")
+		print(f"Simulation record saved to {filename}")
 
 
 def preprocess_sim_config(sim_config, sim_config_filename):
@@ -934,6 +938,7 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
 			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
 			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
+			# TODO: INITIALIZE STORAGE DISTRIBUTIONS 
 			'capacity_1' : sim_config['grass_capacity'],
 			'capacity_2' : sim_config['drymanure_capacity'],
 			'capacity_3' : sim_config['slurrymanure_capacity'],
