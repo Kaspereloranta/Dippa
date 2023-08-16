@@ -461,7 +461,9 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 if(pickupSites[pickup_site_index].type == vehicles[vehicleIndex].type){
                   float collectedAmount = pickup(vehicleIndex, pickup_site_index);
                   // pickup_duration being the constant term, collection_rate*collectedAmount linear term.
-                  co_await sim.timeout(pickup_duration + pickupSites[pickup_site_index].collection_rate*collectedAmount);            
+                  if (collectedAmount > 0){
+                    co_await sim.timeout(pickup_duration + pickupSites[pickup_site_index].collection_rate*collectedAmount);            
+                  }
                 }
                 else{
                  vehicles[vehicleIndex].wrong_sites_visited++; 
@@ -543,9 +545,9 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
           depots[depotIndex].storage_level_3 = 0
         }
         depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS/100)))*100;
-        depots[depotIndex].storage_level_1 = std::max(0.0, depots[depotIndex].storage_level_1);
-        depots[depotIndex].storage_level_2 = std::max(0.0, depots[depotIndex].storage_level_2);
-        depots[depotIndex].storage_level_3 = std::max(0.0, depots[depotIndex].storage_level_3);      }
+        depots[depotIndex].storage_level_1 = std::max(float(0.0), depots[depotIndex].storage_level_1);
+        depots[depotIndex].storage_level_2 = std::max(float(0.0), depots[depotIndex].storage_level_2);
+        depots[depotIndex].storage_level_3 = std::max(float(0.0), depots[depotIndex].storage_level_3);      }
       else {
         depots[depotIndex].storage_level_1 = 0
         depots[depotIndex].storage_level_2 = 0
@@ -561,7 +563,6 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)/100 + pow(depots[depotIndex].storage_TS,2)*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3);
 				  depots[depotIndex].storage_TS = 15;
         }
-        
         depots[depotIndex].storage_level_1 -= depots[depotIndex].consumption_rate_1;
         depots[depotIndex].storage_level_2 -= depots[depotIndex].consumption_rate_2;
         depots[depotIndex].storage_level_3 -= depots[depotIndex].consumption_rate_3;
@@ -665,26 +666,26 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
   float capacity;
 
   if(type==1){
-    bool is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_1;
-    float storage_level = depots[depotIndex].storage_level_1;
-    float cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_1;
-    float capacity = depots[depotIndex].capacity_1;
+    is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_1;
+    storage_level = depots[depotIndex].storage_level_1;
+    cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_1;
+    capacity = depots[depotIndex].capacity_1;
   }
   else if(type==2){
-    bool is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_2;
-    float storage_level = depots[depotIndex].storage_level_2;
-    float cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_2;
-    float capacity = depots[depotIndex].capacity_2;
+    is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_2;
+    storage_level = depots[depotIndex].storage_level_2;
+    cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_2;
+    capacity = depots[depotIndex].capacity_2;
   }
   else if(type==3) {
-    bool is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_3;
-    float storage_level = depots[depotIndex].storage_level_3;
-    float cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_3;
-    float capacity = depots[depotIndex].capacity_3;
+    is_yearly_demand_satisfied = depots[depotIndex].is_yearly_demand_satisfied_3;
+    storage_level = depots[depotIndex].storage_level_3;
+    cumulative_biomass_received = depots[depotIndex].cumulative_biomass_received_3;
+    capacity = depots[depotIndex].capacity_3;
   }
 
   if (is_yearly_demand_satisfied) {
-    depots[depotIndex].unnecessary_imports_counter++;
+    depots[depotIndex].unnecessary_imports_counter += 1;
     return;
   }
 
@@ -696,7 +697,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
   cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
 
   if (storage_level > capacity ) {
-    depots[depotIndex].overfilling_counter++;
+    depots[depotIndex].overfilling_counter += 1;
   }
 
   if (cumulative_biomass_received >= capacity ) {
@@ -707,19 +708,16 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
     depots[depotIndex].is_yearly_demand_satisfied_1 = is_yearly_demand_satisfied;
     depots[depotIndex].storage_level_1 = storage_level;
     depots[depotIndex].cumulative_biomass_received_1 = cumulative_biomass_received;
-    depots[depotIndex].capacity_1 = capacity;
   }
   else if (type == 2) {
       depots[depotIndex].is_yearly_demand_satisfied_2 = is_yearly_demand_satisfied;
       depots[depotIndex].storage_level_2 = storage_level;
       depots[depotIndex].cumulative_biomass_received_2 = cumulative_biomass_received;
-      depots[depotIndex].capacity_2 = capacity;
   }
   else if (type == 3) {
       depots[depotIndex].is_yearly_demand_satisfied_3 = is_yearly_demand_satisfied;
       depots[depotIndex].storage_level_3 = storage_level;
       depots[depotIndex].cumulative_biomass_received_3 = cumulative_biomass_received;
-      depots[depotIndex].capacity_3 = capacity;
   }
   return;
 }
@@ -729,11 +727,11 @@ double costFunctionFromComponents(double totalOdometer, double totalNumPickupSit
   return totalOdometer*(50.0/100000.0*2) // Fuel price: 2 eur / L, fuel consumption: 50 L / (100 km)
   + totalNumPickupSiteOverloadDays*50 // Penalty of 50 eur / overload day / pickup site
   + totalOvertime*(50.0/60) // Cost of 50 eur / h for overtime work  
-  + dilutionWater*100
+  + dilutionWater*5
   + productionStoppages*100000
-  + overFillings*1000
+  + overFillings*100
   + unnecessaryImports*100
-  + wrongSitesVisited*50;
+  + wrongSitesVisited*1000;
 }
 
 // Logistics simulation class member function: cost function
