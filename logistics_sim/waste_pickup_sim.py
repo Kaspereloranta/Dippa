@@ -304,10 +304,10 @@ class Vehicle(IndexedSimEntity):
 				self.route_step_departure_time = self.sim.env.now
 				depart_location = self.sim.locations[self.route[self.route_step]]
 				arrive_location = self.sim.locations[self.route[self.route_step + 1]]
-				self.warn(f"Depart from {type(depart_location).__name__} #{depart_location.index}")
+				self.log(f"Depart from {type(depart_location).__name__} #{depart_location.index}")
 				yield self.sim.env.timeout(self.sim.duration_matrix[self.route[self.route_step]][self.route[self.route_step + 1]])
 				self.record_distance_travelled(self.sim.distance_matrix[self.route[self.route_step]][self.route[self.route_step + 1]])
-				self.warn(f"Arrive at {type(arrive_location).__name__} #{arrive_location.index}")
+				self.log(f"Arrive at {type(arrive_location).__name__} #{arrive_location.index}")
 
 				if isinstance(arrive_location, PickupSite):
 					# Arrived at a pickup site
@@ -330,7 +330,7 @@ class Vehicle(IndexedSimEntity):
 								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
 							self.warn(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
-							self.warn(f"Nothing to pick up at pickup site #{pickup_site.index}")			
+							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 							return
 					else:
 						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
@@ -465,7 +465,7 @@ class Depot(IndexedLocation):
 				self.storage_TS = 0
 
 			self.warn(f"Total storage of biogas facility: {self.storage_sum()} tons.")
-		#	self.warn(f"Storage distribution: {self.storage_distribution}")			
+			self.warn(f"Storage distribution: {self.storage_distribution}")			
 			self.warn(f"TS rate of biogas facility: {self.storage_TS}")			
 
 	def update_TS(self, amount, ts):
@@ -474,14 +474,12 @@ class Depot(IndexedLocation):
 
 	def update_storage_distribution(self, storagelevel, amount, load_distribution, type):
 		# Called within receive_biomass. To maintain the correctness of storage distribution to biomass types.
-		
-		self.warn(f"Storage distribution of type {type}: {self.storage_distribution[type]}")			
-		for exact_biomass_type in self.storage_distribution[type]:
-			if exact_biomass_type in load_distribution:
-				self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel + amount*load_distribution[exact_biomass_type])/(storagelevel + amount)
-			else:
-				self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel)/(storagelevel + amount)
-		self.warn(f"Storage distribution of type {type}: {self.storage_distribution[type]}")			
+		if(amount > 0):
+			for exact_biomass_type in self.storage_distribution[type]:
+				if exact_biomass_type in load_distribution:
+					self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel + amount*load_distribution[exact_biomass_type])/(storagelevel + amount)
+				else:
+					self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel)/(storagelevel + amount)
 
 	def receive_biomass(self, received_amount, received_TS, type, load_distribution):
 		biomass_mapping = {

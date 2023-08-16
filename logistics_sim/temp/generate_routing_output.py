@@ -3,7 +3,7 @@ import random
 
 num_days = 228
 num_vehicles = 9
-num_locations = 395  # 0 to 394 inclusive
+num_locations = 396  # 0 to 395 inclusive
 start_location = 395  # Start and end location index
 end_location = 395
 
@@ -41,5 +41,5 @@ data = {
 
 output_json = json.dumps(data, indent=4)
 
-with open("temp/routing_output.json", "w") as json_file:
+with open("temp/routing_output2.json", "w") as json_file:
     json_file.write(output_json)
