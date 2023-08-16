@@ -213,7 +213,6 @@ class PickupSite(IndexedLocation):
 	def give_collection_rate(self):
 		return self.collection_rate
 
-
 # Vehicle
 class Vehicle(IndexedSimEntity):	
 
@@ -270,25 +269,23 @@ class Vehicle(IndexedSimEntity):
 			)
 
 	def put_load(self, value, ts, Exact_type):
-		self.update_TS(value,ts)
-
-		# To maintain the information regarding to load distribution to actual biomass types.
-		if Exact_type in self.load_distribution:
-			for biomass_type in self.load_distribution:
-				if biomass_type == Exact_type:
-					self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level+value)/(self.load_level+value)
-				else:
+		if(value > 0):
+			self.update_TS(value,ts)
+			# To maintain the information regarding to load distribution to actual biomass types.
+			if Exact_type in self.load_distribution:
+				for biomass_type in self.load_distribution:
+					if biomass_type == Exact_type:
+						self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level+value)/(self.load_level+value)
+					else:
+						self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level)/(self.load_level+value)
+			else:
+				for biomass_type in self.load_distribution:
 					self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level)/(self.load_level+value)
-		else:
-			for biomass_type in self.load_distribution:
-				self.load_distribution[biomass_type] = (self.load_distribution[biomass_type]*self.load_level)/(self.load_level+value)
-			self.load_distribution[Exact_type] = value/(self.load_level+value)
-		
-		# self.log(f"Load distribution: {self.load_distribution}")
-
-		self.load_level += value
-		if (self.load_level > self.load_capacity):
-			self.warn("Overload")
+				self.load_distribution[Exact_type] = value/(self.load_level+value)
+			
+			self.load_level += value
+			if (self.load_level > self.load_capacity):
+				self.warn("Overload")
 
 	def update_TS(self,amount,ts):
 		if self.load_level + amount > 0:
@@ -307,10 +304,10 @@ class Vehicle(IndexedSimEntity):
 				self.route_step_departure_time = self.sim.env.now
 				depart_location = self.sim.locations[self.route[self.route_step]]
 				arrive_location = self.sim.locations[self.route[self.route_step + 1]]
-				self.log(f"Depart from {type(depart_location).__name__} #{depart_location.index}")
+				self.warn(f"Depart from {type(depart_location).__name__} #{depart_location.index}")
 				yield self.sim.env.timeout(self.sim.duration_matrix[self.route[self.route_step]][self.route[self.route_step + 1]])
 				self.record_distance_travelled(self.sim.distance_matrix[self.route[self.route_step]][self.route[self.route_step + 1]])
-				self.log(f"Arrive at {type(arrive_location).__name__} #{arrive_location.index}")
+				self.warn(f"Arrive at {type(arrive_location).__name__} #{arrive_location.index}")
 
 				if isinstance(arrive_location, PickupSite):
 					# Arrived at a pickup site
@@ -331,9 +328,9 @@ class Vehicle(IndexedSimEntity):
 								loadTS = pickup_site.TS_rate()
 								self.put_load(get_amount,loadTS,pickup_site.Exact_type)
 								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
-							self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
+							self.warn(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
-							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
+							self.warn(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 							return
 					else:
 						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
@@ -343,8 +340,8 @@ class Vehicle(IndexedSimEntity):
 					# Arrived at a terminal
 					depot = arrive_location
 					depot.receive_biomass(self.load_level, self.load_TS_rate, self.type, self.load_distribution)
-					self.log(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")
-				#	self.log(f"Vehicle #{self.index} load distribution: {self.load_distribution}")			
+					self.warn(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")
+				#	self.warn(f"Vehicle #{self.index} load distribution: {self.load_distribution}")			
 					self.load_level = 0
 					self.load_distribution.clear()
 					self.load_TS_rate = 0
@@ -414,12 +411,16 @@ class Depot(IndexedLocation):
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
 		self.dilution_water = 0
-		self.storage_TS = 15 # Assuming that the storage's TS is within the acceptable range at the beginning of simulation.
+		self.storage_TS = 14.7 # Based on the example two input combos under which circumstances simulation is initialized
 
-		self.storage_distribution = [{},{},{}]  # At index = 0, dict of distribution of grass and straws within storage, 
+		self.storage_distribution = sim.config['depots'][index]['storage_distribution']
+											    # List of dicts.
+											    # At index = 0, dict of distribution of grass and straws within storage, 
 											    # at index = 1, dict of distribution of dry manures within storage
 												# and at index = 2, dict of distribution of slurry manures within storage
-				
+
+		self.warn(f"initialized storage distribution {self.storage_distribution}")
+
 		self.production_process = sim.env.process(self.produce_biogas_forever())
 
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -434,7 +435,7 @@ class Depot(IndexedLocation):
 		self.storage_level_3 = max(0,self.storage_level_3)
 
 	def update_storage_distribution_if_negative(self,storagelevel,type):
-		if storagelevel < 0:
+		if storagelevel <= 0:
 			for proportion in self.storage_distribution[type-1]:
 				self.storage_distribution[type-1][proportion] = 0
 
@@ -463,7 +464,8 @@ class Depot(IndexedLocation):
 				self.production_stoppage_counter += 1
 				self.storage_TS = 0
 
-			self.warn(f"Total storage of biogas facility: {self.storage_sum()} tons.")			
+			self.warn(f"Total storage of biogas facility: {self.storage_sum()} tons.")
+		#	self.warn(f"Storage distribution: {self.storage_distribution}")			
 			self.warn(f"TS rate of biogas facility: {self.storage_TS}")			
 
 	def update_TS(self, amount, ts):
@@ -471,13 +473,15 @@ class Depot(IndexedLocation):
 			self.storage_TS = (self.storage_TS/100*self.storage_sum() + ts/100*amount)/(self.storage_sum()+amount)*100
 
 	def update_storage_distribution(self, storagelevel, amount, load_distribution, type):
-		# To maintain the information regarding to load distribution to actual biomass types.	
 		# Called within receive_biomass. To maintain the correctness of storage distribution to biomass types.
-		for exact_biomass_type in load_distribution:
-			if exact_biomass_type in self.storage_distribution[type]:
+		
+		self.warn(f"Storage distribution of type {type}: {self.storage_distribution[type]}")			
+		for exact_biomass_type in self.storage_distribution[type]:
+			if exact_biomass_type in load_distribution:
 				self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel + amount*load_distribution[exact_biomass_type])/(storagelevel + amount)
 			else:
-				self.storage_distribution[type][exact_biomass_type] = amount*load_distribution[exact_biomass_type]/(storagelevel + amount)
+				self.storage_distribution[type][exact_biomass_type] = (self.storage_distribution[type][exact_biomass_type]*storagelevel)/(storagelevel + amount)
+		self.warn(f"Storage distribution of type {type}: {self.storage_distribution[type]}")			
 
 	def receive_biomass(self, received_amount, received_TS, type, load_distribution):
 		biomass_mapping = {
@@ -496,7 +500,6 @@ class Depot(IndexedLocation):
 		self.update_TS(received_amount, received_TS)
 		# To update the storage distribution within the exact biomass types
 		self.update_storage_distribution(storage_level, received_amount, load_distribution, type-1)
-		self.warn(f"Storage distribution: {self.storage_distribution}")
 
 		storage_level += received_amount
 		cumulative_biomass_received += received_amount
@@ -716,6 +719,7 @@ class WastePickupSimulation():
 						'storage_level_1': depot.storage_level_1,
 						'storage_level_2': depot.storage_level_2,
 						'storage_level_3': depot.storage_level_3,
+						'storage_distribution' : depot.storage_distribution,
 						'cumulative_biomass_received_1' : depot.cumulative_biomass_received_1,
 						'cumulative_biomass_received_2' : depot.cumulative_biomass_received_2,
 						'cumulative_biomass_received_3' : depot.cumulative_biomass_received_3,
@@ -931,21 +935,27 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 	with open(sim_config['depots_filename']) as depots_file:
 		depots_geojson = json.load(depots_file)
 	for index, depot in enumerate(depots_geojson['features']):
+		
+		# NOTE: Storage levels, consumption rates, and storage_distribution are now initialized based on the example 2 of LuKe's input combos.
+
 		depot_config = {
 			**depot['properties'],
 			**sim_config['depots'][index],
 			'lonlats': tuple(depot['geometry']['coordinates']),
-			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
-			# TODO: INITIALIZE STORAGE DISTRIBUTIONS 
+			'storage_level_1' : sim_config['grass_capacity']*0.225/46,
+			'storage_level_2' : sim_config['drymanure_capacity']*0.6/46,
+			'storage_level_3' : sim_config['slurrymanure_capacity']*4.5/46,
+			'storage_distribution' : [{'Sivuvirta: Kuivaheinanurmet' : 1/3, 'Sivuvirta: Kesantonurmi' : 2/3, 'Sivuvirta: Olki' : 0.0,},
+			{'Lihakarjan kuivalanta yhteensa varastosta' : 1.0, 'Hevoset ja ponit, kuivalanta yhteensa varastosta': 0.0, 'Broilerit, kalkkunat ja muu siipikarja kuivalanta yhteensa varastosta' : 0.0, 'Emakot ja porsaat kuivalanta yhteensa varastosta' : 0.0,},
+			{'Emakot ja porsaat lietelanta elainsuojasta' : 1.0, 'Lihakarjan lietelanta elainsuojasta' : 0.0, }],
 			'capacity_1' : sim_config['grass_capacity'],
 			'capacity_2' : sim_config['drymanure_capacity'],
 			'capacity_3' : sim_config['slurrymanure_capacity'],
-			'consumption_rate_1' : sim_config['grass_capacity'] / sim_config['sim_runtime_days'],
-			'consumption_rate_2' : sim_config['drymanure_capacity'] / sim_config['sim_runtime_days'],
-			'consumption_rate_3' : sim_config['slurrymanure_capacity'] / sim_config['sim_runtime_days']
+			'consumption_rate_1' : 6300 / sim_config['sim_runtime_days'],
+			'consumption_rate_2' : 4200 / sim_config['sim_runtime_days'],
+			'consumption_rate_3' : 31500 / sim_config['sim_runtime_days']
 		}
+
 		sim_config['depots'][index] = depot_config
 
 	# Collect lonlats of everything into a list of location lonlats. Store the location indexes
