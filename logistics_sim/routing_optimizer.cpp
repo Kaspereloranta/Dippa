@@ -467,7 +467,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 }
                 else{
                  vehicles[vehicleIndex].wrong_sites_visited++; 
-                  if (debug >= 1) printf("Vehicle #%d's wrong visits: %d",  vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited); 
+                  if (debug >= 1) printf("Vehicle #%d's wrong visits: %d \n",  vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited); 
                 }
               }
               break;
@@ -562,7 +562,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         if (depots[depotIndex].storage_TS > 15){
           // Amount of water to dilute the storage's content to TS=15% (analytical solution)
 				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)/100 + pow(depots[depotIndex].storage_TS,2)*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3);
-          if (debug >= 1) printf("Total dilutionWater consumption: %g" , depots[depotIndex].dilution_water);	  
+          if (debug >= 1) printf("Total dilutionWater consumption: %g \n" , depots[depotIndex].dilution_water);	  
           depots[depotIndex].storage_TS = 15;
         }
         depots[depotIndex].storage_level_1 -= depots[depotIndex].consumption_rate_1;
@@ -571,7 +571,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){
         depots[depotIndex].production_stoppage_counter += 1;
-        if (debug >= 1) printf("Total production stoppages: %d" , depots[depotIndex].production_stoppage_counter);
+        if (debug >= 1) printf("Total production stoppages: %d \n" , depots[depotIndex].production_stoppage_counter);
         depots[depotIndex].storage_TS = 0;
       }
       depots[depotIndex].storage_level_1 = std::max(float(0.0),depots[depotIndex].storage_level_1);
@@ -689,7 +689,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
 
   if (is_yearly_demand_satisfied) {
     depots[depotIndex].unnecessary_imports_counter += 1;
-    if (debug >= 1) printf("Unnecessary imports total: %d" , depots[depotIndex].unnecessary_imports_counter);	  
+    if (debug >= 1) printf("Unnecessary imports total: %d \n" , depots[depotIndex].unnecessary_imports_counter);	  
     return;
   }
 
@@ -702,7 +702,7 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
 
   if (storage_level > capacity ) {
     depots[depotIndex].overfilling_counter += 1;
-    if (debug >= 1) printf("Total overfilling_counter: %d" , depots[depotIndex].overfilling_counter);	  
+    if (debug >= 1) printf("Total overfilling_counter: %d \n" , depots[depotIndex].overfilling_counter);	  
   }
 
   if (cumulative_biomass_received >= capacity ) {
