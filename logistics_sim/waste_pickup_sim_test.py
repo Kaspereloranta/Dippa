@@ -9,8 +9,8 @@ import random
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
 	'isTimeCriticalityConsidered' :  'False', # Boolean
-	'sim_runtime_days': 228, # Simulation runtime in days, kalenterivuoden 2022 tyopaivat
-	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', # <-- TÄÄLLÄ HAETAAN KAIKKI SITET SISÄLTÄVÄ TIEDOSTO
+	'sim_runtime_days': 228, # Simulation runtime in days, Kalenterivuoden 2022 tyopaivat
+	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', #
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
 	'grass_capacity' : 28000,
 	'drymanure_capacity': 7000,
@@ -24,7 +24,6 @@ sim_config = {
 		'pickup_duration': 10, # Minutes # Tama 10 min = keruiden asetusaika, sama kaikille biomassoille. 
 							   # Simulaatiossa keruun kesto asetusaika + pickup_amount*pickup_rate
 		'load_TS_rate': 0.0
-							# Tarvitaan autolle tyyppimuuttuja joka määrää mitä massoja voi hakea, tämä luodaan esiprosessoinnissa
 	},
 	'depots': [
 		{

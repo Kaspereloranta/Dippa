@@ -467,7 +467,7 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
                 }
                 else{
                  vehicles[vehicleIndex].wrong_sites_visited++; 
-                  if (debug >= 1) printf("Vehicle #%d's wrong visits: %d \n",  vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited); 
+                  if (debug >= 2) printf("Vehicle #%d's wrong visits: %d \n",  vehicleIndex, vehicles[vehicleIndex].wrong_sites_visited); 
                 }
               }
               break;
@@ -482,7 +482,9 @@ simcpp20::event<> LogisticsSimulation::runVehicleRouteProcess(simcpp20::simulati
               {
                 if (debug >= 2) printf("%gh Vehicle #%d: dump whole load of %f t at %s\n", sim.now()/60, vehicleIndex, vehicle.loadLevel, locationString(vehicle.locationIndex).c_str());
                 int depot_index = routingInput.location_index_info[vehicle.destinationLocationIndex].specific_index;
-                receive(vehicleIndex, depot_index, vehicles[vehicleIndex].type);
+                if (vehicles[vehicleIndex].loadLevel > 0){
+                  receive(vehicleIndex, depot_index, vehicles[vehicleIndex].type);
+                }
                 vehicle.loadLevel = 0;
                 vehicle.load_TS_rate = 0;
               }
@@ -558,25 +560,27 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       */
       // Biogas production process (resource consumption):     
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 > 0){
-        // If dilution is needed
+        // If dilution is needed  
         if (depots[depotIndex].storage_TS > 15){
           // Amount of water to dilute the storage's content to TS=15% (analytical solution)
 				  depots[depotIndex].dilution_water += 14/3*depots[depotIndex].storage_TS*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)/100 + pow(depots[depotIndex].storage_TS,2)*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3);
-          if (debug >= 1) printf("Total dilutionWater consumption: %g \n" , depots[depotIndex].dilution_water);	  
           depots[depotIndex].storage_TS = 15;
+          if (debug >= 1) printf("Storage TS after dilution: %g \n" , depots[depotIndex].storage_TS);	  
         }
         depots[depotIndex].storage_level_1 -= depots[depotIndex].consumption_rate_1;
         depots[depotIndex].storage_level_2 -= depots[depotIndex].consumption_rate_2;
         depots[depotIndex].storage_level_3 -= depots[depotIndex].consumption_rate_3;
+
+        depots[depotIndex].storage_level_1 = std::max(float(0.0),depots[depotIndex].storage_level_1);
+        depots[depotIndex].storage_level_2 = std::max(float(0.0),depots[depotIndex].storage_level_2);
+        depots[depotIndex].storage_level_3 = std::max(float(0.0),depots[depotIndex].storage_level_3);
+        depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
       }
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){
         depots[depotIndex].production_stoppage_counter += 1;
-        if (debug >= 1) printf("Total production stoppages: %d \n" , depots[depotIndex].production_stoppage_counter);
+        if (debug >= 2) printf("Total production stoppages: %d \n" , depots[depotIndex].production_stoppage_counter);
         depots[depotIndex].storage_TS = 0;
       }
-      depots[depotIndex].storage_level_1 = std::max(float(0.0),depots[depotIndex].storage_level_1);
-      depots[depotIndex].storage_level_2 = std::max(float(0.0),depots[depotIndex].storage_level_2);
-      depots[depotIndex].storage_level_3 = std::max(float(0.0),depots[depotIndex].storage_level_3);
     }
 
     // Increase pickup site levels
@@ -647,12 +651,14 @@ float LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, collectedAmount, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
     vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
+    vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
   }
   else 
   {
   // The vehicle empties the site
     collectedAmount = pickupSites[pickupSiteIndex].level;
     vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
+    vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
     vehicles[vehicleIndex].loadLevel += collectedAmount;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
     pickupSites[pickupSiteIndex].level = 0;
@@ -687,22 +693,29 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
     capacity = depots[depotIndex].capacity_3;
   }
 
+  storage_level = std::max(float(0.0),storage_level);
+
   if (is_yearly_demand_satisfied) {
     depots[depotIndex].unnecessary_imports_counter += 1;
-    if (debug >= 1) printf("Unnecessary imports total: %d \n" , depots[depotIndex].unnecessary_imports_counter);	  
+    if (debug >= 2) printf("Unnecessary imports total: %d \n" , depots[depotIndex].unnecessary_imports_counter);	  
     return;
   }
 
+  depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
 	depots[depotIndex].storage_TS = (depots[depotIndex].storage_TS/100*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) +
                               vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
                               /((depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)+vehicles[vehicleIndex].loadLevel)*100;
+  depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
+
+    
+  if (debug >= 1) printf("Storage TS updated, TS now: %g \n" , depots[depotIndex].storage_TS);	  
 
   storage_level += vehicles[vehicleIndex].loadLevel;
   cumulative_biomass_received += vehicles[vehicleIndex].loadLevel;
 
   if (storage_level > capacity ) {
     depots[depotIndex].overfilling_counter += 1;
-    if (debug >= 1) printf("Total overfilling_counter: %d \n" , depots[depotIndex].overfilling_counter);	  
+    if (debug >= 2) printf("Total overfilling_counter: %d \n" , depots[depotIndex].overfilling_counter);	  
   }
 
   if (cumulative_biomass_received >= capacity ) {
@@ -877,7 +890,7 @@ routingInput(routingInput), routingOutput(routingInput), vehicles(routingInput.v
 
 int main() {
   // Read routing optimization input
-  std::ifstream f("temp/routing_input.json");
+  std::ifstream f("logistics_sim/temp/routing_input.json");
   auto routingInputJson = json::parse(f);
   auto routingInput = routingInputJson.get<RoutingInput>();
   // Preprocess routing optimization input
@@ -940,7 +953,7 @@ int main() {
   LogisticsSimulation logisticsSim(routingInput);
   logisticsSim.costFunction(genome); // Get routeStartLoci
   json j = logisticsSim.routingOutput;
-  std::ofstream o("temp/routing_output.json");
+  std::ofstream o("logistics_sim/temp/routing_output.json");
   o << std::setw(4) << j << std::endl;
 
   return 0;
