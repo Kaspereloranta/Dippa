@@ -950,9 +950,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 			'capacity_1' : sim_config['grass_capacity'],
 			'capacity_2' : sim_config['drymanure_capacity'],
 			'capacity_3' : sim_config['slurrymanure_capacity'],
-			'consumption_rate_1' : 6300 / sim_config['sim_runtime_days'],
-			'consumption_rate_2' : 4200 / sim_config['sim_runtime_days'],
-			'consumption_rate_3' : 31500 / sim_config['sim_runtime_days']
+			'consumption_rate_1' : sim_config['grass_capacity']*0.225 / sim_config['sim_runtime_days'],
+			'consumption_rate_2' : sim_config['drymanure_capacity']*0.6 / sim_config['sim_runtime_days'],
+			'consumption_rate_3' : sim_config['slurrymanure_capacity']*4.5 / sim_config['sim_runtime_days']
 		}
 
 		sim_config['depots'][index] = depot_config
