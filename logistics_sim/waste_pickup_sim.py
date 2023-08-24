@@ -481,10 +481,13 @@ class Depot(IndexedLocation):
 			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
 
 	def update_TS(self, amount, ts):
-		if self.storage_sum() + amount > 0:
+		if self.storage_sum() > 0:
 			self.storage_TS = (self.storage_TS/100*self.storage_sum() + ts/100*amount)/(self.storage_sum()+amount)*100
-			self.storage_TS = max(0.0,self.storage_TS)
-			self.log(f"Storage TS updated. TS now: {self.storage_TS}")
+		else:
+			self.storage_TS = ts
+
+		self.storage_TS = max(0.0,self.storage_TS)
+		self.log(f"Storage TS updated. TS now: {self.storage_TS}")
 
 
 	def update_storage_distribution(self, storagelevel, amount, load_distribution, type):

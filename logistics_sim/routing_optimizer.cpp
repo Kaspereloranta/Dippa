@@ -708,17 +708,21 @@ void LogisticsSimulation::receive(int vehicleIndex, int depotIndex, int type){
   }
 
   storage_level = std::max(float(0.0),storage_level);
-
   if (is_yearly_demand_satisfied) {
     depots[depotIndex].unnecessary_imports_counter += 1;
     if (debug >= 2) printf("Unnecessary imports so far: %d \n" , depots[depotIndex].unnecessary_imports_counter);	  
     return;
   }
-
   depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
-	depots[depotIndex].storage_TS = (depots[depotIndex].storage_TS/100*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) +
-                              vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
-                              /((depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)+vehicles[vehicleIndex].loadLevel)*100;
+
+  if(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 > 0) {
+    depots[depotIndex].storage_TS = (depots[depotIndex].storage_TS/100*(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) +
+                                  vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)
+                                  /((depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3)+vehicles[vehicleIndex].loadLevel)*100;    
+  }
+  else{
+    depots[depotIndex].storage_TS = vehicles[vehicleIndex].load_TS_rate;
+  }
   depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
   if (debug >= 2) printf("Storage TS updated, TS now: %g \n" , depots[depotIndex].storage_TS);	  
 
