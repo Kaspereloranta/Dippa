@@ -574,6 +574,10 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         depots[depotIndex].storage_level_1 = std::max(float(0.0),depots[depotIndex].storage_level_1);
         depots[depotIndex].storage_level_2 = std::max(float(0.0),depots[depotIndex].storage_level_2);
         depots[depotIndex].storage_level_3 = std::max(float(0.0),depots[depotIndex].storage_level_3);
+
+        if(depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){
+          depots[depotIndex].storage_TS = 0;
+        }
         depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
       }
       else if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){

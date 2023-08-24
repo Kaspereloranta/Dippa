@@ -442,6 +442,8 @@ class Depot(IndexedLocation):
 		self.storage_level_1 = max(0.0,self.storage_level_1)
 		self.storage_level_2 = max(0.0,self.storage_level_2)
 		self.storage_level_3 = max(0.0,self.storage_level_3)
+		if self.storage_sum() <= 0:
+			self.storage_TS = 0
 
 	def update_storage_distribution_if_negative(self,storagelevel,type):
 		if storagelevel <= 0:
