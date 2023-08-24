@@ -148,7 +148,10 @@ class PickupSite(IndexedLocation):
 		listeners_to_message_maybe = list(filter(lambda x: self.level < x[1], self.levelListeners))
 
 		# To update TS-rate of site
-		self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
+		if self.level > 0:
+			self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
+		else:
+			self.TS_current = self.TS_initial/100*amount/(self.level+amount)*100
 
 		self.level += amount
 		listeners_to_message = list(filter(lambda x: self.level >= x[1], listeners_to_message_maybe))

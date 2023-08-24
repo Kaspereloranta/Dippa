@@ -531,9 +531,9 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) > 0){
         if(depots[depotIndex].storage_level_1 > 0){
           depots[depotIndex].storage_level_1 -= depots[depotIndex].storage_level_1*pow(0.01,1/7);
-        }
+        }                
         else{
-          depots[depotIndex].storage_level_1 = 0
+          depots[depotIndex].storage_level_1 = 0               ! ! ! !   MUISTA LISÄTÄ VARMISTUKSIA ETTEI TS TAI STORAGE MEE < 0 ! ! ! !! ! 
         }
         if(depots[depotIndex].storage_level_2 > 0){
           depots[depotIndex].storage_level_2 -= depots[depotIndex].storage_level_2*pow(0.01,1/7);
@@ -603,8 +603,13 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if(routingInput.pickup_sites[pickupSiteIndex].accumulation_days[day] == 1){
         float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate;
         // To update TS-rate of site
-			  pickupSites[pickupSiteIndex].TS_current = (pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level 
-                                                + pickupSites[pickupSiteIndex].TS_initial/100*put_amount)/(pickupSites[pickupSiteIndex].level+put_amount)*100;
+        if(pickupSites[pickupSiteIndex].level > 0){
+          pickupSites[pickupSiteIndex].TS_current = (pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level 
+                                                  + pickupSites[pickupSiteIndex].TS_initial/100*put_amount)/(pickupSites[pickupSiteIndex].level+put_amount)*100;          
+        }
+        else{
+           pickupSites[pickupSiteIndex].TS_current = pickupSites[pickupSiteIndex].TS_initial/100*put_amount/(put_amount)*100;
+        }
         pickupSites[pickupSiteIndex].level += put_amount;
       }
 
