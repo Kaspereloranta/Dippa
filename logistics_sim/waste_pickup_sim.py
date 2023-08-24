@@ -464,7 +464,7 @@ class Depot(IndexedLocation):
 					self.log(f"Storage TS after dilution: {self.storage_TS}")
 				self.biomass_consumption()
 
-			if self.storage_sum() <= 0:
+			elif self.storage_sum() <= 0:
 				self.production_stoppage_counter += 1
 				self.storage_TS = 0
 				self.warn(f"Production stoppage! Stoppages total: {self.production_stoppage_counter}")
@@ -826,12 +826,12 @@ class WastePickupSimulation():
 		totalOdometer = 0
 		for vehicle_index, vehicle in enumerate(self.vehicles):
 			self.warn(f"Wrong sites visited by vehicle #{vehicle_index}: {vehicle.wrong_sites_visited} times.")
-			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer} km.")
+			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer/1000} km.")
 			totalWrongvisits += vehicle.wrong_sites_visited
 			totalOdometer += vehicle.vehicle_odometer
 
 		self.warn(f"Wrong sites total: {totalWrongvisits} times.")
-		self.warn(f"Kilometers driven total: {totalOdometer} km.")
+		self.warn(f"Kilometers driven total: {totalOdometer/1000} km.")
 
 		filename = f"log/routes_log_{self.run_start}.csv"
 		os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -914,9 +914,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 				pickup_site_config['level'] = 0
 
 			# Randomize when the cuttings occur within a site		
-			pickup_site_config['accumulation_days'][random.randint(int(166/365*sim_config['sim_runtime_days']-7),int(166/365*sim_config['sim_runtime_days']+7))] = 1
-			pickup_site_config['accumulation_days'][random.randint(int(212/365*sim_config['sim_runtime_days']-7),int(212/365*sim_config['sim_runtime_days']+7))] = 1
-			pickup_site_config['accumulation_days'][random.randint(int(258/365*sim_config['sim_runtime_days']-7),int(258/365*sim_config['sim_runtime_days']+7))] = 1
+			pickup_site_config['accumulation_days'][random.randint(int(166/365*sim_config['sim_runtime_days']-5),int(166/365*sim_config['sim_runtime_days']+5))] = 1
+			pickup_site_config['accumulation_days'][random.randint(int(212/365*sim_config['sim_runtime_days']-5),int(212/365*sim_config['sim_runtime_days']+5))] = 1
+			pickup_site_config['accumulation_days'][random.randint(int(258/365*sim_config['sim_runtime_days']-5),int(258/365*sim_config['sim_runtime_days']+5))] = 1
 
 			pickup_site_config['collection_rate'] = 1/1.2 # Grass and straws
 

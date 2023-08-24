@@ -576,7 +576,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
         depots[depotIndex].storage_level_3 = std::max(float(0.0),depots[depotIndex].storage_level_3);
         depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
       }
-      if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){
+      else if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 <= 0){
         depots[depotIndex].production_stoppage_counter += 1;
         if (debug >= 2) printf("Total production stoppages: %d \n" , depots[depotIndex].production_stoppage_counter);
         depots[depotIndex].storage_TS = 0;
@@ -627,11 +627,6 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 }
 
 float LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
-
-  // co_await sim.timeout(pickup_duration);              
-
-  // TÄNNE TARVITTAESSA MUUTOKSIA, SAAKO TYHJENTÄÄ VAIN OSAN VAI TULEEKO OLLA TÄYSI TMS.
-  // VOIDAAN ESTÄÄ VAJAISSA KÄYNTI TÄÄLLÄ
 
   float collectedAmount;
 
@@ -922,8 +917,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 200000; // 100000; // 40000
-  int numFinetuneGenerations = 100000; // 20000
+  int numGenerations = 400000; // 100000; // 40000
+  int numFinetuneGenerations = 200000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
