@@ -245,6 +245,7 @@ class Vehicle(IndexedSimEntity):
 		self.moving = False
 		self.location_index = sim.depots[self.home_depot_index].location_index
 		self.vehicle_odometer = 0
+		self.wrong_sites_visited = 0
 
 		# Drying of load
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -335,6 +336,7 @@ class Vehicle(IndexedSimEntity):
 							return
 					else:
 						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
+						self.wrong_sites_visited += 1
 						return
 					
 				elif isinstance(arrive_location, Depot):
@@ -790,8 +792,8 @@ class WastePickupSimulation():
 
 				filename = 'log/routing_optimizer_log.txt'
 				os.makedirs(os.path.dirname(filename), exist_ok=True)
-				#os.system(f"routing_optimizer > {filename}") # *** # Windows
-				os.system(f"./routing_optimizer > {filename}") # *** # Linux
+				os.system(f"routing_optimizer > {filename}") # *** # Windows
+				#os.system(f"./routing_optimizer > {filename}") # *** # Linux
 				with open('temp/routing_output.json') as infile:
 					self.routing_output = json.load(infile)
 
@@ -812,6 +814,24 @@ class WastePickupSimulation():
 		end_time = time.time()
 		self.total_time = end_time-start_time # Excuding config preprocessing
 		self.log(f"Simulation finished with {self.total_time}s of computing")
+
+		self.warn(f"SIMULATION STATS")
+		for depot_index, depot in enumerate(self.depots):
+			self.warn(f"Production stoppages at depot #{depot_index}: {depot.production_stoppage_counter} times.")
+			self.warn(f"Dilution water consumed depot #{depot_index}: {depot.dilution_water} tons.")
+			self.warn(f"Unnecessary imports at depot #{depot_index}: {depot.unnecessary_imports_counter} times.")
+			self.warn(f"Overfillings at depot #{depot_index}: {depot.overfilling_counter} times.")
+
+		totalWrongvisits = 0
+		totalOdometer = 0
+		for vehicle_index, vehicle in enumerate(self.vehicles):
+			self.warn(f"Wrong sites visited by vehicle #{vehicle_index}: {vehicle.wrong_sites_visited} times.")
+			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer} km.")
+			totalWrongvisits += vehicle.wrong_sites_visited
+			totalOdometer += vehicle.vehicle_odometer
+
+		self.warn(f"Wrong sites total: {totalWrongvisits} times.")
+		self.warn(f"Kilometers driven total: {totalOdometer} km.")
 
 		filename = f"log/routes_log_{self.run_start}.csv"
 		os.makedirs(os.path.dirname(filename), exist_ok=True)
