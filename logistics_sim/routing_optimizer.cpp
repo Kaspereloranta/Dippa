@@ -608,7 +608,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
                                                   + pickupSites[pickupSiteIndex].TS_initial/100*put_amount)/(pickupSites[pickupSiteIndex].level+put_amount)*100;          
         }
         else{
-           pickupSites[pickupSiteIndex].TS_current = pickupSites[pickupSiteIndex].TS_initial/100*put_amount/(put_amount)*100;
+           pickupSites[pickupSiteIndex].TS_current = pickupSites[pickupSiteIndex].TS_initial;
         }
         pickupSites[pickupSiteIndex].level += put_amount;
       }
@@ -653,7 +653,12 @@ float LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
     collectedAmount = (routingInput.vehicles[vehicleIndex].load_capacity - vehicles[vehicleIndex].loadLevel);
     pickupSites[pickupSiteIndex].level -= collectedAmount;
     if (debug >= 2) printf("%gh Vehicle #%d: reaches its capacity taking %f t from pickup site #%d with %f t remaining\n", sim->now()/60, vehicleIndex, collectedAmount, pickupSiteIndex, pickupSites[pickupSiteIndex].level);
-    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
+    if (vehicles[vehicleIndex].loadLevel > 0){
+      vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
+    }
+    else{
+      vehicles[vehicleIndex].load_TS_rate = pickupSites[pickupSiteIndex].TS_current;
+    }
     vehicles[vehicleIndex].loadLevel = routingInput.vehicles[vehicleIndex].load_capacity;
     vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
   }
@@ -661,7 +666,12 @@ float LogisticsSimulation::pickup(int vehicleIndex, int pickupSiteIndex) {
   {
   // The vehicle empties the site
     collectedAmount = pickupSites[pickupSiteIndex].level;
-    vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
+    if (vehicles[vehicleIndex].loadLevel > 0){
+      vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel + pickupSites[pickupSiteIndex].TS_current/100*collectedAmount)/(vehicles[vehicleIndex].loadLevel+collectedAmount)*100;
+    }
+    else{
+      vehicles[vehicleIndex].load_TS_rate = pickupSites[pickupSiteIndex].TS_current;
+    }
     vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
     vehicles[vehicleIndex].loadLevel += collectedAmount;
     if (debug >= 2) printf("%gh Vehicle #%d: picks up all of %f t of pickup site #%d\n", sim->now()/60, vehicleIndex, pickupSites[pickupSiteIndex].level, pickupSiteIndex);
@@ -922,8 +932,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 400000; // 100000; // 40000
-  int numFinetuneGenerations = 200000; // 20000
+  int numGenerations = 100000; // 100000; // 40000
+  int numFinetuneGenerations = 50000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 

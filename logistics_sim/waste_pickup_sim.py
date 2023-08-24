@@ -151,7 +151,7 @@ class PickupSite(IndexedLocation):
 		if self.level > 0:
 			self.TS_current = (self.TS_current/100*self.level + self.TS_initial/100*amount)/(self.level+amount)*100
 		else:
-			self.TS_current = self.TS_initial/100*amount/(self.level+amount)*100
+			self.TS_current = self.TS_initial
 
 		self.level += amount
 		listeners_to_message = list(filter(lambda x: self.level >= x[1], listeners_to_message_maybe))
@@ -292,9 +292,11 @@ class Vehicle(IndexedSimEntity):
 				self.warn("Overload")
 
 	def update_TS(self,amount,ts):
-		if self.load_level + amount > 0:
+		if self.load_level > 0:
 			self.load_TS_rate = (self.load_TS_rate/100*self.load_level + ts/100*amount)/(self.load_level+amount)*100
-			self.load_TS_rate = max(0.0,self.load_TS_rate)
+		else:
+			self.load_TS_rate = ts
+		self.load_TS_rate = max(0.0,self.load_TS_rate)
 
 	# Assign route for vehicle
 	def assign_route(self, route):
