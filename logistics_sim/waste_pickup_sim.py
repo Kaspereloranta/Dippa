@@ -196,6 +196,9 @@ class PickupSite(IndexedLocation):
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+
+			# LISÄÄ TÄNNE MAXAUKSET LEVEL JA TS
+
 			while True:
 				yield self.sim.env.timeout(24*60)
 				if self.level > 0:
@@ -365,6 +368,9 @@ class Vehicle(IndexedSimEntity):
 	def load_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
+
+				# LISÄÄ TÄNNE MAKSAUKSET STORAGE LEVEL JA TS
+
 				yield self.sim.env.timeout(24*60)
 				if(self.load_level > 0):
 					self.load_level -= self.load_level*pow(0.01,1/7)
@@ -548,6 +554,9 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+
+			# LISÄÄ TÄNNE MAXAUKSET VARASTOTASOILLE JA TS
+
 			while True:
 				yield self.sim.env.timeout(24*60)
 				if(self.storage_sum() > 0):
@@ -836,12 +845,12 @@ class WastePickupSimulation():
 		totalOdometer = 0
 		for vehicle_index, vehicle in enumerate(self.vehicles):
 			self.warn(f"Wrong sites visited by vehicle #{vehicle_index}: {vehicle.wrong_sites_visited} times.")
-			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer/1000} km.")
+			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer} km.")
 			totalWrongvisits += vehicle.wrong_sites_visited
 			totalOdometer += vehicle.vehicle_odometer
 
 		self.warn(f"Wrong sites total: {totalWrongvisits} times.")
-		self.warn(f"Kilometers driven total: {totalOdometer/1000} km.")
+		self.warn(f"Kilometers driven total: {totalOdometer} km.")
 
 		filename = f"log/routes_log_{self.run_start}.csv"
 		os.makedirs(os.path.dirname(filename), exist_ok=True)

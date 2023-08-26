@@ -517,6 +517,9 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if(vehicles[vehicleIndex].loadLevel > 0){
         vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
         vehicles[vehicleIndex].load_TS_rate = (1-((1-pow(0.05,1/7))*(1-vehicles[vehicleIndex].load_TS_rate/100)))*100;
+
+        // TÄHÄN KUMMALLEKIN MAX(0,VAL)
+
       }
       else {
         vehicles[vehicleIndex].loadLevel = 0
@@ -531,23 +534,36 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) > 0){
         if(depots[depotIndex].storage_level_1 > 0){
           depots[depotIndex].storage_level_1 -= depots[depotIndex].storage_level_1*pow(0.01,1/7);
+          
+          // MAX(0,VAL)
+
         }                
         else{
           depots[depotIndex].storage_level_1 = 0               ! ! ! !   MUISTA LISÄTÄ VARMISTUKSIA ETTEI TS TAI STORAGE MEE < 0 ! ! ! !! ! 
         }
         if(depots[depotIndex].storage_level_2 > 0){
           depots[depotIndex].storage_level_2 -= depots[depotIndex].storage_level_2*pow(0.01,1/7);
+          
+           // MAX(0,VAL)
+
         }
         else{
           depots[depotIndex].storage_level_2 = 0
         }
         if(depots[depotIndex].storage_level_3 > 0){
           depots[depotIndex].storage_level_3 -= depots[depotIndex].storage_level_3*pow(0.01,1/7);
+
+          // MAX(0,VAL)
+
+
         }
         else{
           depots[depotIndex].storage_level_3 = 0
         }
         depots[depotIndex].storage_TS = (1-((1-pow(0.05,1/7))*(1-depots[depotIndex].storage_TS/100)))*100;
+
+        // MYÖS TS:LLE MAXAUS
+
         depots[depotIndex].storage_level_1 = std::max(float(0.0), depots[depotIndex].storage_level_1);
         depots[depotIndex].storage_level_2 = std::max(float(0.0), depots[depotIndex].storage_level_2);
         depots[depotIndex].storage_level_3 = std::max(float(0.0), depots[depotIndex].storage_level_3);      }
@@ -598,6 +614,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       if (pickupSites[pickupSiteIndex].level > 0){
         pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
         pickupSites[pickupSiteIndex].TS_current = (1-((1-pow(pickupSites[pickupSiteIndex].moisture_loss_coefficient,1/7))*(1-pickupSites[pickupSiteIndex].TS_current/100)))*100;
+
+        // TÄNNE MAX(0,VAL)
+
+        // TUPLACHEKKAA TS:N LASKENTA ! ! ! ! ! ! AIKAKRIITTISYYSASIASSA
+
       }
       else {
         pickupSites[pickupSiteIndex].level = 0;
@@ -940,8 +961,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 100000; // 100000; // 40000
-  int numFinetuneGenerations = 50000; // 20000
+  int numGenerations = 400000; // 100000; // 40000
+  int numFinetuneGenerations = 200000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
