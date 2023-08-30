@@ -189,10 +189,10 @@ class PickupSite(IndexedLocation):
 	def grow_daily_forever(self):
 		day = 0
 		while True:
-			yield self.sim.env.timeout(24*60)
 			if(self.accumulation_days[day]==1):	
 				self.put(self.daily_growth_rate)
 			day += 1
+			yield self.sim.env.timeout(24*60)
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -200,13 +200,14 @@ class PickupSite(IndexedLocation):
 			# LISÄÄ TÄNNE MAXAUKSET LEVEL JA TS
 
 			while True:
-				yield self.sim.env.timeout(24*60)
 				if self.level > 0:
 					self.level -= self.level*pow(self.volume_loss,1/7)
 					self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
 				else:
 					self.level = 0
 					self.TS_current = 0
+				yield self.sim.env.timeout(24*60)
+
 
 	def TS_rate(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
@@ -330,22 +331,22 @@ class Vehicle(IndexedSimEntity):
 								pickup_site.get(get_amount)
 								loadTS = pickup_site.TS_rate()
 								self.put_load(get_amount,loadTS,pickup_site.Exact_type)
-								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
+								if get_amount > 0:
+									yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
 							else:
 								# Can take all
 								get_amount = pickup_site.level
 								pickup_site.get(get_amount)
 								loadTS = pickup_site.TS_rate()
 								self.put_load(get_amount,loadTS,pickup_site.Exact_type)
-								yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
+								if get_amount > 0:
+									yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
 							self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
 							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
-							return
 					else:
 						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
 						self.wrong_sites_visited += 1
-						return
 					
 				elif isinstance(arrive_location, Depot):
 					# Arrived at a terminal
@@ -371,13 +372,14 @@ class Vehicle(IndexedSimEntity):
 
 				# LISÄÄ TÄNNE MAKSAUKSET STORAGE LEVEL JA TS
 
-				yield self.sim.env.timeout(24*60)
 				if(self.load_level > 0):
 					self.load_level -= self.load_level*pow(0.01,1/7)
 					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
 				else:
 					self.load_level = 0
 					self.load_TS_rate = 0
+				yield self.sim.env.timeout(24*60)
+
 
 	def record_distance_travelled(self, distance_driven):
 		"""
@@ -467,7 +469,6 @@ class Depot(IndexedLocation):
 
 	def produce_biogas_forever(self):
 		while True:
-			yield self.sim.env.timeout(24*60)
 			if self.storage_sum() > 0:
 				if self.storage_TS > 15:
 					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
@@ -487,6 +488,8 @@ class Depot(IndexedLocation):
 			self.log(f"Slurry manure storage: {self.storage_level_3}.")
 			self.log(f"Storage distribution: {self.storage_distribution}")			
 			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
+			yield self.sim.env.timeout(24*60)
+
 
 	def update_TS(self, amount, ts):
 		if self.storage_sum() > 0:
@@ -558,7 +561,6 @@ class Depot(IndexedLocation):
 			# LISÄÄ TÄNNE MAXAUKSET VARASTOTASOILLE JA TS
 
 			while True:
-				yield self.sim.env.timeout(24*60)
 				if(self.storage_sum() > 0):
 					if(self.storage_level_1 > 0):
 						self.storage_level_1 -= self.storage_level_1*pow(0.01,1/7)
@@ -579,6 +581,8 @@ class Depot(IndexedLocation):
 					self.storage_level_2 = 0
 					self.storage_level_3 = 0
 					self.storage_TS = 0
+				yield self.sim.env.timeout(24*60)
+
 
 # Terminal where waste is brought to at the end of the day, before returning to depot
 class Terminal(IndexedLocation):
@@ -843,9 +847,11 @@ class WastePickupSimulation():
 
 		totalWrongvisits = 0
 		totalOdometer = 0
+		totalOvertime = 0
 		for vehicle_index, vehicle in enumerate(self.vehicles):
 			self.warn(f"Wrong sites visited by vehicle #{vehicle_index}: {vehicle.wrong_sites_visited} times.")
 			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer} km.")
+			self.warn(f"Overtime of the vehicle #{vehicle_index}: {vehicle.vehicle_overtime} km.")
 			totalWrongvisits += vehicle.wrong_sites_visited
 			totalOdometer += vehicle.vehicle_odometer
 
