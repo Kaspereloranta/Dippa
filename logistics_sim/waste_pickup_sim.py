@@ -385,7 +385,7 @@ class Vehicle(IndexedSimEntity):
 		"""
 		Remove later?
 		"""
-		self.vehicle_odometer =+ distance_driven
+		self.vehicle_odometer += distance_driven
 
 	def vehicle_type(self):
 		return self.type
@@ -847,13 +847,11 @@ class WastePickupSimulation():
 
 		totalWrongvisits = 0
 		totalOdometer = 0
-		totalOvertime = 0
 		for vehicle_index, vehicle in enumerate(self.vehicles):
 			self.warn(f"Wrong sites visited by vehicle #{vehicle_index}: {vehicle.wrong_sites_visited} times.")
-			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer} km.")
-			self.warn(f"Overtime of the vehicle #{vehicle_index}: {vehicle.vehicle_overtime} km.")
+			self.warn(f"Odometer of the vehicle #{vehicle_index}: {vehicle.vehicle_odometer/1000} km.")
 			totalWrongvisits += vehicle.wrong_sites_visited
-			totalOdometer += vehicle.vehicle_odometer
+			totalOdometer += vehicle.vehicle_odometer/1000
 
 		self.warn(f"Wrong sites total: {totalWrongvisits} times.")
 		self.warn(f"Kilometers driven total: {totalOdometer} km.")
