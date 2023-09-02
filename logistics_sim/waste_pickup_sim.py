@@ -730,7 +730,7 @@ class WastePickupSimulation():
 				routing_input = {
 					'pickup_sites': list(map(lambda pickup_site: {
 						'capacity': pickup_site.capacity,
-						'level': pickup_site.level,
+        				'level': pickup_site.level - pickup_site.daily_growth_rate if pickup_site.type != 1 else pickup_site.level,
 						'growth_rate': pickup_site.daily_growth_rate,
 						'location_index': pickup_site.location_index,
 						'TS_initial': pickup_site.TS_initial, 
@@ -744,9 +744,9 @@ class WastePickupSimulation():
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index,
-						'storage_level_1': depot.storage_level_1,
-						'storage_level_2': depot.storage_level_2,
-						'storage_level_3': depot.storage_level_3,
+						'storage_level_1': depot.storage_level_1 + depot.consumption_rate_1,
+						'storage_level_2': depot.storage_level_2 + depot.consumption_rate_2,
+						'storage_level_3': depot.storage_level_3 + depot.consumption_rate_3,
 						'storage_distribution' : depot.storage_distribution,
 						'cumulative_biomass_received_1' : depot.cumulative_biomass_received_1,
 						'cumulative_biomass_received_2' : depot.cumulative_biomass_received_2,
