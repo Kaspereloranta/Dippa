@@ -187,6 +187,7 @@ class PickupSite(IndexedLocation):
 		self.levelListeners = filter(lambda x: x[0] != listener, self.levelListeners)
 
 	def grow_daily_forever(self):
+		yield self.sim.env.timeout(1)
 		day = 0
 		while True:
 			if(self.accumulation_days[day]==1):	
@@ -465,6 +466,7 @@ class Depot(IndexedLocation):
 		self.avoid_negative_storage_levels()
 
 	def produce_biogas_forever(self):
+		yield self.sim.env.timeout(1)
 		while True:
 			if self.storage_sum() > 0:
 				if self.storage_TS > 15:
