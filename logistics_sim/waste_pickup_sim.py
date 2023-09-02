@@ -958,9 +958,9 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		terminal_config = {
 			**terminal['properties'],
 			'lonlats': tuple(terminal['geometry']['coordinates']),
-			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_1' : sim_config['grass_capacity']*0.175/46,
+			'storage_level_2' : sim_config['drymanure_capacity']*0.6/46,
+			'storage_level_3' : sim_config['slurrymanure_capacity']*4.5/46,
 			'capacity_1' : sim_config['grass_capacity'],
 			'capacity_2' : sim_config['drymanure_capacity'],
 			'capacity_3' : sim_config['slurrymanure_capacity'],
