@@ -187,6 +187,7 @@ class PickupSite(IndexedLocation):
 		self.levelListeners = filter(lambda x: x[0] != listener, self.levelListeners)
 
 	def grow_daily_forever(self):
+		yield self.sim.env.timeout(1)		
 		day = 0
 		while True:
 			if(self.accumulation_days[day]==1):	
@@ -196,9 +197,10 @@ class PickupSite(IndexedLocation):
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			yield self.sim.env.timeout(1)			
 			while True:
 				if self.level > 0:
-					self.level -= self.level*pow(self.volume_loss,1/7)
+					self.level -= (pow(1-self.volume_loss,1/7)-1)*self.level*-1
 					self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
 				else:
 					self.level = 0
@@ -367,9 +369,10 @@ class Vehicle(IndexedSimEntity):
 
 	def load_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			yield self.sim.env.timeout(1)
 			while True:
 				if(self.load_level > 0):
-					self.load_level -= self.load_level*pow(0.01,1/7)
+					self.load_level -= (pow(1-0.01,1/7)-1)*self.load_level*-1
 					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
 				else:
 					self.load_level = 0
@@ -465,6 +468,7 @@ class Depot(IndexedLocation):
 		self.avoid_negative_storage_levels()
 
 	def produce_biogas_forever(self):
+		yield self.sim.env.timeout(1)
 		while True:
 			if self.storage_sum() > 0:
 				if self.storage_TS > 15:
@@ -554,22 +558,24 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+			#yield self.sim.env.timeout(1)
 			while True:
-
 				if(self.storage_sum() > 0):
+					initial_sum = self.storage_sum()
 					if(self.storage_level_1 > 0):
-						self.storage_level_1 -= self.storage_level_1*pow(0.01,1/7)
+						self.storage_level_1 -= (pow(1-0.01,1/7)-1)*self.storage_level_1*-1
 					else:
 						self.storage_level_1 = 0
 					if(self.storage_level_2 > 0):
-						self.storage_level_2 -= self.storage_level_2*pow(0.01,1/7)
+						self.storage_level_2 -= (pow(1-0.01,1/7)-1)*self.storage_level_2*-1
 					else:
 						self.storage_level_2 = 0
 					if(self.storage_level_3 > 0):
-						self.storage_level_3 -= self.storage_level_3*pow(0.01,1/7)
+						self.storage_level_3 -= (pow(1-0.01,1/7)-1)*self.storage_level_3*-1
 					else:
 						self.storage_level_3 = 0					
-					self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
+					self.storage_TS = self.storage_TS/100*initial_sum/(initial_sum-(100-self.storage_TS)/100*initial_sum*(pow(1-0.05,1/7)+1)*-1)
+					#self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
 				else:
 					self.storage_level_1 = 0								
 					self.storage_level_2 = 0
@@ -730,7 +736,7 @@ class WastePickupSimulation():
 				routing_input = {
 					'pickup_sites': list(map(lambda pickup_site: {
 						'capacity': pickup_site.capacity,
-        				'level': pickup_site.level - pickup_site.daily_growth_rate if pickup_site.type != 1 else pickup_site.level,
+        				'level': pickup_site.level,
 						'growth_rate': pickup_site.daily_growth_rate,
 						'location_index': pickup_site.location_index,
 						'TS_initial': pickup_site.TS_initial, 
@@ -744,9 +750,9 @@ class WastePickupSimulation():
 					}, self.pickup_sites)),
 					'depots': list(map(lambda depot: {
 						'location_index': depot.location_index,
-						'storage_level_1': depot.storage_level_1 + depot.consumption_rate_1,
-						'storage_level_2': depot.storage_level_2 + depot.consumption_rate_2,
-						'storage_level_3': depot.storage_level_3 + depot.consumption_rate_3,
+						'storage_level_1': depot.storage_level_1,
+						'storage_level_2': depot.storage_level_2,
+						'storage_level_3': depot.storage_level_3,
 						'storage_distribution' : depot.storage_distribution,
 						'cumulative_biomass_received_1' : depot.cumulative_biomass_received_1,
 						'cumulative_biomass_received_2' : depot.cumulative_biomass_received_2,
