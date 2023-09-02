@@ -512,6 +512,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
+      /*
       // Drying process within the vehicles
       if(vehicles[vehicleIndex].loadLevel > 0){
         vehicles[vehicleIndex].loadLevel -= vehicles[vehicleIndex].loadLevel*pow(0.01,1/7);
@@ -524,9 +525,10 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       vehicles[vehicleIndex].loadLevel = std::max(float(0.0), vehicles[vehicleIndex].loadLevel);
       vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
       }
-
+      */
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
       
+      /*
       // Drying process within the biogas plant
       if((depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3) > 0){
         if(depots[depotIndex].storage_level_1 > 0){
@@ -559,6 +561,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       depots[depotIndex].storage_level_2 = std::max(float(0.0), depots[depotIndex].storage_level_2);
       depots[depotIndex].storage_level_3 = std::max(float(0.0), depots[depotIndex].storage_level_3);     
       depots[depotIndex].storage_TS = std::max(float(0.0), depots[depotIndex].storage_TS);
+      */
 
       // Biogas production process (resource consumption):     
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 > 0){
@@ -595,7 +598,8 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
-
+      
+      /*
       // Drying process within the pickup sites
       if (pickupSites[pickupSiteIndex].level > 0){
         pickupSites[pickupSiteIndex].level -= pickupSites[pickupSiteIndex].level*pow(pickupSites[pickupSiteIndex].volume_loss_coefficient,1/7);
@@ -607,6 +611,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }    
       pickupSites[pickupSiteIndex].level = std::max(float(0.0), pickupSites[pickupSiteIndex].level);
       pickupSites[pickupSiteIndex].TS_current = std::max(float(0.0), pickupSites[pickupSiteIndex].TS_current);
+      */
 
       if(routingInput.pickup_sites[pickupSiteIndex].accumulation_days[day] == 1){
         float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate;
