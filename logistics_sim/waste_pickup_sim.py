@@ -196,9 +196,6 @@ class PickupSite(IndexedLocation):
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-
-			# LISÄÄ TÄNNE MAXAUKSET LEVEL JA TS
-
 			while True:
 				if self.level > 0:
 					self.level -= self.level*pow(self.volume_loss,1/7)
@@ -206,6 +203,8 @@ class PickupSite(IndexedLocation):
 				else:
 					self.level = 0
 					self.TS_current = 0
+				self.TS_current = max(0.0,self.TS_current)
+				self.level = max(0.0,self.level)				
 				yield self.sim.env.timeout(24*60)
 
 
@@ -369,17 +368,15 @@ class Vehicle(IndexedSimEntity):
 	def load_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			while True:
-
-				# LISÄÄ TÄNNE MAKSAUKSET STORAGE LEVEL JA TS
-
 				if(self.load_level > 0):
 					self.load_level -= self.load_level*pow(0.01,1/7)
 					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
 				else:
 					self.load_level = 0
 					self.load_TS_rate = 0
+				self.load_TS_rate = max(0.0,self.load_TS_rate)
+				self.load_level = max(0.0,self.load_level)
 				yield self.sim.env.timeout(24*60)
-
 
 	def record_distance_travelled(self, distance_driven):
 		"""
@@ -557,30 +554,30 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-
-			# LISÄÄ TÄNNE MAXAUKSET VARASTOTASOILLE JA TS
-
 			while True:
+
 				if(self.storage_sum() > 0):
 					if(self.storage_level_1 > 0):
 						self.storage_level_1 -= self.storage_level_1*pow(0.01,1/7)
 					else:
 						self.storage_level_1 = 0
 					if(self.storage_level_2 > 0):
-							self.storage_level_2 -= self.storage_level_2*pow(0.01,1/7)
+						self.storage_level_2 -= self.storage_level_2*pow(0.01,1/7)
 					else:
-							self.storage_level_2 = 0
+						self.storage_level_2 = 0
 					if(self.storage_level_3 > 0):
 						self.storage_level_3 -= self.storage_level_3*pow(0.01,1/7)
 					else:
 						self.storage_level_3 = 0					
 					self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
-					self.avoid_negative_storage_levels()
 				else:
 					self.storage_level_1 = 0								
 					self.storage_level_2 = 0
 					self.storage_level_3 = 0
-					self.storage_TS = 0
+					self.storage_TS = 0		
+
+				self.avoid_negative_storage_levels()
+				self.storage_TS = max(0.0,self.storage_TS)
 				yield self.sim.env.timeout(24*60)
 
 

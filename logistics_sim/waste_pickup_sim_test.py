@@ -8,7 +8,7 @@ import random
 
 sim_config = {	
 	'sim_name': 'Biomass transportation to biogas facility',
-	'isTimeCriticalityConsidered' :  'False', # Boolean
+	'isTimeCriticalityConsidered' :  'True', # Boolean
 	'sim_runtime_days': 251, # Simulation runtime in days, Kalenterivuoden 2023 tyopaivat
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', #
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
