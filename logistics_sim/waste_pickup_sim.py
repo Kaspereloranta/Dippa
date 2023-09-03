@@ -139,9 +139,11 @@ class PickupSite(IndexedLocation):
 
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
-		self.growth_process = sim.env.process(self.grow_daily_forever())
 		if sim.config['isTimeCriticalityConsidered'] == 'True':
-			self.drying_process = sim.env.process(self.dry_daily_forever())		
+			self.drying_process = sim.env.process(self.dry_daily_forever())	
+
+		self.growth_process = sim.env.process(self.grow_daily_forever())
+	
 
 	# Put some amount into the containers at the site
 	def put(self, amount):
@@ -438,10 +440,10 @@ class Depot(IndexedLocation):
 
 		self.log(f"initialized storage distribution {self.storage_distribution}")
 
-		self.production_process = sim.env.process(self.produce_biogas_forever())
-
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
 			self.drying_process = sim.env.process(self.storage_drying_daily_forever())
+
+		self.production_process = sim.env.process(self.produce_biogas_forever())
 
 	def storage_sum(self):
 		return self.storage_level_1 + self.storage_level_2 + self.storage_level_3
