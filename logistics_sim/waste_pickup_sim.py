@@ -200,8 +200,8 @@ class PickupSite(IndexedLocation):
 			yield self.sim.env.timeout(1)			
 			while True:
 				if self.level > 0:
-					self.level -= (pow(1-self.volume_loss,1/7)-1)*self.level*-1
-					self.TS_current = (1-((1-pow(self.moisture_loss,1/7))*(1-self.TS_current/100)))*100
+					self.TS_current = (self.TS_current/100*self.level)/(self.TS_current/100*self.level+((100-self.TS_current)/100*self.level-(100-self.TS_current)/100*self.level*(pow(0.95,1/7)+1))*-1)*100
+					self.level -= (pow(1-self.volume_loss,1/7)-1)*self.level*-1					
 				else:
 					self.level = 0
 					self.TS_current = 0
@@ -372,11 +372,11 @@ class Vehicle(IndexedSimEntity):
 			yield self.sim.env.timeout(1)
 			while True:
 				if(self.load_level > 0):
+					self.load_TS_rate = (self.load_TS_rate/100*self.load_level)/(self.load_TS_rate/100*self.load_level+((100-self.load_TS_rate)/100*self.load_level-(100-self.load_TS_rate)/100*self.load_level*(pow(0.95,1/7)+1))*-1)*100
 					self.load_level -= (pow(1-0.01,1/7)-1)*self.load_level*-1
-					self.load_TS_rate = (1-((1-pow(0.05,1/7))*(1-self.load_TS_rate/100)))*100
 				else:
-					self.load_level = 0
 					self.load_TS_rate = 0
+					self.load_level = 0
 				self.load_TS_rate = max(0.0,self.load_TS_rate)
 				self.load_level = max(0.0,self.load_level)
 				yield self.sim.env.timeout(24*60)
@@ -558,10 +558,10 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			#yield self.sim.env.timeout(1)
+			yield self.sim.env.timeout(1)
 			while True:
 				if(self.storage_sum() > 0):
-					initial_sum = self.storage_sum()
+					self.storage_TS = (self.storage_TS/100*self.storage_sum())/(self.storage_TS/100*self.storage_sum()+((100-self.storage_TS)/100*self.storage_sum()-(100-self.storage_TS)/100*self.storage_sum()*(pow(0.95,1/7)+1))*-1)*100
 					if(self.storage_level_1 > 0):
 						self.storage_level_1 -= (pow(1-0.01,1/7)-1)*self.storage_level_1*-1
 					else:
@@ -574,14 +574,11 @@ class Depot(IndexedLocation):
 						self.storage_level_3 -= (pow(1-0.01,1/7)-1)*self.storage_level_3*-1
 					else:
 						self.storage_level_3 = 0					
-					self.storage_TS = self.storage_TS/100*initial_sum/(initial_sum-(100-self.storage_TS)/100*initial_sum*(pow(1-0.05,1/7)+1)*-1)
-					#self.storage_TS = (1-((1-pow(0.05,1/7))*(1-self.storage_TS/100)))*100
 				else:
 					self.storage_level_1 = 0								
 					self.storage_level_2 = 0
 					self.storage_level_3 = 0
 					self.storage_TS = 0		
-
 				self.avoid_negative_storage_levels()
 				self.storage_TS = max(0.0,self.storage_TS)
 				yield self.sim.env.timeout(24*60)
@@ -625,7 +622,7 @@ class Terminal(IndexedLocation):
 		self.overfilling_counter = 0
 		self.unnecessary_imports_counter = 0
 		self.dilution_water = 0
-		self.storage_TS = 15 # Assuming that the storage's TS is within the acceptable range at the beginning of simulation.
+		self.storage_TS = 14.7 # Assuming that the storage's TS is within the acceptable range at the beginning of simulation.
 
 # Simulation
 class WastePickupSimulation():
@@ -964,15 +961,15 @@ def preprocess_sim_config(sim_config, sim_config_filename):
 		terminal_config = {
 			**terminal['properties'],
 			'lonlats': tuple(terminal['geometry']['coordinates']),
-			'storage_level_1' : sim_config['grass_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_2' : sim_config['drymanure_capacity']*np.random.uniform(0, 0.8),
-			'storage_level_3' : sim_config['slurrymanure_capacity']*np.random.uniform(0, 0.8),
+			'storage_level_1' : sim_config['grass_capacity']*0.225/46,
+			'storage_level_2' : sim_config['drymanure_capacity']*0.6/46,
+			'storage_level_3' : sim_config['slurrymanure_capacity']*4.5/46,
 			'capacity_1' : sim_config['grass_capacity'],
 			'capacity_2' : sim_config['drymanure_capacity'],
 			'capacity_3' : sim_config['slurrymanure_capacity'],
-			'consumption_rate_1' : sim_config['grass_capacity'] / sim_config['sim_runtime_days'],
-			'consumption_rate_2' : sim_config['drymanure_capacity'] / sim_config['sim_runtime_days'],
-			'consumption_rate_3' : sim_config['slurrymanure_capacity'] / sim_config['sim_runtime_days']
+			'consumption_rate_1' : sim_config['grass_capacity']*0.225 / sim_config['sim_runtime_days'],
+			'consumption_rate_2' : sim_config['drymanure_capacity']*0.6 / sim_config['sim_runtime_days'],
+			'consumption_rate_3' : sim_config['slurrymanure_capacity']*4.5 / sim_config['sim_runtime_days']
 		}
 		sim_config['terminals'].append(terminal_config)
 		
