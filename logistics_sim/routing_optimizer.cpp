@@ -510,7 +510,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
   for (int day = 0; day < routingInput.sim_duration_days; day++) {
 
     for (int vehicleIndex = 0; vehicleIndex < vehicles.size(); vehicleIndex++) {
-      
+      /*
       // Drying process within the vehicles
       if(vehicles[vehicleIndex].loadLevel > 0){
 				vehicles[vehicleIndex].load_TS_rate = (vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel)/(vehicles[vehicleIndex].load_TS_rate/100*vehicles[vehicleIndex].loadLevel+((100-vehicles[vehicleIndex].load_TS_rate)/100*vehicles[vehicleIndex].loadLevel-(100-vehicles[vehicleIndex].load_TS_rate)/100*vehicles[vehicleIndex].loadLevel*(pow(0.95,1/7)+1))*-1)*100;
@@ -526,9 +526,9 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
       }
-
+      */
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
-      
+      /*
       // Drying process within the biogas plant
       float initial_storage = depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3;
       if(initial_storage > 0){
@@ -562,7 +562,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       depots[depotIndex].storage_level_1 = std::max(float(0.0), depots[depotIndex].storage_level_1);
       depots[depotIndex].storage_level_2 = std::max(float(0.0), depots[depotIndex].storage_level_2);
       depots[depotIndex].storage_level_3 = std::max(float(0.0), depots[depotIndex].storage_level_3);     
-
+      */
       // Biogas production process (resource consumption):     
       if (depots[depotIndex].storage_level_1+depots[depotIndex].storage_level_2+depots[depotIndex].storage_level_3 > 0){
         // If dilution is needed  
@@ -598,7 +598,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
 
     // Increase pickup site levels
     for (int pickupSiteIndex = 0; pickupSiteIndex < pickupSites.size(); pickupSiteIndex++) {
-
+      /*
       // Drying process within the pickup sites
       if (pickupSites[pickupSiteIndex].level > 0){
 				pickupSites[pickupSiteIndex].TS_current = (pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level)/(pickupSites[pickupSiteIndex].TS_current/100*pickupSites[pickupSiteIndex].level+((100-pickupSites[pickupSiteIndex].TS_current)/100*pickupSites[pickupSiteIndex].level-(100-pickupSites[pickupSiteIndex].TS_current)/100*pickupSites[pickupSiteIndex].level*(pow(0.95,1/7)+1))*-1)*100;
@@ -610,7 +610,7 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }    
       pickupSites[pickupSiteIndex].TS_current = std::max(float(0.0), pickupSites[pickupSiteIndex].TS_current);
       pickupSites[pickupSiteIndex].level = std::max(float(0.0), pickupSites[pickupSiteIndex].level);
-
+      */
       if(routingInput.pickup_sites[pickupSiteIndex].accumulation_days[day] == 1){
         float put_amount = routingInput.pickup_sites[pickupSiteIndex].growth_rate;
         // To update TS-rate of site
@@ -947,8 +947,8 @@ int main() {
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 400000; // 100000; // 40000
-  int numFinetuneGenerations = 200000; // 20000
+  int numGenerations = 100; // 100000; // 40000
+  int numFinetuneGenerations = 0; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
