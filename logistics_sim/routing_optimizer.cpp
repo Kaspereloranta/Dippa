@@ -522,11 +522,11 @@ simcpp20::event<> LogisticsSimulation::runDailyProcess(simcpp20::simulation<> &s
       }
       vehicles[vehicleIndex].load_TS_rate = std::max(float(0.0), vehicles[vehicleIndex].load_TS_rate);
       vehicles[vehicleIndex].loadLevel = std::max(float(0.0), vehicles[vehicleIndex].loadLevel);
-
+      *//
       // Start vehicle shift for current day
       runVehicleRouteProcess(sim, vehicleIndex, day);
       }
-      */
+      
     for (int depotIndex = 0; depotIndex < depots.size(); depotIndex++) {
       /*
       // Drying process within the biogas plant
