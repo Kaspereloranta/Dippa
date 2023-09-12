@@ -341,11 +341,11 @@ class Vehicle(IndexedSimEntity):
 								self.put_load(get_amount,loadTS,pickup_site.Exact_type)
 								if get_amount > 0:
 									yield self.sim.env.timeout(self.pickup_duration + get_amount*pickup_site.give_collection_rate())
-							self.log(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
+							self.warn(f"Pick up {tons_to_string(get_amount)} from pickup site #{pickup_site.index} with {tons_to_string(pickup_site.level)} remaining. Vehicle load {tons_to_string(self.load_level)} / {tons_to_string(self.load_capacity)}")
 						else:
 							self.log(f"Nothing to pick up at pickup site #{pickup_site.index}")			
 					else:
-						self.warn(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
+						self.log(f"Vehicle #{self.index} of type #{self.vehicle_type()} arrived at site #{pickup_site.index} of type #{pickup_site.biomass_type()}!")
 						self.wrong_sites_visited += 1
 					
 				elif isinstance(arrive_location, Depot):
@@ -353,7 +353,7 @@ class Vehicle(IndexedSimEntity):
 					depot = arrive_location
 					if self.load_level > 0:
 						depot.receive_biomass(self.load_level, self.load_TS_rate, self.type, self.load_distribution)
-						self.log(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")
+						self.warn(f"Vehicle #{self.index} of type #{self.type} dumped load of #{self.load_level} to the biogas plant.")
 						self.log(f"Vehicle #{self.index} load distribution: {self.load_distribution}")			
 					self.load_level = 0
 					self.load_distribution.clear()
@@ -474,7 +474,7 @@ class Depot(IndexedLocation):
 					self.dilution_water += 14/3*self.storage_TS*self.storage_sum()/100 + pow(self.storage_TS,2)*self.storage_sum()
 					self.warn(f"Dilution water consumed. Total consumption: {self.dilution_water}")
 					self.storage_TS = 15
-					self.log(f"Storage TS after dilution: {self.storage_TS}")
+					self.warn(f"Storage TS after dilution: {self.storage_TS}")
 				self.biomass_consumption()
 
 			elif self.storage_sum() <= 0:
@@ -482,11 +482,11 @@ class Depot(IndexedLocation):
 				self.storage_TS = 0
 				self.warn(f"Production stoppage! Stoppages total: {self.production_stoppage_counter}")
 
-			self.log(f"Grass and straw storage: {self.storage_level_1}.")
-			self.log(f"Dry manure storage: {self.storage_level_2}.")
-			self.log(f"Slurry manure storage: {self.storage_level_3}.")
-			self.log(f"Storage distribution: {self.storage_distribution}")			
-			self.log(f"TS rate of biogas facility: {self.storage_TS}")			
+			self.warn(f"Grass and straw storage: {self.storage_level_1}.")
+			self.warn(f"Dry manure storage: {self.storage_level_2}.")
+			self.warn(f"Slurry manure storage: {self.storage_level_3}.")
+			self.warn(f"Storage distribution: {self.storage_distribution}")			
+			self.warn(f"TS rate of biogas facility: {self.storage_TS}")			
 			yield self.sim.env.timeout(24*60)
 
 
@@ -497,7 +497,7 @@ class Depot(IndexedLocation):
 			self.storage_TS = ts
 
 		self.storage_TS = max(0.0,self.storage_TS)
-		self.log(f"Storage TS updated. TS now: {self.storage_TS}")
+		self.warn(f"Storage TS updated. TS now: {self.storage_TS}")
 
 
 	def update_storage_distribution(self, storagelevel, amount, load_distribution, type):
