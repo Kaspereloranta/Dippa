@@ -31,17 +31,15 @@ sim_config = {
 		}
 	],
 	'biomass_type_mapping':{
-		'Hevoset ja ponit, kuivalanta yhteensa varastosta': 2,
-		'Nautojen lietelanta elainsuojasta 2015': 3,
-		'Lihakarjan lietelanta elainsuojasta' : 3,  
-		'Lihakarjan kuivalanta yhteensa varastosta': 2,
-		'Broilerit, kalkkunat ja muu siipikarja kuivalanta yhteensa varastosta' : 2,
-		'Emakot ja porsaat lietelanta elainsuojasta' : 3,
-		'Sikojenkuivalantavarastosta2016' : 2,
-		'Emakot ja porsaat kuivalanta yhteensa varastosta' : 2, 
-		'Sivuvirta: Kesantonurmi' : 1,
-		'Sivuvirta: Olki' : 1,
-		'Sivuvirta: Kuivaheinanurmet': 1
+		'Horses and Ponies, Total Solid Manure from Storage': 2,
+		'Beef Cattle Liquid Manure from Animal Housing' : 3,  
+		'Beef Cattle Total Solid Manure from Storage': 2,
+		'Broilers, Turkeys, and Other Poultry Total Solid Manure from Storage' : 2,
+		'Sows and Piglets Liquid Manure from Animal Housing' : 3,
+		'Sows and Piglets Total Solid Manure from Storage' : 2,
+		'Side-stream: Grassland Residue' : 1,
+		'Side-stream: Straw' : 1,
+		'Side-stream: Dry Hayfields': 1
 	}
 }
 
