@@ -1,0 +1,20 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Clustermasses": 787.3058990681352, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.414531265397152, "lat": 60.939095137070851 }, "geometry": { "type": "Point", "coordinates": [ 23.414531265397152, 60.939095137070851 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 851.68483552374164, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.332823480728237, "lat": 60.913338268135753 }, "geometry": { "type": "Point", "coordinates": [ 23.332823480728237, 60.913338268135753 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 776.51440842407203, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.312555395185331, "lat": 60.9535883732336 }, "geometry": { "type": "Point", "coordinates": [ 23.312555395185331, 60.9535883732336 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1123.6045338108031, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.43092334693279, "lat": 60.895885757590023 }, "geometry": { "type": "Point", "coordinates": [ 23.43092334693279, 60.895885757590023 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 775.89473821144554, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.379411428212755, "lat": 60.978852070583848 }, "geometry": { "type": "Point", "coordinates": [ 23.379411428212755, 60.978852070583848 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1629.1152723270104, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.505730319405743, "lat": 60.92281544680641 }, "geometry": { "type": "Point", "coordinates": [ 23.505730319405743, 60.92281544680641 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 654.03779633777003, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.485612817170487, "lat": 60.966000499304002 }, "geometry": { "type": "Point", "coordinates": [ 23.485612817170487, 60.966000499304002 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 937.10005736503922, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.253617314464343, "lat": 60.892241700296196 }, "geometry": { "type": "Point", "coordinates": [ 23.253617314464343, 60.892241700296196 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1297.9448174272177, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.335464694714091, "lat": 60.863383971565426 }, "geometry": { "type": "Point", "coordinates": [ 23.335464694714091, 60.863383971565426 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 836.92617392288389, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.226099960929155, "lat": 60.939724104537817 }, "geometry": { "type": "Point", "coordinates": [ 23.226099960929155, 60.939724104537817 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 923.25809907539042, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.285988889448607, "lat": 60.990578341935915 }, "geometry": { "type": "Point", "coordinates": [ 23.285988889448607, 60.990578341935915 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1552.9244851830945, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.413663340697791, "lat": 60.859696002599911 }, "geometry": { "type": "Point", "coordinates": [ 23.413663340697791, 60.859696002599911 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 747.75512337116015, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.424816667293168, "lat": 60.998806504722616 }, "geometry": { "type": "Point", "coordinates": [ 23.424816667293168, 60.998806504722616 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1234.459351359538, "Type": "Lihakarjan lietelanta eläinsuojasta", "lon": 23.493133153821919, "lat": 60.884086096936578 }, "geometry": { "type": "Point", "coordinates": [ 23.493133153821919, 60.884086096936578 ] } }
+]
+}

@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Clustermasses": 1803.512762867008, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.369724850548494, "lat": 60.931439008546128 }, "geometry": { "type": "Point", "coordinates": [ 23.369724850548494, 60.931439008546128 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1964.2675463221326, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.395955730478768, "lat": 60.895798178615934 }, "geometry": { "type": "Point", "coordinates": [ 23.395955730478768, 60.895798178615934 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 2008.0023581058442, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.297525704859478, "lat": 60.912929356645563 }, "geometry": { "type": "Point", "coordinates": [ 23.297525704859478, 60.912929356645563 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1666.7266038530411, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.385781961754546, "lat": 60.968549057482498 }, "geometry": { "type": "Point", "coordinates": [ 23.385781961754546, 60.968549057482498 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1671.4381244845777, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.285886040107549, "lat": 60.947682209076646 }, "geometry": { "type": "Point", "coordinates": [ 23.285886040107549, 60.947682209076646 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1744.425032237808, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.457906965002827, "lat": 60.946016336993821 }, "geometry": { "type": "Point", "coordinates": [ 23.457906965002827, 60.946016336993821 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1442.8102102936064, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.300722069372409, "lat": 60.980902413086078 }, "geometry": { "type": "Point", "coordinates": [ 23.300722069372409, 60.980902413086078 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 2364.2160364221872, "Type": "Emakot ja porsaat lietelanta eläinsuojasta", "lon": 23.482944480317268, "lat": 60.890073468070973 }, "geometry": { "type": "Point", "coordinates": [ 23.482944480317268, 60.890073468070973 ] } }
+]
+}
