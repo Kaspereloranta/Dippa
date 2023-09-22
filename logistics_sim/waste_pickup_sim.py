@@ -139,8 +139,8 @@ class PickupSite(IndexedLocation):
 
 		self.log(f"Initial level: {tons_to_string(self.level)} of {tons_to_string(self.capacity)} ({to_percentage_string(self.level / self.capacity)}), growth rate: {tons_to_string(self.daily_growth_rate)}/day, TS-rate: {tons_to_string(self.TS_initial)}")
 
-		if sim.config['isTimeCriticalityConsidered'] == 'True':
-			self.drying_process = sim.env.process(self.dry_daily_forever())	
+		#if sim.config['isTimeCriticalityConsidered'] == 'True':
+		#	self.drying_process = sim.env.process(self.dry_daily_forever())	
 
 		self.growth_process = sim.env.process(self.grow_daily_forever())
 	
@@ -192,6 +192,10 @@ class PickupSite(IndexedLocation):
 		yield self.sim.env.timeout(1)		
 		day = 0
 		while True:
+
+			if self.sim.config['isTimeCriticalityConsidered'] == 'True':
+				self.dry_daily_forever()
+
 			if(self.accumulation_days[day]==1):	
 				self.put(self.daily_growth_rate)
 			day += 1
@@ -199,7 +203,6 @@ class PickupSite(IndexedLocation):
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			yield self.sim.env.timeout(1)			
 			while True:
 				if self.level > 0:
 					self.TS_current = (self.TS_current/100*self.level)/(self.TS_current/100*self.level+((100-self.TS_current)/100*self.level-(100-self.TS_current)/100*self.level*(pow(0.95,1/7)+1))*-1)*100
@@ -440,8 +443,8 @@ class Depot(IndexedLocation):
 
 		self.log(f"initialized storage distribution {self.storage_distribution}")
 
-		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			self.drying_process = sim.env.process(self.storage_drying_daily_forever())
+	#	if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+	#		self.drying_process = sim.env.process(self.storage_drying_daily_forever())
 
 		self.production_process = sim.env.process(self.produce_biogas_forever())
 
@@ -472,6 +475,8 @@ class Depot(IndexedLocation):
 	def produce_biogas_forever(self):
 		yield self.sim.env.timeout(1)
 		while True:
+			if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
+				self.storage_drying_daily_forever()
 			if self.storage_sum() > 0:
 				if self.storage_TS > 15:
 					# Amount of water to dilute the storage's content to TS=15% (analytical solution)
@@ -560,7 +565,6 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			yield self.sim.env.timeout(1)
 			while True:
 				if(self.storage_sum() > 0):
 					self.storage_TS = (self.storage_TS/100*self.storage_sum())/(self.storage_TS/100*self.storage_sum()+((100-self.storage_TS)/100*self.storage_sum()-(100-self.storage_TS)/100*self.storage_sum()*(pow(0.95,1/7)+1))*-1)*100
