@@ -13,8 +13,8 @@ sim_config = {
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', #
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
 	'grass_capacity' : 28000, # BioKanta case humppilaan Case1: grass=18000, lannat yht. = 7000 (3500 ja 3500), Case2: Grass=28000, lannat yht. = 14 000 (7k ja 7k), Case3: ei kapasiteettia, mitoitus kasvaa samassa suhteeessa 10k nurmea ja 7k lantaa
-	'drymanure_capacity': 14000, # LISÄÄ BIOKANTA AJOIHIN SITTEN PYTHONIIN JOTAIN LOGGAUKSIA NOISTA MÄÄRISTÄ, JOTTA NÄHDÄÄN PAREMMIN MITÄ TAPAHTUU
-	'slurrymanure_capacity': 14000,
+	'drymanure_capacity': 7000, # LISÄÄ BIOKANTA AJOIHIN SITTEN PYTHONIIN JOTAIN LOGGAUKSIA NOISTA MÄÄRISTÄ, JOTTA NÄHDÄÄN PAREMMIN MITÄ TAPAHTUU
+	'slurrymanure_capacity': 7000,
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', 
 	'vehicle_template': {
 		'load_capacity': 45, # Keskim. arvaus
@@ -31,17 +31,15 @@ sim_config = {
 		}
 	],
 	'biomass_type_mapping':{
-		'Hevoset ja ponit, kuivalanta yhteensa varastosta': 2,
-		'Nautojen lietelanta elainsuojasta 2015': 3,
-		'Lihakarjan lietelanta elainsuojasta' : 3,  
-		'Lihakarjan kuivalanta yhteensa varastosta': 2,
-		'Broilerit, kalkkunat ja muu siipikarja kuivalanta yhteensa varastosta' : 2,
-		'Emakot ja porsaat lietelanta elainsuojasta' : 3,
-		'Sikojenkuivalantavarastosta2016' : 2,
-		'Emakot ja porsaat kuivalanta yhteensa varastosta' : 2, 
-		'Sivuvirta: Kesantonurmi' : 1,
-		'Sivuvirta: Olki' : 1,
-		'Sivuvirta: Kuivaheinanurmet': 1
+		'Horses and Ponies, Total Solid Manure from Storage': 2,
+		'Beef Cattle Liquid Manure from Animal Housing': 3,
+		'Beef Cattle Total Solid Manure from Storage': 2,
+		'Broilers, Turkeys, and Other Poultry Total Solid Manure from Storage' : 2,
+		'Sows and Piglets Liquid Manure from Animal Housing' : 3,
+		'Sows and Piglets Total Solid Manure from Storage' : 2,
+		'Side-stream: Grassland Residue' : 1,
+		'Side-stream: Straw' : 1,
+		'Side-stream: Dry Hayfields': 1
 	}
 }
 
