@@ -565,7 +565,7 @@ class Depot(IndexedLocation):
 
 	def storage_drying_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			while True:
+			#while True:
 				if(self.storage_sum() > 0):
 					self.storage_TS = (self.storage_TS/100*self.storage_sum())/(self.storage_TS/100*self.storage_sum()+((100-self.storage_TS)/100*self.storage_sum()-(100-self.storage_TS)/100*self.storage_sum()*(pow(0.95,1/7)+1))*-1)*100
 					if(self.storage_level_1 > 0):
@@ -587,7 +587,7 @@ class Depot(IndexedLocation):
 					self.storage_TS = 0		
 				self.avoid_negative_storage_levels()
 				self.storage_TS = max(0.0,self.storage_TS)
-				yield self.sim.env.timeout(24*60)
+				#yield self.sim.env.timeout(24*60)
 
 
 # Terminal where waste is brought to at the end of the day, before returning to depot
@@ -821,8 +821,8 @@ class WastePickupSimulation():
 
 				filename = 'log/routing_optimizer_log.txt'
 				os.makedirs(os.path.dirname(filename), exist_ok=True)
-				#os.system(f"routing_optimizer > {filename}") # *** # Windows
-				os.system(f"./routing_optimizer > {filename}") # *** # Linux
+				os.system(f"routing_optimizer > {filename}") # *** # Windows
+				#os.system(f"./routing_optimizer > {filename}") # *** # Linux
 				with open('temp/routing_output.json') as infile:
 					self.routing_output = json.load(infile)
 
