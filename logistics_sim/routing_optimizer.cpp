@@ -945,7 +945,7 @@ int main() {
 
 */
 
-  Optimizer<int16_t> optimizer(routingInput.num_genes, logisticsSims);
+  Optimizer<int16_t> optimizer(routingInput.num_genes, logisticsSims, 500);
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
