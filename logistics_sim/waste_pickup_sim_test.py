@@ -13,7 +13,7 @@ sim_config = {
 	'pickup_sites_filename': 'geo_data/nearest_pickup_sites.geojson', #
 	'depots_filename': 'geo_data/sim_test_terminals.geojson', # Nyt depots = terminals, vain 1, Biokaasulaitos. 
 	'grass_capacity' : 28000, # BioKanta case humppilaan Case1: grass=18000, lannat yht. = 7000 (3500 ja 3500), Case2: Grass=28000, lannat yht. = 14 000 (7k ja 7k), Case3: ei kapasiteettia, mitoitus kasvaa samassa suhteeessa 10k nurmea ja 7k lantaa
-	'drymanure_capacity': 7000, # LISÄÄ BIOKANTA AJOIHIN SITTEN PYTHONIIN JOTAIN LOGGAUKSIA NOISTA MÄÄRISTÄ, JOTTA NÄHDÄÄN PAREMMIN MITÄ TAPAHTUU
+	'drymanure_capacity': 7000, 
 	'slurrymanure_capacity': 7000,
 	'terminals_filename': 'geo_data/sim_test_terminals.geojson', 
 	'vehicle_template': {

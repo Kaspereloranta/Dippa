@@ -945,12 +945,12 @@ int main() {
 
 */
 
-  Optimizer<int16_t> optimizer(routingInput.num_genes, logisticsSims, 500);
+  Optimizer<int16_t> optimizer(routingInput.num_genes, logisticsSims);
   
   // TÄÄLLÄ MÄÄRÄTÄÄN KUINKA MONTA KIERROSTA GEENIAJOJA TEHDÄÄN, VAIKUTTA OPTIMOINNIN NOPEUTEEN, VOIDAAN MYÖS LISÄTÄ GEENEJÄ JOS HALUTAAN TARKENTAA LASKENTAA
   
-  int numGenerations = 2000000; // 100000; // 40000
-  int numFinetuneGenerations = 1000000; // 20000
+  int numGenerations = 1000000; // 100000; // 40000
+  int numFinetuneGenerations = 500000; // 20000
   int numGenerationsPerStep = 100;
   //optimizer.initPopulation();
 
