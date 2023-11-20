@@ -2,13 +2,13 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "Clustermasses": 1478.790439404502, "Type": "Sivuvirta: Olki", "lon": 23.358493724949085, "lat": 60.941409051755947 }, "geometry": { "type": "Point", "coordinates": [ 23.358493724949085, 60.941409051755947 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1564.6115271952806, "Type": "Sivuvirta: Olki", "lon": 23.400445502342386, "lat": 60.903336638439079 }, "geometry": { "type": "Point", "coordinates": [ 23.400445502342386, 60.903336638439079 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1920.3567755735223, "Type": "Sivuvirta: Olki", "lon": 23.285247732508161, "lat": 60.904152545182548 }, "geometry": { "type": "Point", "coordinates": [ 23.285247732508161, 60.904152545182548 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1349.5241320443172, "Type": "Sivuvirta: Olki", "lon": 23.428494710001786, "lat": 60.969921296961537 }, "geometry": { "type": "Point", "coordinates": [ 23.428494710001786, 60.969921296961537 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 2380.1169651456862, "Type": "Sivuvirta: Olki", "lon": 23.280247867035584, "lat": 60.958689383042412 }, "geometry": { "type": "Point", "coordinates": [ 23.280247867035584, 60.958689383042412 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1121.2588517449738, "Type": "Sivuvirta: Olki", "lon": 23.467167745664142, "lat": 60.877931790917096 }, "geometry": { "type": "Point", "coordinates": [ 23.467167745664142, 60.877931790917096 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1023.9095326941385, "Type": "Sivuvirta: Olki", "lon": 23.225172948767788, "lat": 60.932022120867941 }, "geometry": { "type": "Point", "coordinates": [ 23.225172948767788, 60.932022120867941 ] } },
-{ "type": "Feature", "properties": { "Clustermasses": 1521.5279755694569, "Type": "Sivuvirta: Olki", "lon": 23.405667434436467, "lat": 60.859449613450735 }, "geometry": { "type": "Point", "coordinates": [ 23.405667434436467, 60.859449613450735 ] } }
+{ "type": "Feature", "properties": { "Clustermasses": 1983.93578119942, "Type": "Sivuvirta: Olki", "lon": 23.336491679152509, "lat": 60.950320969488246 }, "geometry": { "type": "Point", "coordinates": [ 23.336491679152509, 60.950320969488246 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1646.6358128356637, "Type": "Sivuvirta: Olki", "lon": 23.400217589923287, "lat": 60.904604393155324 }, "geometry": { "type": "Point", "coordinates": [ 23.400217589923287, 60.904604393155324 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1471.7407276781105, "Type": "Sivuvirta: Olki", "lon": 23.306265017150416, "lat": 60.91357080912195 }, "geometry": { "type": "Point", "coordinates": [ 23.306265017150416, 60.91357080912195 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1500.2468554949673, "Type": "Sivuvirta: Olki", "lon": 23.432310811369103, "lat": 60.967443626351951 }, "geometry": { "type": "Point", "coordinates": [ 23.432310811369103, 60.967443626351951 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1688.0393220940925, "Type": "Sivuvirta: Olki", "lon": 23.257347611172744, "lat": 60.963091274503874 }, "geometry": { "type": "Point", "coordinates": [ 23.257347611172744, 60.963091274503874 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1152.5749836435698, "Type": "Sivuvirta: Olki", "lon": 23.234915555225612, "lat": 60.927636818005475 }, "geometry": { "type": "Point", "coordinates": [ 23.234915555225612, 60.927636818005475 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1317.2505394870159, "Type": "Sivuvirta: Olki", "lon": 23.475698226859034, "lat": 60.881732037459727 }, "geometry": { "type": "Point", "coordinates": [ 23.475698226859034, 60.881732037459727 ] } },
+{ "type": "Feature", "properties": { "Clustermasses": 1565.7418500998817, "Type": "Sivuvirta: Olki", "lon": 23.406517040221679, "lat": 60.859730561848465 }, "geometry": { "type": "Point", "coordinates": [ 23.406517040221679, 60.859730561848465 ] } }
 ]
 }
