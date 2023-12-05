@@ -203,7 +203,7 @@ class PickupSite(IndexedLocation):
 
 	def dry_daily_forever(self):
 		if (self.sim.config['isTimeCriticalityConsidered'] == 'True'):
-			#while True:
+			while True:
 				if self.level > 0:
 					self.TS_current = (self.TS_current/100*self.level)/(self.TS_current/100*self.level+((100-self.TS_current)/100*self.level-(100-self.TS_current)/100*self.level*(pow(0.95,1/7)+1))*-1)*100
 					self.level -= (pow(1-self.volume_loss,1/7)-1)*self.level*-1					
@@ -212,7 +212,7 @@ class PickupSite(IndexedLocation):
 					self.TS_current = 0
 				self.TS_current = max(0.0,self.TS_current)
 				self.level = max(0.0,self.level)				
-			#	yield self.sim.env.timeout(24*60)
+				yield self.sim.env.timeout(24*60)
 
 
 	def TS_rate(self):
