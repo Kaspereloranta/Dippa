@@ -1,6 +1,6 @@
 {
     "sim_name": "Biomass transportation to biogas facility",
-    "isTimeCriticalityConsidered": "False",
+    "isTimeCriticalityConsidered": "True",
     "sim_runtime_days": 251,
     "pickup_sites_filename": "geo_data/nearest_pickup_sites.geojson",
     "depots_filename": "geo_data/sim_test_terminals.geojson",
